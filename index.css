@@ -1,4 +1,6 @@
 button {
     font-size: 5em;
     border: 5px solid black;
+    width: 20%;
+    height: 10%;
 }
