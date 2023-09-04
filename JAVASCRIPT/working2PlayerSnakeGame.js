@@ -386,7 +386,12 @@
 
         promptAnswer = "yes";
         if (promptAnswer === "yes") {
-            selfCollisions = true;
+            promptAnswer = prompt("Do you want Self Collisions(answer yes or no)");
+            if (promptAnswer === "yes") {
+                selfCollisions = true;
+            } else {
+                selfCollisions = false;
+            }
             autoStart = true;
             blockSize = 12;
             canvas.width = Math.floor((window.innerWidth)/blockSize)*blockSize;

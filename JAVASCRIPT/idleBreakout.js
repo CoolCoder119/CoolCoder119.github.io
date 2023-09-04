@@ -23,7 +23,7 @@ var yellowDamage = 1;
 var squareWidth = width/8;
 var squareHeight = height/10;
 
-var speedMultiplier = width/300;
+var speedMultiplier = width/200;
 
 
 
