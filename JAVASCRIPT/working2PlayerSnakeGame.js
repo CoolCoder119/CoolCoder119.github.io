@@ -83,13 +83,7 @@
         ctx.fillStyle = "Black";
         ctx.font = "45px New Roman";
         ctx.fillText(gameOverCondition, width/2, height*0.8);
-        if (autoStart !== true) {
-            gameover = true;
-            setTimeout(() => {
-                document.querySelector('.submit').style.visibility = "visible";
-                document.querySelector('#submit').style.visibility = "visible";
-            }, waitTime); 
-        } else {
+        if (autoStart) {
             setTimeout(() => {
                 location.reload()
             }, waitTime); 
@@ -484,49 +478,6 @@
                 selfCollisions = false;
             }
         }  
-
-
-
-
-        $("#submit").on('click', function(event) {
-            
-            document.querySelector('.submit').style.visibility = "hidden";
-            document.querySelector('#submit').style.visibility = "hidden";
-            if (gameOver) {
-                //dealing with form info
-                var formBlockSize = Number(document.getElementById("blockSizea").innerHTML);
-                var formApplesPerBlock = Number(document.getElementById("applesPerBlock").innerHTML);
-
-                if (formBlockSize !== 0 && formApplesPerBlock !== 0 && formBlockSize < 200 && formBlockSize > 1) {
-                    blockSize = formBlockSize;
-                    // repeat times is how many applese there are
-                    canvas.width = Math.floor((window.innerWidth)/blockSize)*blockSize;
-                    canvas.height = Math.floor((window.innerHeight)/blockSize)*blockSize;
-                    width = canvas.width;
-                    height = canvas.height;
-                
-                    widthInBlocks = width / blockSize;
-                    heightInBlocks = height / blockSize;
-
-                    dividedNumber = formApplesPerBlock;
-                    repeatTimes = Math.round((widthInBlocks*heightInBlocks)/dividedNumber);
-
-                    sp = [2,2,3,2,4,2, widthInBlocks-4, 2,widthInBlocks-5, 2,widthInBlocks-3, 2];
-                    
-                }
-                snake = new Snake("lightblue","darkblue", 1,"right", sp[0],sp[1],sp[2],sp[3],sp[4],sp[5]);
-                snakeb = new Snake("pink","darkred", 2,"left", sp[6],sp[7],sp[8],sp[9],sp[10],sp[11]);
-                sizeToGetTo = STARTERSIZE;
-                sizeTOGetTob = STARTERSIZE;
-                apples = [];
-                populateApples();
-                console.log("just about to say gameover = false"
-                );
-                
-                gameover = false;
-                console.log("gameover = false");
-            }   
-        });
     }
 
     gameLoop();
