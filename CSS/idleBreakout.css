@@ -1,0 +1,83 @@
+* {
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+body{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    background-color: blanchedalmond;
+}
+canvas {
+    align-self:center;
+    background-color: white;
+}
+.Overhead {
+    background: linear-gradient(to bottom, black, rgba(0,0,0,0));
+    border: none;
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-left: 0 !important;
+    height: 40%;
+
+}
+#backButton {
+    width: 10%;
+    height: 3em;
+    border-radius: 1.5em;
+    background: linear-gradient(to bottom, orange, rgba(0,0,0,0));
+    border: none;
+    font-size: 1em;
+}
+div {
+    width: 100%;
+    align-self: center;
+    text-align: center;
+    background-color: inherit;
+    border: 3px solid black;
+    transition:all 1s;
+    display: flex;
+    align-items: center;
+}
+.gold {
+    width: 20%;
+    height: 30px;
+    font-size: 200%;
+
+}
+.button {
+    margin-left: 5%;
+    background: linear-gradient(to bottom, aqua, rgba(0,0,0,0));
+    width: 20%;
+    height: 3em;
+    border-radius: 1.5em;
+    opacity: 0.6;
+    border: none;
+
+}
+h1 {
+    border: 3px black;
+}
+.button:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+h1 {
+    height: 100% ;
+    margin: 10px;
+    border: 3px black;
+}
+.level {
+    height: 200% inherit;
+}
+#ball {
+    background-color: yellow;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    border: 3px solid black;
+    margin-right: 20%;
+    margin-left: 10%;
+
+}

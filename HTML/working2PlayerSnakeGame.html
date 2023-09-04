@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/working2PlayerSnakeGame.css">
+    <title>Snake Game</title>
+</head>
+<body>
+    <!--    <h1 class="title">Snake Game</h1>-->
+
+    <canvas id="canvas"></canvas>
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+    <script src="../JAVASCRIPT/working2PlayerSnakeGame.js"></script>
+
+    <div class="submit" id="submitForm">
+        <p class="playerText">PLEASE ENTER SOME INFO!</p>
+        <div id="blockSize">
+            <p class="playerText">Try a value between 10 and 50</p>
+            <p class="playerText">the blockSize</p>
+            <h1 contenteditable="true" class="text" id="blockSizea" type="number" name=""></h1>
+        </div>
+        <div id="dividedNumber">
+            <p class="playerText">Try a value between 8 and 30</p>
+            <p class="playerText">1 apple per this many blocks</p>
+            <h1 contenteditable="true" id="applesPerBlock" class="text" type="number"></h1>
+        </div>
+         <button id="submit">Start Game</button>
+    </div>
+
+</body>
+</html>

@@ -14,21 +14,22 @@ h1 {
     text-align: center;
 }
 .model {
-    margin-left: 5%;
+    margin-left: 0.5%;
     margin-right: 5%;
     margin-top: 5%;
-    width: 20em;
-    height: 20em;
+    width: 26em;
+    height: 26em;
     display: inline-block;
     background: yellow;
+    border-radius: 13em;
 }
 
 #idleBreakout {
     background: url(https://play-lh.googleusercontent.com/P6_Iw8xK-cxvTqtVdIANFGB48y_zLLxCZIK2JT6AMk_AMBGZJFSGmV-3a20BnijlfA=w526-h296-rw);
 }
 #snakeGame {
-    background: url(https://media.istockphoto.com/id/1363586427/vector/a-classic-retro-snake-style-game-basic-digital-screen-for-your-design-vector.jpg?s=612x612&w=0&k=20&c=zh1iSO27qJZF6hmolbGpTWfmkt2hYdfCZsgy9q5OgHE=);
+    background: url(https://rembound.com/files/creating-a-snake-game-tutorial-with-html5/snake.png);
 }
 #zombieShooter {
-    background: url(https://play-lh.googleusercontent.com/ilhyzHPR1GI1xIJ-VMLjgx5QC9DQUu94aQmDl3n60Cal9SRUOWc6cgR64CcnHC2hAw);
+    background: url(https://avatars.mds.yandex.net/get-games/1881364/2a0000016dc1acae7622e2ca9a827f696dfa/orig);
 }
