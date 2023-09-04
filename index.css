@@ -17,11 +17,11 @@ h1 {
     margin-left: 0.5%;
     margin-right: 5%;
     margin-top: 5%;
-    width: 26em;
-    height: 26em;
+    width: 25em;
+    height: 25em;
     display: inline-block;
     background: yellow;
-    border-radius: 13em;
+    border-radius: 12.5em;
 }
 
 #idleBreakout {
