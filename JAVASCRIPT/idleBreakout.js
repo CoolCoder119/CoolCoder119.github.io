@@ -159,28 +159,13 @@ function createLevel1stWay() {
         x+= squareWidth*2+5;
     }
 }
-function createLevel2ndWay() {
-    var startingX = 0+squareWidth*2;
-    var startingY = 0+squareHeight/2;
-    x = startingX;
-    y = startingX;
-    for (var repeatX = 0; repeatX<6; repeatX++) {
-        for (var repeatY = 0; repeatY<6; repeatY++) {
-            squares.push(new Square(level,x,y,squareWidth, squareHeight, "blue"));
-            console.log("created new one")
-            x+=squareWidth;
-        }
-        y+=squareHeight;
-        x = 0;
-    }
-};
 function createLevel() {
     var x = 0;
     var y = 0;
     if (level < 5) {
         createLevel1stWay();
     } else if(level < 10) {
-        createLevel1ndWay();
+        createLevel1stWay();
     }
 
 };
