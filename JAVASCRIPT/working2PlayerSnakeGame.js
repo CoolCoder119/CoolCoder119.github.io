@@ -136,7 +136,7 @@
     };
 
     Snake.prototype.draw = function() {
-        for (var i = 0;i < this.segments.length; i++) {
+        for (var i = this.segments.length; i > 0; i--) {
             this.segments[i].drawSquare(this.color);
         }
     };
@@ -386,12 +386,7 @@
 
         promptAnswer = "yes";
         if (promptAnswer === "yes") {
-            promptAnswer = prompt("Do you want Self Collisions(answer yes or no)");
-            if (promptAnswer === "yes") {
-                selfCollisions = true;
-            } else {
-                selfCollisions = false;
-            }
+            selfCollisions = false;
             autoStart = true;
             blockSize = 12;
             canvas.width = Math.floor((window.innerWidth)/blockSize)*blockSize;

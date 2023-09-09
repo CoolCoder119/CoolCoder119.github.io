@@ -1,14 +1,11 @@
 * {
     padding: 0;
     margin: 0;
-    color: white;
 }
-div {
-    position: absolute;
-}
-#score {
-    position: relative;
-}
-canvas {
+
+#canvas { 
     background-color: black;
+    position: absolute;
+    padding: 0 !important;
+    margin: 0 !important;
 }
