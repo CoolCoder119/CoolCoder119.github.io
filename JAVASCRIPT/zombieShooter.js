@@ -33,8 +33,8 @@ var projectileSpeed = 14;
 var player;
 
 
-var enemySummonTick = 100;
-var bulletSummonTick = 10;
+var enemySummonTick = 30;
+var bulletSummonTick = 3;
 
 var score = 0;
 var gameOver = false;
