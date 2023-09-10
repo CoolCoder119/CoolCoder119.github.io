@@ -5,23 +5,36 @@ canvas.height = window.innerHeight;
 var height = canvas.height;
 var width = canvas.width;
 
-var playerColor = "red";
+
 var projectiles = [];
 var enemies = [];
+
+var playerColor = "red";
 var projectileColor = "pink";
 var enemyColor = "teal";
+
+
 var enemyRadius = 23;
 var enemySpeed = 0.5;
+var enemyMaxSpeed = 60;
 var maxEnemyHealth = 20;
+
+
 var gameFrame = 0;
+
+
 var playerRadius = 20;
 var playerSpeed = 5;
+
+
 var projectileRadius = 10;
 var projectileSpeed = 14;
-var projectileShoot = 10;
-var player;
-var enemySummonTick = 100;
 
+var player;
+
+
+var enemySummonTick = 100;
+var bulletSummonTick = 10;
 
 var score = 0;
 var gameOver = false;
@@ -72,6 +85,8 @@ var mouse = function() {
     this.keyA = false;
     this.keyS = false;
     this.keyD = false;
+    this.x = width/2;
+    this.y = height/2 + 1;
 }
 var Mouse = new mouse();
 var Player = function(x,y,radius,color) {
@@ -162,6 +177,7 @@ Projectile.prototype.update = function() {
         if (getDistance(this.x,this.y,enemy.x,enemy.y) < this.radius + enemy.radius) {
             this.markedForDeletion = true;
             enemy.health -=1;
+            enemy.radius = enemy.health * 3 + 10;
             if (enemy.health < 1) {
                 score += enemy.maxHealth;
                 document.getElementById("score").innerHTML = "Score: " + score;
@@ -179,7 +195,7 @@ function gameLoop() {
     if (gameOver) {
         return
     }
-    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillStyle = "rgba(0,0,0,0.12)";
     ctx.fillRect(0,0,width,height);
     player.update();
     player.draw();
@@ -219,8 +235,22 @@ function gameLoop() {
         var color = "rgb(" + random1 + ","+random2 + ","+random3 + ")";
         var enemyHealth = Math.round(Math.random() * maxEnemyHealth);
         var Radius = enemyHealth * 3 + 10;
-        var enemy = new Enemy(x,y,Radius,color,xVel,yVel,enemySpeed,enemyHealth);
+        var enemySpeed = enemyMaxSpeed/Radius;
+        var enemy = new Enemy(x,y,Radius,color,xVel,yVel,enemySpeed,enemyHealth,);
         enemies.push(enemy)
+    }
+    if (gameFrame % bulletSummonTick === 0) {
+        var x = player.x - player.radius;
+        var y = player.y - player.radius;
+        const angle = Math.atan2(
+        Mouse.y-y,
+        Mouse.x-x
+        );
+        const xVel = Math.cos(angle) * projectileSpeed;
+        const yVel = Math.sin(angle) * projectileSpeed;
+    
+        var projectile = new Projectile(player.x, player.y,xVel,yVel,projectileRadius,projectileColor);
+        projectiles.push(projectile)
     }
     gameFrame++;
     requestAnimationFrame(gameLoop);
@@ -233,17 +263,12 @@ function gameLoop() {
 
 addEventListener('click', (event) => {
     ctx.fillStyle = "aqua";
-    var x = player.x - player.radius;
-    var y = player.y - player.radius;
-    const angle = Math.atan2(
-    event.clientY - y,
-    event.clientX - x
-    );
-    const xVel = Math.cos(angle) * projectileSpeed;
-    const yVel = Math.sin(angle) * projectileSpeed;
 
-    var projectile = new Projectile(player.x, player.y,xVel,yVel,projectileRadius,projectileColor);
-    projectiles.push(projectile)
+});
+
+addEventListener('mousemove', (event) => {
+    Mouse.x = event.x;
+    Mouse.y = event.y;
 });
 
 document.addEventListener('keydown', (event) => {
