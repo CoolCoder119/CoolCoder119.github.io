@@ -23,6 +23,7 @@ var player;
 var enemySummonTick = 100;
 
 
+var score = 0;
 var gameOver = false;
 
 function gameover() {
@@ -39,6 +40,8 @@ function resetGame() {
     enemies = [];
     player = new Player(width/2,height/2, playerRadius,playerColor);
     gameOver = false;
+    score = 0;
+    document.getElementById("score").innerHTML = "Score: 0";
 };
 
 function getDistance(x1,y1,x2,y2) {
@@ -160,6 +163,8 @@ Projectile.prototype.update = function() {
             this.markedForDeletion = true;
             enemy.health -=1;
             if (enemy.health < 1) {
+                score += enemy.maxHealth;
+                document.getElementById("score").innerHTML = "Score: " + score;
                 enemies.splice(i,1);        
             }
         }
