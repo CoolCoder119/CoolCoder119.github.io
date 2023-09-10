@@ -47,14 +47,22 @@ function gameover() {
     ctx.textBaseline = "middle";
     ctx.fillText("Game Over", width/2,height/2);    
 
-    setTimeout(resetGame(),2000);
+    resetGame();
+    //document.querySelector(".deadDiv").style.display = "inline-block";
+    //document.querySelector("#finalScore").innerHTML = "Score: " +score;
 };
 function resetGame() {
-    enemies = [];
+
     player = new Player(width/2,height/2, playerRadius,playerColor);
-    gameOver = false;
     score = 0;
     document.getElementById("score").innerHTML = "Score: 0";
+    enemies = [];
+    gameOver = false;
+};
+
+document.querySelector(".restartButton").onclick = function() {
+    document.querySelector(".deadDiv").style.display = "none";
+    resetGame();
 };
 
 function getDistance(x1,y1,x2,y2) {
@@ -133,7 +141,7 @@ var Enemy = function(x,y,radius,color,xVel,yVel,speedMultiplier,health) {
 }
 Enemy.prototype.draw = function() {
     circle(this.x,this.y,this.radius,this.color);
-    drawHealthBar(this.x,this.y,100,10,this.health,this.maxHealth,this.radius + 15);
+    drawHealthBar(this.x,this.y,(this.radius * 2) / 0.75,10,this.health,this.maxHealth,this.radius + 15);
 }
 Enemy.prototype.update = function() {
     var xDiff = player.x - this.x;
@@ -193,10 +201,12 @@ Projectile.prototype.update = function() {
 resetGame();
 function gameLoop() {
     if (gameOver) {
-        return
+        return;
     }
-    ctx.fillStyle = "rgba(0,0,0,0.12)";
+    ctx.fillStyle = "rgba(0,0,0,0.1)";
     ctx.fillRect(0,0,width,height);
+
+
     player.update();
     player.draw();
     var i = 0;
@@ -303,4 +313,7 @@ document.addEventListener('keyup', (event) => {
         Mouse.keyD = false;
     }
   }, false);
+
+
+
 gameLoop();
