@@ -32,8 +32,8 @@ var gameFrame = 0;
 
 var playerRadius = 20*MULTIPLIER;
 var playerSpeed = 3*MULTIPLIER;
-var hasPowerup = true;
-var powerupMaxLength = 300;
+var hasPowerup = false;
+var powerupMaxLength = 500;
 var powerUpLength = powerupMaxLength;
 
 
@@ -46,6 +46,8 @@ var player;
 
 var enemySummonTick = 50;
 var bulletSummonTick = 20;
+var regularBulletSummonTick = 20;
+var powerupBulletSummonTick = 3;
 var powerupSummonTick = 1000;
 
 
@@ -140,11 +142,19 @@ var Player = function(x,y,radius,color) {
 Player.prototype.draw = function() {
     circle(this.x,this.y,this.radius,this.color);
 
-    var powerupBarX = width * 0.5;
-    var powerupBarY = height * 0.75;
-    var powerupBarWidth = width * 0.4;
-    var powerupBarHeight = height * 0.05;
-    drawBar(powerupBarX,powerupBarY,300,100,5,10);
+
+    if (hasPowerup) {
+        var powerupBarX = width * 0.5;
+        var powerupBarY = height * 0.75;
+        var powerupBarWidth = width * 0.4;
+        var powerupBarHeight = height * 0.05;
+        drawBar(powerupBarX,powerupBarY,powerupBarWidth,powerupBarHeight,powerUpLength,powerupMaxLength,0);
+        powerUpLength--;
+        if (powerUpLength < 1) {
+            hasPowerup = false;
+            bulletSummonTick = regularBulletSummonTick;
+        }
+    }
 }
 Player.prototype.update = function() {
     if (Mouse.keyW && this.y - this.radius< 0 !== true) {
@@ -172,6 +182,7 @@ Player.prototype.update = function() {
             var isTouching = touching(x,powerup.x,y,powerup.y,width,powerup.width,height,powerup.height);
             if (isTouching) {
                 powerup.markedForDeletion = true;
+                giveHeroPowerup();
             }
       });
     
@@ -187,9 +198,10 @@ var Enemy = function(x,y,radius,color,xVel,yVel,speedMultiplier,health) {
     this.speedMultiplier = speedMultiplier;
     this.maxHealth = health;
     this.health = this.maxHealth;
+    this.image = document.querySelector("#zombie");
 }
 Enemy.prototype.draw = function() {
-    circle(this.x,this.y,this.radius,this.color);
+    ctx.drawImage(this.image,0,0,761,901,this.x-this.radius,this.y-this.radius,this.radius*2,this.radius*2);
     drawBar(this.x,this.y,(this.radius * 2) / 0.75,5,this.health,this.maxHealth,this.radius * 1.2);
 }
 Enemy.prototype.update = function() {
@@ -312,15 +324,18 @@ var summonNewEnemy = function() {
 var summonNewPowerup = function() {
     var thisPowerupWidth = powerupWidth;
     var thisPowerupHeight = powerupHeight;
-    var x = Math.random() * width;
-    var y = Math.random() * height;
+    var x = (Math.random() * (width - thisPowerupWidth));
+    var y = (Math.random() * (height - thisPowerupHeight));
     var powerup = new Powerup(x,y,thisPowerupWidth,thisPowerupHeight);
     powerups.push(powerup);
     powerupSummonTick = 1000;
 }
 
-
-
+var giveHeroPowerup = function() {
+    hasPowerup = true;
+    bulletSummonTick = powerupBulletSummonTick;
+    powerUpLength = powerupMaxLength;
+}
 
 
 resetGame();
@@ -353,7 +368,6 @@ function gameLoop() {
         powerup.draw();
         if (powerup.markedForDeletion) {
             powerups.splice(i,1);
-            console.log("splcied");
         }
       });
     if (gameFrame % enemySummonTick === 0) {
