@@ -141,10 +141,10 @@ Player.prototype.draw = function() {
     circle(this.x,this.y,this.radius,this.color);
 
     var powerupBarX = width * 0.5;
-    var powerupBarY = width * 0.75;
+    var powerupBarY = height * 0.75;
     var powerupBarWidth = width * 0.4;
     var powerupBarHeight = height * 0.05;
-    drawBar(powerupBarX,powerupBarY,powerupBarWidth,powerupBarHeight,powerUpLength,powerupMaxLength);
+    drawBar(powerupBarX,powerupBarY,300,100,5,10);
 }
 Player.prototype.update = function() {
     if (Mouse.keyW && this.y - this.radius< 0 !== true) {
