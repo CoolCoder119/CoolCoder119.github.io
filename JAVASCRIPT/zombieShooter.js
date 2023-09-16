@@ -24,7 +24,7 @@ var enemyInfo = function(health,radius,speed) {
 var basicEnemy = new enemyInfo(3,30*MULTIPLIER,1*MULTIPLIER);
 var mediumEnemy = new enemyInfo(8,50*MULTIPLIER,0.6*MULTIPLIER);
 var hardEnemy = new enemyInfo(20,70*MULTIPLIER,0.4);
-var ultraEnemy = new enemyInfo(200,120*MULTIPLIER,0.2);
+var ultraEnemy = new enemyInfo(400,120*MULTIPLIER,0.2);
 
 var gameFrame = 0;
 
@@ -38,7 +38,7 @@ var powerUpLength = powerupMaxLength;
 
 var projectileRadius = 8*MULTIPLIER;
 var projectileSpeed = 10*MULTIPLIER;
-var projectileDamage = 3;
+var projectileDamage = 2;
 
 var player;
 
@@ -51,9 +51,10 @@ var powerupSummonTick = 1000;
 
 
 
-var powerupColor = "yellow";
+var powerupColor = "brown";
 var powerupWidth = 100*MULTIPLIER;
 var powerupHeight = 100*MULTIPLIER;
+var powerupTypes = ["Bomb","QuickShot"];
 
 var score = 0;
 var gameOver = false;
@@ -258,7 +259,7 @@ Projectile.prototype.update = function() {
       });
 }
 
-var Powerup = function(x,y,width,height) {
+var Powerup = function(x,y,width,height,powerupColor) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -267,6 +268,7 @@ var Powerup = function(x,y,width,height) {
     this.markedForDeletion = false;
 }
 Powerup.prototype.draw = function() {
+    this.fillStyle = this.color;
     ctx.fillRect(this.x,this.y,this.width,this.height);
 }
 
@@ -328,7 +330,16 @@ var summonNewPowerup = function() {
     var thisPowerupHeight = powerupHeight;
     var x = (Math.random() * (width - thisPowerupWidth));
     var y = (Math.random() * (height - thisPowerupHeight));
-    var powerup = new Powerup(x,y,thisPowerupWidth,thisPowerupHeight);
+    var thisPowerupType = powerupTypes[Math.floor(Math.random() * powerupTypes.length)];
+
+    var thisPowerupColor;
+    if (thisPowerupType === "Bomb") {
+        thisPowerupColor = "Red";
+    } else {
+        thisPowerupColor = "Brown";
+    }
+
+    var powerup = new Powerup(x,y,thisPowerupWidth,thisPowerupHeight,thisPowerupColor,thisPowerupType);
     powerups.push(powerup);
     powerupSummonTick = 1000;
 }
