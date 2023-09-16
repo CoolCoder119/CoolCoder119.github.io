@@ -11,6 +11,7 @@ var projectiles = [];
 var enemies = [];
 var powerups = [];
 var bombs = [];
+var explosions = [];
 
 var playerColor = "red";
 var projectileColor = "pink";
@@ -59,6 +60,9 @@ var powerupTypes = ["Bomb","QuickShot"];
 
 var bombColor = "tan";
 
+var explosionDamage = 400;
+var explosionRadius = 300;
+
 var score = 0;
 var gameOver = false;
 
@@ -87,6 +91,8 @@ function resetGame() {
     enemies = [];
     projectiles = [];
     bombs = [];
+    explosions= [];
+    hasPowerup = false;
     gameOver = false;
     gameLoop();
 };
@@ -253,11 +259,6 @@ Projectile.prototype.update = function() {
         if (getDistance(this.x,this.y,enemy.x,enemy.y) < this.radius + enemy.radius) {
             this.markedForDeletion = true;
             enemy.health -=projectileDamage;
-            if (enemy.health < 1) {
-                score += enemy.maxHealth;
-                document.getElementById("score").innerHTML = "Score: " + score;
-                enemies.splice(i,1);        
-            }
         }
         i++;
       });
@@ -277,16 +278,19 @@ Powerup.prototype.draw = function() {
     ctx.fillRect(this.x,this.y,this.width,this.height);
 }
 
-var Bomb = function(x,y,radius,color) {
+var Bomb = function(x,y,radius) {
     this.x = x;
     this.y = y;
     this.xVel = 0;
     this.yVel = 0;
     this.radius = radius;
-    this.color = color;
+    this.color = "Red";
+    this.markedForDeletion = false;
+    this.image = document.querySelector("#idleBomb")
+    
 }
 Bomb.prototype.draw = function() {
-    circle(this.x,this.y,this.radius,this.color);
+    ctx.drawImage(this.image,0,0,1215,761,this.x-this.radius*2,this.y-this.radius*2,this.radius*4,this.radius*3);
 }
 Bomb.prototype.update = function() {
     var closestEnemy;
@@ -300,19 +304,59 @@ Bomb.prototype.update = function() {
             closestEnemyIndex = i;
         }
       });
+      this.xVel = 0;
+      this.yVel = 0;
       if (closestEnemy) {
-        console.log(closestEnemy);
+        if (closestDistance < this.radius + closestEnemy.radius) {
+            this.markedForDeletion = true;
+            summonNewExplosion(this);
+        }
+
         var xDiff = closestEnemy.x - this.x;
         var yDiff = closestEnemy.y - this.y;
         var angle = Math.atan2(yDiff,xDiff);
-        this.xVel = Math.cos(angle) * this.speedMultiplier;
-        this.yVel = Math.sin(angle) * this.speedMultiplier;
+        this.xVel = Math.cos(angle);
+        this.yVel = Math.sin(angle);
         this.x += this.xVel;
         this.y += this.yVel;
       }
       else {
         console.log("no enemy!");
       }
+}
+
+var Explosion = function(x,y,radius,color) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.markedForDeletion = false;
+    this.exploded = false;
+    this.frame = 0;
+    this.afterAffectFrames = 20;
+    this.opacity = 1;
+}
+Explosion.prototype.draw = function() {
+    console.log(this.opacity);
+    circle(this.x,this.y,this.radius,"rgba(365,0,0," + this.opacity + ")");
+}   
+Explosion.prototype.update = function() {
+    enemies.forEach((enemy) => {
+        var distance = getDistance(this.x,this.y,enemy.x,enemy.y)
+        if (distance < this.radius + enemy.radius) {
+            enemy.health -= explosionDamage;
+            
+        }
+      });
+    this.exploded = true;
+    if (this.exploded) {
+        this.frame++;
+        this.opacity -= 1/this.afterAffectFrames;
+        if (this.frame % this.afterAffectFrames === 0) {
+            this.markedForDeletion = true;
+        }
+    }
+
 }
 
 var summonNewProjectile = function() {
@@ -329,7 +373,10 @@ var summonNewProjectile = function() {
     projectiles.push(projectile)
 }
 
-
+var summonNewExplosion = function(bomb) {
+    var explosion = new Explosion(bomb.x,bomb.y,explosionRadius,bomb.color);
+    explosions.push(explosion);
+}
 
 var summonNewEnemy = function() {
     var x = Math.random() * width;
@@ -381,7 +428,7 @@ var summonNewPowerup = function() {
     if (thisPowerupType === "Bomb") {
         thisPowerupColor = "Red";
     } else {
-        thisPowerupColor = "Brown";
+        thisPowerupColor = "Yellow";
     }
 
     var powerup = new Powerup(x,y,thisPowerupWidth,thisPowerupHeight,thisPowerupColor,thisPowerupType);
@@ -419,13 +466,35 @@ function gameLoop() {
             projectiles.splice(i,1);
         }
       });
-      enemies.forEach((enemy) => {
+      enemies.forEach((enemy,i) => {
         enemy.draw();
         enemy.update();
+        if (enemy.health < 1) {
+            score += enemy.maxHealth;
+            document.getElementById("score").innerHTML = "Score: " + score;
+            enemies.splice(i,1);        
+        }
       });
-      bombs.forEach((bomb) => {
+      bombs.forEach((bomb,i) => {
         bomb.draw();
         bomb.update();
+        if (bomb.markedForDeletion) {
+            bombs.splice(i,1);
+        }
+      });
+      bombs.forEach((bomb,i) => {
+        bomb.draw();
+        bomb.update();
+        if (bomb.markedForDeletion) {
+            bombs.splice(i,1);
+        }
+      });
+      explosions.forEach((explosion,i) => {
+        explosion.draw();
+        explosion.update();
+        if (explosion.markedForDeletion) {
+            explosions.splice(i,1);
+        }
       });
       powerups.forEach((powerup,i) => {
         powerup.draw();
