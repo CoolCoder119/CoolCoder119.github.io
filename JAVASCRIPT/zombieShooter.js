@@ -1,4 +1,3 @@
-
 var canvas = document.querySelector("canvas");
 var ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -22,10 +21,10 @@ var enemyInfo = function(health,radius,speed) {
     this.speed = speed;
 }
 
-var basicEnemy = new enemyInfo(1,16*MULTIPLIER,1*MULTIPLIER);
-var mediumEnemy = new enemyInfo(5,20*MULTIPLIER,0.6*MULTIPLIER);
-var hardEnemy = new enemyInfo(30,40*MULTIPLIER,0.2);
-var ultraEnemy = new enemyInfo(100,60*MULTIPLIER,0.1);
+var basicEnemy = new enemyInfo(3,30*MULTIPLIER,1*MULTIPLIER);
+var mediumEnemy = new enemyInfo(8,50*MULTIPLIER,0.6*MULTIPLIER);
+var hardEnemy = new enemyInfo(20,70*MULTIPLIER,0.4);
+var ultraEnemy = new enemyInfo(200,120*MULTIPLIER,0.2);
 
 var gameFrame = 0;
 
@@ -39,15 +38,15 @@ var powerUpLength = powerupMaxLength;
 
 var projectileRadius = 8*MULTIPLIER;
 var projectileSpeed = 10*MULTIPLIER;
-var projectileDamage = 1;
+var projectileDamage = 3;
 
 var player;
 
 
 var enemySummonTick = 50;
-var bulletSummonTick = 20;
 var regularBulletSummonTick = 20;
-var powerupBulletSummonTick = 3;
+var bulletSummonTick = regularBulletSummonTick;
+var powerupBulletSummonTick = 5;
 var powerupSummonTick = 1000;
 
 
@@ -59,7 +58,7 @@ var powerupHeight = 100*MULTIPLIER;
 var score = 0;
 var gameOver = false;
 
-
+var enemyImage = document.querySelector("#zombie");
 
 
 
@@ -71,9 +70,10 @@ function gameover() {
     ctx.textBaseline = "middle";
     ctx.fillText("Game Over", width/2,height/2);    
 
-
-    document.querySelector(".deadDiv").style.display = "inline-block";
-    document.querySelector("#finalScore").innerHTML = "Score: " +score;
+    setTimeout(() => {
+        document.querySelector(".deadDiv").style.display = "inline-block";
+        document.querySelector("#finalScore").innerHTML = "Score: " +score;   
+    }, 1000);
 };
 function resetGame() {
 
@@ -81,6 +81,7 @@ function resetGame() {
     score = 0;
     document.getElementById("score").innerHTML = "Score: 0";
     enemies = [];
+    projectiles = [];
     gameOver = false;
     gameLoop();
 };
@@ -198,7 +199,8 @@ var Enemy = function(x,y,radius,color,xVel,yVel,speedMultiplier,health) {
     this.speedMultiplier = speedMultiplier;
     this.maxHealth = health;
     this.health = this.maxHealth;
-    this.image = document.querySelector("#zombie");
+    this.index = 0;
+    this.image = enemyImage;
 }
 Enemy.prototype.draw = function() {
     ctx.drawImage(this.image,0,0,761,901,this.x-this.radius,this.y-this.radius,this.radius*2,this.radius*2);
@@ -304,11 +306,11 @@ var summonNewEnemy = function() {
         var Radius = basicEnemy.radius;
         var enemySpeed = basicEnemy.speed;
         var enemyHealth = basicEnemy.health;
-    } else if (random4 < 0.8) {
+    } else if (random4 < 0.85) {
         var Radius = mediumEnemy.radius;
         var enemySpeed = mediumEnemy.speed;
         var enemyHealth = mediumEnemy.health;
-    } else if (random4 < 0.95) {
+    } else if (random4 < 0.99) {
         var Radius = hardEnemy.radius;
         var enemySpeed = hardEnemy.speed;
         var enemyHealth = hardEnemy.health;            
@@ -351,14 +353,12 @@ function gameLoop() {
 
     player.update();
     player.draw();
-    var i = 0;
-    projectiles.forEach((projectile) => {
+    projectiles.forEach((projectile,i) => {
         projectile.update();
         projectile.draw();
         if (projectile.markedForDeletion) {
             projectiles.splice(i,1);
         }
-        i++;
       });
       enemies.forEach((enemy) => {
         enemy.draw();
