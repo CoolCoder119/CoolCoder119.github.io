@@ -99,6 +99,22 @@ var heroImage12 = document.querySelector("#idleHero12");
 var heroImages = [heroImage0,heroImage1,heroImage2,heroImage3,heroImage4,heroImage5,heroImage6,heroImage7,heroImage8,
     heroImage9,heroImage10,heroImage11,heroImage12];
 
+var explodeImage0 = document.querySelector("#Explosion0");
+var explodeImage1 = document.querySelector("#Explosion1");
+var explodeImage2 = document.querySelector("#Explosion2");
+var explodeImage3 = document.querySelector("#Explosion3");
+var explodeImage4 = document.querySelector("#Explosion4");
+var explodeImage5 = document.querySelector("#Explosion5");
+var explodeImage6 = document.querySelector("#Explosion6");
+var explodeImage7 = document.querySelector("#Explosion7");
+var explodeImage8 = document.querySelector("#Explosion8");
+var explodeImage9 = document.querySelector("#Explosion9");
+var explodeImage10 = document.querySelector("#Explosion10");
+var explodeImage11 = document.querySelector("#Explosion11");
+var explodeImage12 = document.querySelector("#Explosion12");
+var explosionImages = [explodeImage0,explodeImage1,explodeImage2,explodeImage3,explodeImage4,explodeImage5,explodeImage6,explodeImage7,explodeImage8,
+    explodeImage9,explodeImage10,explodeImage11,explodeImage12];
+
 
 
 function gameover() {
@@ -373,34 +389,42 @@ Bomb.prototype.update = function() {
 var Explosion = function(x,y,radius,color) {
     this.x = x;
     this.y = y;
-    this.radius = radius;
+    this.radius = radius/2;
     this.color = color;
     this.markedForDeletion = false;
     this.exploded = false;
     this.frame = 0;
     this.afterAffectFrames = 20;
-    this.opacity = 1;
+    this.index = 0;
+    this.maxIndex = explosionImages.length;
+    this.image = explosionImages[0];
+    this.staggerFrames = 10;
+    
 }
 Explosion.prototype.draw = function() {
-    console.log(this.opacity);
-    circle(this.x,this.y,this.radius,"rgba(365,0,0," + this.opacity + ")");
+    ctx.drawImage(this.image,0,0,1215,761,this.x-this.radius*2,this.y-this.radius*2.5,this.radius*4,this.radius*3);
 }   
 Explosion.prototype.update = function() {
-    enemies.forEach((enemy) => {
-        var distance = getDistance(this.x,this.y,enemy.x,enemy.y)
-        if (distance < this.radius + enemy.radius) {
-            enemy.health -= explosionDamage;
-            
+    if (!this.exploded) {
+        enemies.forEach((enemy) => {
+            var distance = getDistance(this.x,this.y,enemy.x,enemy.y)
+            if (distance < this.radius + enemy.radius) {
+                enemy.health -= explosionDamage;
+                
+            }
+          });
+          this.exploded = true;
+        } else {
+            if (gameFrame % this.staggerFrames === 0) {
+                this.index++;
+                if (this.index === this.maxIndex) {
+                    this.markedForDeletion = true;
+                } else {
+                    this.image = explosionImages[this.index];
+                }
+              }
         }
-      });
-    this.exploded = true;
-    if (this.exploded) {
-        this.frame++;
-        this.opacity -= 1/this.afterAffectFrames;
-        if (this.frame % this.afterAffectFrames === 0) {
-            this.markedForDeletion = true;
-        }
-    }
+
 
 }
 
