@@ -60,8 +60,8 @@ var powerupTypes = ["Bomb","QuickShot"];
 
 var bombColor = "tan";
 
-var explosionDamage = 400;
-var explosionRadius = 300;
+var explosionDamage = 300;
+var explosionRadius = 150;
 
 var score = 0;
 var gameOver = false;
@@ -389,7 +389,7 @@ Bomb.prototype.update = function() {
 var Explosion = function(x,y,radius,color) {
     this.x = x;
     this.y = y;
-    this.radius = radius/2;
+    this.radius = radius;
     this.color = color;
     this.markedForDeletion = false;
     this.exploded = false;
