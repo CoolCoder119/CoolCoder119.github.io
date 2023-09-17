@@ -51,6 +51,10 @@
 
     var offset;
 
+
+    var bombImage1 = document.querySelector()
+    var bombImages = [bombImage1,bombImage2,bombImage3];
+
     var drawBorder = function() {
         ctx.fillStyle = "Gray";
         ctx.fillRect(0,0,width,blockSize);
@@ -83,6 +87,8 @@
         ctx.fillStyle = "Black";
         ctx.font = "45px New Roman";
         ctx.fillText(gameOverCondition, width/2, height*0.8);
+
+        
         if (autoStart) {
             setTimeout(() => {
                 location.reload()

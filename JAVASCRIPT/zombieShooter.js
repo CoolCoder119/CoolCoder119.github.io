@@ -66,7 +66,10 @@ var explosionRadius = 300;
 var score = 0;
 var gameOver = false;
 
-var enemyImage = document.querySelector("#zombie");
+var bombImage0 = document.querySelector("idleBomb0");
+var bombImage1 = document.querySelector("idleBomb1");
+var bombImage2 = document.querySelector("idleBomb2");
+var bombImages = [bombImage0,bombImage1,bombImage2];
 
 
 
@@ -211,7 +214,7 @@ var Enemy = function(x,y,radius,color,xVel,yVel,speedMultiplier,health) {
     this.maxHealth = health;
     this.health = this.maxHealth;
     this.index = 0;
-    this.image = enemyImage;
+    this.image = document.querySelector("#zombie");
 }
 Enemy.prototype.draw = function() {
     ctx.drawImage(this.image,0,0,761,901,this.x-this.radius,this.y-this.radius,this.radius*2,this.radius*2);
@@ -286,7 +289,10 @@ var Bomb = function(x,y,radius) {
     this.radius = radius;
     this.color = "Red";
     this.markedForDeletion = false;
-    this.image = document.querySelector("#idleBomb")
+    this.index = 0;
+    this.maxIndex = 2;
+    this.image = bombImages[0];
+    this.staggerFrames = 5;
     
 }
 Bomb.prototype.draw = function() {
@@ -322,6 +328,14 @@ Bomb.prototype.update = function() {
       }
       else {
         console.log("no enemy!");
+      }
+
+      if (gameFrame % this.staggerFrames === 0) {
+        this.index++;
+        if (this.index > bombImages.length) {
+            this.index === 0;   
+        }
+        this.image = bombImages[this.index];
       }
 }
 
