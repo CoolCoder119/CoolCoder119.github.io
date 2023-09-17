@@ -66,10 +66,21 @@ var explosionRadius = 300;
 var score = 0;
 var gameOver = false;
 
-var bombImage0 = document.querySelector("idleBomb0");
-var bombImage1 = document.querySelector("idleBomb1");
-var bombImage2 = document.querySelector("idleBomb2");
-var bombImages = [bombImage0,bombImage1,bombImage2];
+var bombImage0 = document.querySelector("#idleBomb0");
+var bombImage1 = document.querySelector("#idleBomb1");
+var bombImage2 = document.querySelector("#idleBomb2");
+var bombImage3 = document.querySelector("#idleBomb3");
+var bombImage4 = document.querySelector("#idleBomb4");
+var bombImage5 = document.querySelector("#idleBomb5");
+var bombImage6 = document.querySelector("#idleBomb6");
+var bombImage7 = document.querySelector("#idleBomb7");
+var bombImage8 = document.querySelector("#idleBomb8");
+var bombImage9 = document.querySelector("#idleBomb9");
+var bombImage10 = document.querySelector("#idleBomb10");
+var bombImage11 = document.querySelector("#idleBomb11");
+var bombImage12 = document.querySelector("#idleBomb12");
+var bombImages = [bombImage0,bombImage1,bombImage2,bombImage3,bombImage4,bombImage5,bombImage6,bombImage7,bombImage8,
+    bombImage9,bombImage10,bombImage11,bombImage12];
 
 
 
@@ -290,10 +301,9 @@ var Bomb = function(x,y,radius) {
     this.color = "Red";
     this.markedForDeletion = false;
     this.index = 0;
-    this.maxIndex = 2;
-    this.image = bombImages[0];
+    this.maxIndex = bombImages.length;
+    this.image = bombImage0;
     this.staggerFrames = 5;
-    
 }
 Bomb.prototype.draw = function() {
     ctx.drawImage(this.image,0,0,1215,761,this.x-this.radius*2,this.y-this.radius*2,this.radius*4,this.radius*3);
@@ -329,13 +339,9 @@ Bomb.prototype.update = function() {
       else {
         console.log("no enemy!");
       }
-
       if (gameFrame % this.staggerFrames === 0) {
         this.index++;
-        if (this.index > bombImages.length) {
-            this.index === 0;   
-        }
-        this.image = bombImages[this.index];
+        this.image = bombImages[this.index % this.maxIndex];
       }
 }
 
