@@ -83,6 +83,23 @@ var bombImages = [bombImage0,bombImage1,bombImage2,bombImage3,bombImage4,bombIma
     bombImage9,bombImage10,bombImage11,bombImage12];
 
 
+var heroImage0 = document.querySelector("#idleHero0");
+var heroImage1 = document.querySelector("#idleHero1");
+var heroImage2 = document.querySelector("#idleHero2");
+var heroImage3 = document.querySelector("#idleHero3");
+var heroImage4 = document.querySelector("#idleHero4");
+var heroImage5 = document.querySelector("#idleHero5");
+var heroImage6 = document.querySelector("#idleHero6");
+var heroImage7 = document.querySelector("#idleHero7");
+var heroImage8 = document.querySelector("#idleHero8");
+var heroImage9 = document.querySelector("#idleHero9");
+var heroImage10 = document.querySelector("#idleHero10");
+var heroImage11 = document.querySelector("#idleHero11");
+var heroImage12 = document.querySelector("#idleHero12");
+var heroImages = [heroImage0,heroImage1,heroImage2,heroImage3,heroImage4,heroImage5,heroImage6,heroImage7,heroImage8,
+    heroImage9,heroImage10,heroImage11,heroImage12];
+
+
 
 function gameover() {
     gameOver = true;
@@ -164,11 +181,14 @@ var Player = function(x,y,radius,color) {
     this.height = radius*2;
     this.color = color;
     this.speed = playerSpeed;
+    this.index = 0;
+    this.maxIndex = heroImages.length;
+    this.image = heroImage0;
+    this.staggerFrames = 5;
+    this.direction = "right";
 }
 Player.prototype.draw = function() {
-    circle(this.x,this.y,this.radius,this.color);
-
-
+    ctx.drawImage(this.image,0,0,1500,1001,this.x-this.radius*2,this.y-this.radius*2,this.radius*4,this.radius*3);
     if (hasPowerup) {
         var powerupBarX = width * 0.5;
         var powerupBarY = height * 0.75;
@@ -211,6 +231,11 @@ Player.prototype.update = function() {
                 giveHeroPowerup(powerup);
             }
       });
+
+      if (gameFrame % this.staggerFrames === 0) {
+        this.index++;
+        this.image = heroImages[this.index % this.maxIndex];
+      }      
     
 };
 
@@ -389,7 +414,7 @@ var summonNewProjectile = function() {
     const xVel = Math.cos(angle) * projectileSpeed;
     const yVel = Math.sin(angle) * projectileSpeed;
 
-    var projectile = new Projectile(player.x, player.y,xVel,yVel,projectileRadius,projectileColor);
+    var projectile = new Projectile(player.x, player.y,xVel,yVel,projectileRadius,"Black");
     projectiles.push(projectile)
 }
 
@@ -473,9 +498,8 @@ function gameLoop() {
     if (gameOver) {
         return;
     }
-    ctx.fillStyle = "rgba(0,0,0,0.1)";
-
-    ctx.fillRect(0,0,width,height);
+    var grassBackground = document.querySelector("#background")
+    ctx.drawImage(grassBackground,0,0,width,height);
 
     player.update();
     player.draw();
