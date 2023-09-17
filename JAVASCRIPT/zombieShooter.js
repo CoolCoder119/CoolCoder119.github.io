@@ -499,7 +499,11 @@ function gameLoop() {
         return;
     }
     var grassBackground = document.querySelector("#background")
-    ctx.drawImage(grassBackground,0,0,width,height);
+    for (var x=0; x < width; x+= 612) {
+        for (var y = 0; y < height; y+= 601) {
+            ctx.drawImage(grassBackground,x,y,612,601);
+        }
+    }
 
     player.update();
     player.draw();
