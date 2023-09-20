@@ -33,7 +33,8 @@ var gameFrame = 0;
 
 var playerRadius = 20*MULTIPLIER;
 var playerSpeed = 3*MULTIPLIER;
-var hasPowerup = false;
+var hasBulletPowerup = false;
+var hasBombPowerup = false;
 var powerupMaxLength = 500;
 var powerUpLength = powerupMaxLength;
 
@@ -48,6 +49,7 @@ var player;
 var enemySummonTick = 50;
 var regularBulletSummonTick = 20;
 var bulletSummonTick = regularBulletSummonTick;
+var powerupExplosionBulletSummonTick = 70;
 var powerupBulletSummonTick = 5;
 var powerupSummonTick = 1000;
 
@@ -56,12 +58,13 @@ var powerupSummonTick = 1000;
 var powerupColor = "brown";
 var powerupWidth = 100*MULTIPLIER;
 var powerupHeight = 100*MULTIPLIER;
-var powerupTypes = ["Bomb","QuickShot"];
+var powerupTypes = ["Bomb","QuickShot","Explosion"];
 
 var bombColor = "tan";
+var bombPowerupRadius = 100;
 
 var explosionDamage = 300;
-var explosionRadius = 150;
+var explosionRadius = 300;
 
 var score = 0;
 var gameOver = false;
@@ -139,7 +142,9 @@ function resetGame() {
     projectiles = [];
     bombs = [];
     explosions= [];
-    hasPowerup = false;
+    hasBulletPowerup = false;
+    hasBombPowerup = false;
+    bulletSummonTick = regularBulletSummonTick;
     gameOver = false;
     gameLoop();
 };
@@ -205,7 +210,7 @@ var Player = function(x,y,radius,color) {
 }
 Player.prototype.draw = function() {
     ctx.drawImage(this.image,0,0,1500,1001,this.x-this.radius*2,this.y-this.radius*2,this.radius*4,this.radius*3);
-    if (hasPowerup) {
+    if (hasBulletPowerup || hasBombPowerup) {
         var powerupBarX = width * 0.5;
         var powerupBarY = height * 0.75;
         var powerupBarWidth = width * 0.4;
@@ -213,7 +218,8 @@ Player.prototype.draw = function() {
         drawBar(powerupBarX,powerupBarY,powerupBarWidth,powerupBarHeight,powerUpLength,powerupMaxLength,0);
         powerUpLength--;
         if (powerUpLength < 1) {
-            hasPowerup = false;
+            hasBulletPowerup = false;
+            hasBombPowerup = false;
             bulletSummonTick = regularBulletSummonTick;
         }
     }
@@ -313,7 +319,12 @@ Projectile.prototype.update = function() {
     enemies.forEach((enemy) => {
         if (getDistance(this.x,this.y,enemy.x,enemy.y) < this.radius + enemy.radius) {
             this.markedForDeletion = true;
-            enemy.health -=projectileDamage;
+            if (hasBombPowerup) {
+                var bomb = new Bomb(this.x,this.y,bombPowerupRadius);
+                bombs.push(bomb);
+            } else {
+                enemy.health -=projectileDamage;
+            }
         }
         i++;
       });
@@ -385,12 +396,15 @@ Bomb.prototype.update = function() {
         this.image = bombImages[this.index % this.maxIndex];
       }
 }
-
-var Explosion = function(x,y,radius,color) {
+var Explosion = function(x,y) {
     this.x = x;
     this.y = y;
-    this.radius = radius;
-    this.color = color;
+    if (hasBombPowerup) {
+        this.radius = bombPowerupRadius;
+    } else {
+        this.radius = explosionRadius;
+    }
+    this.color = bombColor;
     this.markedForDeletion = false;
     this.exploded = false;
     this.frame = 0;
@@ -402,7 +416,7 @@ var Explosion = function(x,y,radius,color) {
     
 }
 Explosion.prototype.draw = function() {
-    ctx.drawImage(this.image,0,0,1215,761,this.x-this.radius*2,this.y-this.radius*2.5,this.radius*4,this.radius*3);
+    ctx.drawImage(this.image,0,0,1215 ,761,this.x-this.radius*2,this.y-this.radius*2.5,this.radius*4,this.radius*3);
 }   
 Explosion.prototype.update = function() {
     if (!this.exploded) {
@@ -496,6 +510,8 @@ var summonNewPowerup = function() {
     var thisPowerupColor;
     if (thisPowerupType === "Bomb") {
         thisPowerupColor = "Red";
+    } else if (thisPowerupType === "Explosion"){
+        thisPowerupColor = "Purple";
     } else {
         thisPowerupColor = "Yellow";
     }
@@ -508,9 +524,13 @@ var summonNewPowerup = function() {
 var giveHeroPowerup = function(powerup) {
     if (powerup.type === "Bomb") {
         var bomb = new Bomb(player.x,player.y,player.radius*3,bombColor);
-        bombs.push(bomb)
+        explosions.push(bomb)
+    } else if (powerup.type === "Explosion"){
+        hasBombPowerup = true;
+        bulletSummonTick = powerupExplosionBulletSummonTick;
+        powerUpLength = powerupMaxLength;
     } else {
-        hasPowerup = true;
+        hasBulletPowerup = true;
         bulletSummonTick = powerupBulletSummonTick;
         powerUpLength = powerupMaxLength;
     }
@@ -523,11 +543,7 @@ function gameLoop() {
         return;
     }
     var grassBackground = document.querySelector("#background")
-    for (var x=0; x < width; x+= 612) {
-        for (var y = 0; y < height; y+= 601) {
-            ctx.drawImage(grassBackground,x,y,612,601);
-        }
-    }
+    ctx.drawImage(grassBackground,0,0,width,height);
 
     player.update();
     player.draw();

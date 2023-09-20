@@ -38,19 +38,20 @@ a:hover {
     ,0.8);
 }
 #score {
-    padding-left: 2em;
+    margin-left: 2em !important;
+    padding-top: 0.1em;;
     font-size: 2em;
     user-select: none;
 }
 
 .deadDiv {
-    position: absolute;
+    position: absolute !important;
     background: linear-gradient(to bottom, white, rgba(0,0,0,0));
     width: 30%;
     height: 30%;
     z-index: 5;
-    margin-left: 35%;
-    margin-top: 20%;
+    margin-left: 35% !important;
+    margin-top: 20% !important;
     border-radius: 5em;
     display: none;
 }
