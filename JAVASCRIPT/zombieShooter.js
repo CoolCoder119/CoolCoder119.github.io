@@ -102,6 +102,36 @@ var heroImage12 = document.querySelector("#idleHero12");
 var heroImages = [heroImage0,heroImage1,heroImage2,heroImage3,heroImage4,heroImage5,heroImage6,heroImage7,heroImage8,
     heroImage9,heroImage10,heroImage11,heroImage12];
 
+
+var basicenemyImage0 = document.querySelector("#enemy10");
+var basicenemyImage1 = document.querySelector("#enemy11");
+var basicenemyImage2 = document.querySelector("#enemy12");
+var basicenemyImage3 = document.querySelector("#enemy13");
+var basicenemyImage4 = document.querySelector("#enemy14");
+var basicenemyImage5 = document.querySelector("#enemy15");
+var basicenemyImage6 = document.querySelector("#enemy16");
+var basicenemyImages = [basicenemyImage0,basicenemyImage1,basicenemyImage2,basicenemyImage3,basicenemyImage4,basicenemyImage5,basicenemyImage6];
+
+var mediumenemyImage0 = document.querySelector("#enemy20");
+var mediumenemyImage1 = document.querySelector("#enemy21");
+var mediumenemyImage2 = document.querySelector("#enemy22");
+var mediumenemyImage3 = document.querySelector("#enemy23");
+var mediumenemyImage4 = document.querySelector("#enemy24");
+var mediumenemyImage5 = document.querySelector("#enemy25");
+var mediumenemyImage6 = document.querySelector("#enemy26");
+var mediumenemyImages = [mediumenemyImage0,mediumenemyImage1,mediumenemyImage2,mediumenemyImage3,mediumenemyImage4,mediumenemyImage5,mediumenemyImage6];
+
+var hardenemyImage0 = document.querySelector("#enemy30");
+var hardenemyImage1 = document.querySelector("#enemy31");
+var hardenemyImage2 = document.querySelector("#enemy32");
+var hardenemyImage3 = document.querySelector("#enemy33");
+var hardenemyImage4 = document.querySelector("#enemy34");
+var hardenemyImage5 = document.querySelector("#enemy35");
+var hardenemyImage6 = document.querySelector("#enemy36");
+var hardenemyImages = [hardenemyImage0,hardenemyImage1,hardenemyImage2,hardenemyImage3,hardenemyImage4,hardenemyImage5,hardenemyImage6];
+
+
+console.log(basicenemyImages);
 var explodeImage0 = document.querySelector("#Explosion0");
 var explodeImage1 = document.querySelector("#Explosion1");
 var explodeImage2 = document.querySelector("#Explosion2");
@@ -261,9 +291,11 @@ Player.prototype.update = function() {
     
 };
 
-var Enemy = function(x,y,radius,color,xVel,yVel,speedMultiplier,health) {
+var Enemy = function(x,y,radius,color,xVel,yVel,speedMultiplier,health,random4) {
     this.x = x;
     this.y = y;
+    this.imageWidth = 2000;
+    this.imageHeight = 2000;
     this.radius = radius;
     this.color = color;
     this.xVel = xVel;
@@ -272,10 +304,32 @@ var Enemy = function(x,y,radius,color,xVel,yVel,speedMultiplier,health) {
     this.maxHealth = health;
     this.health = this.maxHealth;
     this.index = 0;
-    this.image = document.querySelector("#zombie");
+    this.maxIndex = basicenemyImages.length;
+    this.image;
+    this.staggerFrames = 10;
+    this.random4 = random4;
+    this.enemyType;
+    this.enemyWidthDivider;
+    if (random4 < 0.5) {
+        this.enemyWidthDivider = 20;
+        this.enemyType = "small";
+        this.image = basicenemyImage0;
+    } else if (random4 < 0.85) {
+        this.enemyWidthDivider = 15;    
+        this.enemyType = "medium"; 
+        this.image = basicenemyImage0;
+    } else if (random4 < 0.99) {
+        this.enemyWidthDivider = 10;    
+        this.enemyType = "medium"; 
+        this.image = mediumenemyImage0;
+    } else {
+        this.enemyWidthDivider = 5;
+        this.enemyType = "big";
+        this.image = hardenemyImage0;
+    }
 }
 Enemy.prototype.draw = function() {
-    ctx.drawImage(this.image,0,0,761,901,this.x-this.radius,this.y-this.radius,this.radius*2,this.radius*2);
+    ctx.drawImage(this.image,0,0,this.imageWidth,this.imageHeight,this.x - this.radius,this.y - this.radius,this.imageWidth/this.enemyWidthDivider,this.imageHeight/this.enemyWidthDivider);
     drawBar(this.x,this.y,(this.radius * 2) / 0.75,5,this.health,this.maxHealth,this.radius * 1.2);
 }
 Enemy.prototype.update = function() {
@@ -286,6 +340,18 @@ Enemy.prototype.update = function() {
     this.yVel = Math.sin(angle) * this.speedMultiplier;
     this.x += this.xVel;
     this.y += this.yVel;
+
+    if (gameFrame % this.staggerFrames === 0) {
+        this.index++;
+        if (this.enemyType === "medium") {
+            this.image = mediumenemyImages[this.index % this.maxIndex];
+        } else if (this.enemyType === "hard") {
+            this.image = hardenemyImages[this.index % this.maxIndex];            
+        } else {
+            this.image = basicenemyImages[this.index % this.maxIndex];
+        }
+
+      }
 }
 
 var Projectile = function(x,y,xVel, yVel,radius,color) {
@@ -496,7 +562,7 @@ var summonNewEnemy = function() {
         var enemySpeed = ultraEnemy.speed;
         var enemyHealth = ultraEnemy.health;             
     }
-    var enemy = new Enemy(x,y,Radius,color,xVel,yVel,enemySpeed,enemyHealth);
+    var enemy = new Enemy(x,y,Radius,color,xVel,yVel,enemySpeed,enemyHealth,random4);
     enemies.push(enemy)
 }
 
