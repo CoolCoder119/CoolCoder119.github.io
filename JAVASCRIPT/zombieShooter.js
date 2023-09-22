@@ -177,6 +177,7 @@ function resetGame() {
     bulletSummonTick = regularBulletSummonTick;
     gameOver = false;
     gameLoop();
+    gameLoop();
 };
 
 document.querySelector(".restartButton").onclick = function() {
@@ -603,7 +604,7 @@ var giveHeroPowerup = function(powerup) {
 }
 
 
-resetGame();
+
 function gameLoop() {
     if (gameOver) {
         return;
@@ -719,4 +720,6 @@ document.addEventListener('keyup', (event) => {
 
 
 
-gameLoop();
+window.onload = function() {
+    resetGame();
+}
