@@ -311,21 +311,21 @@ var Enemy = function(x,y,radius,color,xVel,yVel,speedMultiplier,health,random4) 
     this.random4 = random4;
     this.enemyType;
     this.enemyWidthDivider;
-    if (random4 < 0.5) {
+    if (random4 < 0.6) {
         this.enemyWidthDivider = 20;
         this.enemyType = "small";
         this.image = basicenemyImage0;
-    } else if (random4 < 0.85) {
+    } else if (random4 < 0.8) {
         this.enemyWidthDivider = 15;    
         this.enemyType = "medium"; 
         this.image = basicenemyImage0;
-    } else if (random4 < 0.99) {
+    } else if (random4 < 0.9) {
         this.enemyWidthDivider = 10;    
         this.enemyType = "medium"; 
         this.image = mediumenemyImage0;
     } else {
         this.enemyWidthDivider = 5;
-        this.enemyType = "big";
+        this.enemyType = "large";
         this.image = hardenemyImage0;
     }
 }
@@ -346,7 +346,7 @@ Enemy.prototype.update = function() {
         this.index++;
         if (this.enemyType === "medium") {
             this.image = mediumenemyImages[this.index % this.maxIndex];
-        } else if (this.enemyType === "hard") {
+        } else if (this.enemyType === "large") {
             this.image = hardenemyImages[this.index % this.maxIndex];            
         } else {
             this.image = basicenemyImages[this.index % this.maxIndex];
@@ -546,15 +546,15 @@ var summonNewEnemy = function() {
     var Radius;
     var enemySpeed;
     var enemyHealth;
-    if (random4 < 0.5) {
+    if (random4 < 0.6) {
         var Radius = basicEnemy.radius;
         var enemySpeed = basicEnemy.speed;
         var enemyHealth = basicEnemy.health;
-    } else if (random4 < 0.85) {
+    } else if (random4 < 0.8) {
         var Radius = mediumEnemy.radius;
         var enemySpeed = mediumEnemy.speed;
         var enemyHealth = mediumEnemy.health;
-    } else if (random4 < 0.99) {
+    } else if (random4 < 0.9) {
         var Radius = hardEnemy.radius;
         var enemySpeed = hardEnemy.speed;
         var enemyHealth = hardEnemy.health;            
