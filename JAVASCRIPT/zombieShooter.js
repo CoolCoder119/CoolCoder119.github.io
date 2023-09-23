@@ -46,7 +46,7 @@ var projectileDamage = 2;
 var player;
 
 
-var enemySummonTick = 200;
+var enemySummonTick = 50;
 var regularBulletSummonTick = 20;
 var bulletSummonTick = regularBulletSummonTick;
 var powerupExplosionBulletSummonTick = 70;
@@ -56,15 +56,16 @@ var powerupSummonTick = 1000;
 
 
 var powerupColor = "brown";
-var powerupWidth = 100*MULTIPLIER;
-var powerupHeight = 100*MULTIPLIER;
+var powerupWidth = (443/4)*MULTIPLIER;
+var powerupHeight = (360/4)*MULTIPLIER;
 var powerupTypes = ["Bomb","QuickShot","Explosion"];
 
 var bombColor = "tan";
-var bombPowerupRadius = 100;
+var bombPowerupRadius = 50;
 
 var explosionDamage = 300;
-var explosionRadius = 300;
+var powerupExplosionDamage = 50;
+var explosionRadius = 150;
 
 var score = 0;
 var gameOver = false;
@@ -130,6 +131,10 @@ var hardenemyImage5 = document.querySelector("#enemy35");
 var hardenemyImage6 = document.querySelector("#enemy36");
 var hardenemyImages = [hardenemyImage0,hardenemyImage1,hardenemyImage2,hardenemyImage3,hardenemyImage4,hardenemyImage5,hardenemyImage6];
 
+var treasureChestImg = document.querySelector("#treasureChest");
+
+var explosionSound = new Audio();
+explosionSound.src = "../Sounds/Explosion2.wav";
 
 console.log(basicenemyImages);
 var explodeImage0 = document.querySelector("#Explosion0");
@@ -405,10 +410,12 @@ var Powerup = function(x,y,width,height,powerupColor,type) {
     this.color = powerupColor;
     this.markedForDeletion = false;
     this.type = type;
+    this.img = treasureChestImg;
+    this.imgWidth = 443;
+    this.imgHeight = 360;
 }
 Powerup.prototype.draw = function() {
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x,this.y,this.width,this.height);
+    ctx.drawImage(this.img,0,0,this.imgWidth,this.imgHeight, this.x,this.y,this.width,this.height);
 }
 
 var Bomb = function(x,y,radius) {
@@ -468,8 +475,10 @@ var Explosion = function(x,y) {
     this.y = y;
     if (hasBombPowerup) {
         this.radius = bombPowerupRadius;
+        this.damage = powerupExplosionDamage;
     } else {
         this.radius = explosionRadius;
+        this.damage = explosionDamage;
     }
     this.color = bombColor;
     this.markedForDeletion = false;
@@ -487,10 +496,11 @@ Explosion.prototype.draw = function() {
 }   
 Explosion.prototype.update = function() {
     if (!this.exploded) {
+        explosionSound.play();
         enemies.forEach((enemy) => {
             var distance = getDistance(this.x,this.y,enemy.x,enemy.y)
             if (distance < this.radius + enemy.radius) {
-                enemy.health -= explosionDamage;
+                enemy.health -= this.damage;
                 
             }
           });
