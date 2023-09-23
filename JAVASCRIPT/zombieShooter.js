@@ -61,11 +61,11 @@ var powerupHeight = (360/4)*MULTIPLIER;
 var powerupTypes = ["Bomb","QuickShot","Explosion"];
 
 var bombColor = "tan";
-var bombPowerupRadius = 50;
+var bombPowerupRadius = 150;
 
 var explosionDamage = 300;
-var powerupExplosionDamage = 50;
-var explosionRadius = 150;
+var powerupExplosionDamage = 100;
+var explosionRadius = 250;
 
 var score = 0;
 var gameOver = false;
