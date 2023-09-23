@@ -52,9 +52,6 @@
     var offset;
 
 
-    var bombImage1 = document.querySelector("#")
-    var bombImages = [bombImage1,bombImage2,bombImage3];
-
     var drawBorder = function() {
         ctx.fillStyle = "Gray";
         ctx.fillRect(0,0,width,blockSize);
@@ -114,7 +111,7 @@
     Block.prototype.drawSquare = function(color) {
         var x = this.col * blockSize;
         var y = this.row * blockSize;
-        ctx.fillStyle = color
+        ctx.fillStyle = color;
         ctx.fillRect(x,y,blockSize,blockSize);
     };
 
@@ -143,6 +140,7 @@
 
     Snake.prototype.draw = function() {
         for (var i = this.segments.length; i > 0; i--) {
+            console.log(this.color);
             this.segments[i].drawSquare(this.color);
         }
     };

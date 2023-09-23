@@ -46,7 +46,7 @@ var projectileDamage = 2;
 var player;
 
 
-var enemySummonTick = 50;
+var enemySummonTick = 200;
 var regularBulletSummonTick = 20;
 var bulletSummonTick = regularBulletSummonTick;
 var powerupExplosionBulletSummonTick = 70;
@@ -311,15 +311,15 @@ var Enemy = function(x,y,radius,color,xVel,yVel,speedMultiplier,health,random4) 
     this.random4 = random4;
     this.enemyType;
     this.enemyWidthDivider;
-    if (random4 < 0.6) {
+    if (random4 < 0.5) {
         this.enemyWidthDivider = 20;
         this.enemyType = "small";
         this.image = basicenemyImage0;
-    } else if (random4 < 0.8) {
+    } else if (random4 < 0.7) {
         this.enemyWidthDivider = 15;    
         this.enemyType = "medium"; 
         this.image = basicenemyImage0;
-    } else if (random4 < 0.9) {
+    } else if (random4 < 0.95) {
         this.enemyWidthDivider = 10;    
         this.enemyType = "medium"; 
         this.image = mediumenemyImage0;
@@ -546,15 +546,15 @@ var summonNewEnemy = function() {
     var Radius;
     var enemySpeed;
     var enemyHealth;
-    if (random4 < 0.6) {
+    if (random4 < 0.5) {
         var Radius = basicEnemy.radius;
         var enemySpeed = basicEnemy.speed;
         var enemyHealth = basicEnemy.health;
-    } else if (random4 < 0.8) {
+    } else if (random4 < 0.7) {
         var Radius = mediumEnemy.radius;
         var enemySpeed = mediumEnemy.speed;
         var enemyHealth = mediumEnemy.health;
-    } else if (random4 < 0.9) {
+    } else if (random4 < 0.95) {
         var Radius = hardEnemy.radius;
         var enemySpeed = hardEnemy.speed;
         var enemyHealth = hardEnemy.health;            

@@ -24,12 +24,13 @@ h1 {
     border-radius: 5em;
 }
 
+
 #idleBreakout {
-    background: url(https://play-lh.googleusercontent.com/P6_Iw8xK-cxvTqtVdIANFGB48y_zLLxCZIK2JT6AMk_AMBGZJFSGmV-3a20BnijlfA=w526-h296-rw);
+    background: linear-gradient(to bottom, teal, rgba(0,0,0,0));
 }
 #snakeGame {
-    background: url(https://rembound.com/files/creating-a-snake-game-tutorial-with-html5/snake.png);
+    background: linear-gradient(to bottom, red, rgba(0,0,0,0));
 }
 #zombieShooter {
-    background: url(https://avatars.mds.yandex.net/get-games/1881364/2a0000016dc1acae7622e2ca9a827f696dfa/orig);
+    background: linear-gradient(to bottom, yellow, rgba(0,0,0,0));
 }
