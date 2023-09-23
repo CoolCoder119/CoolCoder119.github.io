@@ -51,7 +51,7 @@ var regularBulletSummonTick = 20;
 var bulletSummonTick = regularBulletSummonTick;
 var powerupExplosionBulletSummonTick = 70;
 var powerupBulletSummonTick = 5;
-var powerupSummonTick = 1000;
+var powerupSummonTick = 300;
 
 
 
