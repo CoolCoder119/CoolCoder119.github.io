@@ -263,6 +263,13 @@ function summonApple() {
     apples.push(apple);
 }
 
+function summonSnake() {
+    var x = Math.random() * width;
+    var y = Math.random() * height;
+    var aiSnake = new Snake(x,y,snakeStarterRadius,"red","blue",true);
+    snakes.push(aiSnake);
+}
+
 function gameLoop() {
     if (gameOver === false) {
         requestAnimationFrame(gameLoop);
@@ -289,10 +296,7 @@ function gameLoop() {
 
 window.onload = function() {
     for (var i = 0; i < 1; i++) {
-        var x = Math.random() * width;
-        var y = Math.random() * height;
-        var aiSnake = new Snake(x,y,snakeStarterRadius,"red","blue",true);
-        snakes.push(aiSnake);
+        summonSnake();
     }
     setup();
 };
