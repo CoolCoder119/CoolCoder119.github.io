@@ -5,7 +5,9 @@ canvas.height = window.innerHeight;
 var height = canvas.height;
 var width = canvas.width;
 
-var MULTIPLIER = width/1536;
+
+var MULTIPLIER = 1536/width;
+
 
 var projectiles = [];
 var enemies = [];
@@ -40,7 +42,7 @@ var powerUpLength = powerupMaxLength;
 
 
 var projectileRadius = 8*MULTIPLIER;
-var projectileSpeed = 10*MULTIPLIER;
+var projectileSpeed = 5*MULTIPLIER;
 var projectileDamage = 2;
 
 var player;
@@ -136,7 +138,6 @@ var treasureChestImg = document.querySelector("#treasureChest");
 var explosionSound = new Audio();
 explosionSound.src = "../Sounds/Explosion2.wav";
 
-console.log(basicenemyImages);
 var explodeImage0 = document.querySelector("#Explosion0");
 var explodeImage1 = document.querySelector("#Explosion1");
 var explodeImage2 = document.querySelector("#Explosion2");
@@ -204,8 +205,8 @@ function touching(x1,x2,y1,y2,width1,width2,height1,height2) {
            y1 <= y2+height2;
 }
 function drawBar(x,y,width,height,health,maxHealth,yOffset) {
-    var xPosition = x - width/2;
-    var yPosition = y - yOffset;
+    var xPosition = (x-width/2);
+    var yPosition = (y-yOffset);
     ctx.fillStyle = "red";
     ctx.fillRect(xPosition,yPosition,width,height);
     ctx.fillStyle = "limegreen";
@@ -245,7 +246,9 @@ var Player = function(x,y,radius,color) {
     this.direction = "right";
 }
 Player.prototype.draw = function() {
-    ctx.drawImage(this.image,0,0,1500,1001,this.x-this.radius*2,this.y-this.radius*2,this.radius*4,this.radius*3);
+    var x = (this.x-this.radius);
+    var y = (this.y-this.radius);
+    ctx.drawImage(this.image,0,0,1500,1001,x,y,this.radius*4,this.radius*3);
     if (hasBulletPowerup || hasBombPowerup) {
         var powerupBarX = width * 0.5;
         var powerupBarY = height * 0.75;
@@ -293,8 +296,10 @@ Player.prototype.update = function() {
       if (gameFrame % this.staggerFrames === 0) {
         this.index++;
         this.image = heroImages[this.index % this.maxIndex];
-      }      
-    
+      }    
+
+
+
 };
 
 var Enemy = function(x,y,radius,color,xVel,yVel,speedMultiplier,health,random4) {
@@ -335,7 +340,9 @@ var Enemy = function(x,y,radius,color,xVel,yVel,speedMultiplier,health,random4) 
     }
 }
 Enemy.prototype.draw = function() {
-    ctx.drawImage(this.image,0,0,this.imageWidth,this.imageHeight,this.x - this.radius,this.y - this.radius,this.imageWidth/this.enemyWidthDivider,this.imageHeight/this.enemyWidthDivider);
+    var x = (this.x-this.radius);
+    var y = (this.y-this.radius);
+    ctx.drawImage(this.image,0,0,this.imageWidth,this.imageHeight,x,y,this.imageWidth/this.enemyWidthDivider,this.imageHeight/this.enemyWidthDivider);
     drawBar(this.x,this.y,(this.radius * 2) / 0.75,5,this.health,this.maxHealth,this.radius * 1.2);
 }
 Enemy.prototype.update = function() {
@@ -432,7 +439,9 @@ var Bomb = function(x,y,radius) {
     this.staggerFrames = 5;
 }
 Bomb.prototype.draw = function() {
-    ctx.drawImage(this.image,0,0,1215,761,this.x-this.radius*2,this.y-this.radius*2,this.radius*4,this.radius*3);
+    var x = (this.x-this.radius);
+    var y = (this.y-this.radius);
+    ctx.drawImage(this.image,0,0,1215,761,x,y,this.radius*4,this.radius*3);
 }
 Bomb.prototype.update = function() {
     var closestEnemy;
@@ -492,7 +501,9 @@ var Explosion = function(x,y) {
     
 }
 Explosion.prototype.draw = function() {
-    ctx.drawImage(this.image,0,0,1215 ,761,this.x-this.radius*2,this.y-this.radius*2.5,this.radius*4,this.radius*3);
+    var x = (this.x-(this.radius*2));
+    var y = (this.y-(this.radius*2.5));
+    ctx.drawImage(this.image,0,0,1215 ,761,x,y,this.radius*4,this.radius*3);
 }   
 Explosion.prototype.update = function() {
     if (!this.exploded) {
@@ -520,8 +531,8 @@ Explosion.prototype.update = function() {
 }
 
 var summonNewProjectile = function() {
-    var x = player.x - player.radius;
-    var y = player.y - player.radius;
+    var x = canvas.width/2;
+    var y = canvas.height/2;
     const angle = Math.atan2(
     Mouse.y-y,
     Mouse.x-x
@@ -620,6 +631,7 @@ function gameLoop() {
         return;
     }
     var grassBackground = document.querySelector("#background")
+    ctx.clearRect(0,0,width,height);
     ctx.drawImage(grassBackground,0,0,width,height);
 
     player.update();

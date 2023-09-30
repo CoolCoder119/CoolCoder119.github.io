@@ -10,6 +10,18 @@ var MULTIPLIER = width/1536;
 var SCROLLX;
 var SCROLLY;
 
+const socket = io();  
+
+socket.on('updatePlayers',  (backEndPlayers) => {
+    for (const id in backEndPlayers) {
+      const backEndPlayer = backEndPlayers[id]
+
+      if (!snakes[id]) {
+        snakes[id] = new Snake(this.width/2,this.height/2,snakeStarterRadius,snakeColor,"",false);
+      }
+    }
+})
+
 
 var apples;
 var snakes = [];
@@ -56,7 +68,7 @@ function getDistance(x1,y1,x2,y2) {
 
 
 function setup() {
-    snake = new Snake(this.width/2,this.height/2,snakeStarterRadius,snakeColor,"",false);
+    var snake = new Snake(this.width/2,this.height/2,snakeStarterRadius,snakeColor,"",false);
     snakes.push(snake);
     apples = [];
     gameTick = 0;
@@ -142,8 +154,8 @@ var Snake = function(startX,startY,radius,snakeColor, isAI) {
     this.score = 1000;
     this.id = pushedAmount;
     pushedAmount++;
-    this.i = 0;
-    console.log(this.colorPattern);
+    this.i = 0; 
+    this.radiusGrowth = 0;
 
 
 }
@@ -155,10 +167,10 @@ Snake.prototype.checkWallCollision = function(head) {
 }
 Snake.prototype.checkOtherSnakeCollision = function(pushedAmount,head) {
     snakes.forEach((snake,i) => {
-        if (this.id !== snake.id) {
+        if (this.id != snake.id) {
             snake.segments.forEach((segment,i) => {
                 var distance = getDistance(head.x,head.y,segment.x,segment.y);
-                return distance < head.radius + segment.radius;
+                return distance < head.radius;
               }); 
         }
       }); 
@@ -193,6 +205,7 @@ Snake.prototype.update = function() {
             apples.splice(i,1);
             this.maxSize += Math.round(apple.radius);
             this.score += Math.round(apple.radius);
+            this.radiusGrowth += Math.round(apple.radius/30);
         }    
       }); 
     if (mouse.mousedown && this.score > 10) {
@@ -223,7 +236,7 @@ Snake.prototype.update = function() {
         var yVel = Math.sin(angle) * this.snakeSpeedMultiplier * this.powerupBonus;
         var newX = head.x+xVel;
         var newY = head.y+yVel;
-        var radius = (snakeStarterRadius * MULTIPLIERX * MULTIPLIER) + this.size;
+        var radius = (snakeStarterRadius + this.radiusGrowth) * MULTIPLIER * MULTIPLIERX;
         var color = this.colorPattern[i%this.colorPattern.length];
         var newSegment = new segment(newX,newY,radius,color,color);
         this.segments.unshift(newSegment);
@@ -238,7 +251,7 @@ Snake.prototype.update = function() {
         var yVel = Math.sin(angle) * this.snakeSpeedMultiplier * this.powerupBonus;
         var newX = head.x+xVel;
         var newY = head.y+yVel;
-        var radius = (snakeStarterRadius * MULTIPLIERX * MULTIPLIER) + this.size;
+        var radius = (snakeStarterRadius + this.radiusGrowth) * MULTIPLIER * MULTIPLIERX;
         var color = this.colorPattern[i%this.colorPattern.length];
         var newSegment = new segment(newX,newY,radius,color,color);
         this.segments.unshift(newSegment);
@@ -278,8 +291,9 @@ function summonApple() {
 function summonSnake() {
     var x = Math.random() * width;
     var y = Math.random() * height;
-    var aiSnake = new Snake(x,y,snakeStarterRadius,"red","blue",true);
-    snakes.push(aiSnake);
+    var aSnake = new Snake(x,y,snakeStarterRadius,"red","blue",true);
+
+    return aSnake;
 }
 
 function gameLoop() {
@@ -292,6 +306,7 @@ function gameLoop() {
         snake.update();
         if (snake.markedForDeletion) {
             snakes.splice(i,1);
+            summonSnake();
         }
       }); 
     apples.forEach((apple,i) => {
@@ -307,9 +322,6 @@ function gameLoop() {
 }
 
 window.onload = function() {
-    for (var i = 0; i < 15; i++) {
-        summonSnake();
-    }
     setup();
 };
 
@@ -326,5 +338,5 @@ addEventListener('mouseup', (e) => {
 });
 
 document.querySelector(".restartButton").onclick = function() {
-    location.reload();
+   location.reload();
 }

@@ -82,10 +82,9 @@ function getDistance(x1,y1,x2,y2) {
     return Math.sqrt(Math.pow(xDistance,2) + 
         Math.pow(yDistance,2));
 }
-function circle(x,y,radius,color,fillCircle,strokeCircle,lineWidth,lineColor) {
-    ctx.strokeStyle = lineColor;
-    ctx.lineWidth = lineWidth;
+function circle(x,y,radius,color,fillCircle) {
     ctx.fillStyle = color;
+    ctx.strokeStyle = color;
     ctx.beginPath();
     ctx.arc(x-SCROLLX,y-SCROLLY,radius,Math.PI * 2,false);
     if (fillCircle) {
@@ -101,38 +100,50 @@ function drawBorder() {
     ctx.fillRect((width - blockSize) - SCROLLX, 0 - SCROLLY, blockSize, height);
 }
 
+var createColorPattern = function() {
+    var colorPattern = [];
+    for (var i = 0; i < 30; i++) {
+        var color = randomColors[Math.round(Math.random() * (randomColors.length-1))]
+        colorPattern.push(color);
+    }
+    return colorPattern;
+}
+
 var segment = function(x,y,radius,color,fillCircle) {
     this.x = x;
     this.y = y;
-    this.radius = radius;
     this.color = color;
+    this.radius = radius;
     this.fillCircle = fillCircle;
-    this.strokeColor = snakeLineColor;
 }
 segment.prototype.draw = function() {
-    circle(this.x,this.y,this.radius,this.color,this.fillCircle,true,this.radius*0/1,this.strokeColor);
+    circle(this.x,this.y,this.radius,this.color,this.fillCircle);
 };
  
 var Snake = function(startX,startY,radius,snakeColor, isAI) {
+    this.colorPattern = createColorPattern();
     this.markedForDeletion = false;
     this.isAI = isAI;
     this.circleRadius = radius;
-    this.snakeColor = randomColors  [Math.round(Math.random() * randomColors.length)];
     this.segments = [
-        new segment(startX,startY,this.circleRadius,this.snakeColor,true)
+        new segment(startX,startY,this.circleRadius,this.colorPattern[0],true)
     ];
+
+
     this.size = this.segments.length;
     this.maxSize = snakeMaxSize;
     if (isAI) {
-        this.snakeSpeedMultiplier = 1.2 * MULTIPLIER;
+        this.snakeSpeedMultiplier = 0.5 * MULTIPLIER;
     } else {
         this.snakeSpeedMultiplier = 2.5 * MULTIPLIER;
     }
 
     this.powerupBonus = 1;
-    this.score = 0;
+    this.score = 1000;
     this.id = pushedAmount;
     pushedAmount++;
+    this.i = 0;
+    console.log(this.colorPattern);
 
 
 }
@@ -142,16 +153,12 @@ Snake.prototype.checkWallCollision = function(head) {
            head.y - head.radius <= blockSize ||
            head.y + head.radius >= height-blockSize;
 }
-Snake.prototype.checkOtherSnakeCollision = function(pushedAmount) {
+Snake.prototype.checkOtherSnakeCollision = function(pushedAmount,head) {
     snakes.forEach((snake,i) => {
-        var sameSnake = pushedAmount == snake.pushedAmount;
-        console.log(sameSnake);
-        if (sameSnake != true) {
+        if (this.id !== snake.id) {
             snake.segments.forEach((segment,i) => {
-                var distance = getDistance(this.x,this.y,snake.x,snake.y)
-                if (distance < this.radius + snake.radius) {
-                    return true;
-                }
+                var distance = getDistance(head.x,head.y,segment.x,segment.y);
+                return distance < head.radius + segment.radius;
               }); 
         }
       }); 
@@ -159,7 +166,7 @@ Snake.prototype.checkOtherSnakeCollision = function(pushedAmount) {
 }
 Snake.prototype.draw = function() {
     this.segments.forEach((segment,i) => {
-        segment.draw();
+        segment.draw(segment.color);
       }); 
 }
 Snake.prototype.update = function() {
@@ -168,9 +175,12 @@ Snake.prototype.update = function() {
 
     var death = false;
     var wallCollision = this.checkWallCollision(head);
-    var snakeCollision = this.checkOtherSnakeCollision(this.pushedAmount)
+    var snakeCollision = this.checkOtherSnakeCollision(this.pushedAmount,head);
     var death = wallCollision || snakeCollision;
-    if (death) {
+    if (snakeCollision) {
+        gameover();
+    }
+    if (wallCollision || snakeCollision) {
         if (this.isAI) {
             this.markedForDeletion = true;
         } else {
@@ -213,8 +223,9 @@ Snake.prototype.update = function() {
         var yVel = Math.sin(angle) * this.snakeSpeedMultiplier * this.powerupBonus;
         var newX = head.x+xVel;
         var newY = head.y+yVel;
-        var radius = snakeStarterRadius * MULTIPLIERX * MULTIPLIER;
-        var newSegment = new segment(newX,newY,radius,head.color,head.fillCircle);
+        var radius = (snakeStarterRadius * MULTIPLIERX * MULTIPLIER) + this.size;
+        var color = this.colorPattern[i%this.colorPattern.length];
+        var newSegment = new segment(newX,newY,radius,color,color);
         this.segments.unshift(newSegment);
         this.radius = this.score;
     } else {
@@ -227,21 +238,22 @@ Snake.prototype.update = function() {
         var yVel = Math.sin(angle) * this.snakeSpeedMultiplier * this.powerupBonus;
         var newX = head.x+xVel;
         var newY = head.y+yVel;
-        var radius = snakeStarterRadius * MULTIPLIERX * MULTIPLIER;
-        var newSegment = new segment(newX,newY,radius,head.color,head.fillCircle);
+        var radius = (snakeStarterRadius * MULTIPLIERX * MULTIPLIER) + this.size;
+        var color = this.colorPattern[i%this.colorPattern.length];
+        var newSegment = new segment(newX,newY,radius,color,color);
         this.segments.unshift(newSegment);
     
         SCROLLX = newSegment.x - (width/2) / MULTIPLIERX;
         SCROLLY = newSegment.y - (height/2) / MULTIPLIERY;
     
-    
-        document.querySelector("#size").innerHTML = "Score: " + Math.round(this.score);
-        if (this.size >= this.maxSize) {
-            this.segments.pop();
-        }
+
+    }
+    document.querySelector("#size").innerHTML = "Score: " + Math.round(this.score);
+    if (this.segments.length === this.maxSize) {
+        this.segments.pop();
     }
 
-    this.size = this.segments.length;
+    this.i++;
 }
 
 var Apple = function(x,y,radius,color) {
@@ -295,7 +307,7 @@ function gameLoop() {
 }
 
 window.onload = function() {
-    for (var i = 0; i < 1; i++) {
+    for (var i = 0; i < 4; i++) {
         summonSnake();
     }
     setup();
