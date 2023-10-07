@@ -42,8 +42,8 @@ var Mouse = function() {
 
 var mouse = new Mouse();
 
-var MULTIPLIERX = 3;
-var MULTIPLIERY = 3;
+var MULTIPLIERX = 1;
+var MULTIPLIERY = 1;
 ctx.scale(MULTIPLIERX,MULTIPLIERY);
 
 function getDistance(x1,y1,x2,y2) {
@@ -143,8 +143,6 @@ var Snake = function(startX,startY,radius,snakeColor, isAI) {
     this.id = pushedAmount;
     pushedAmount++;
     this.i = 0;
-    console.log(this.colorPattern);
-
 
 }
 Snake.prototype.checkWallCollision = function(head) {
@@ -156,15 +154,19 @@ Snake.prototype.checkWallCollision = function(head) {
 Snake.prototype.checkOtherSnakeCollision = function(pushedAmount,head) {
     snakes.forEach((snake,i) => {
         if (this.id !== snake.id) {
-            snake.segments.forEach((segment,i) => {
+            snake.segments.forEach((segment) => {
                 var distance = getDistance(head.x,head.y,segment.x,segment.y);
-                return distance < head.radius + segment.radius;
+                if (distance < segment.radius + head.radius){
+                    return true;
+                }
               }); 
         }
       }); 
-    return false;
 }
 Snake.prototype.draw = function() {
+    var head = this.segments[0];
+    ctx.fillStyle = "lightgrey";
+    ctx.fillRect(head.x-SCROLLX,head.y-SCROLLY,10,10);
     this.segments.forEach((segment,i) => {
         segment.draw(segment.color);
       }); 
@@ -173,14 +175,14 @@ Snake.prototype.update = function() {
 
     var head = this.segments[0];
 
-    var death = false;
+
     var wallCollision = this.checkWallCollision(head);
-    var snakeCollision = this.checkOtherSnakeCollision(this.pushedAmount,head);
-    var death = wallCollision || snakeCollision;
+    var snakeCollision = this.checkOtherSnakeCollision(this.id,head);
     if (snakeCollision) {
-        gameover();
+        console.log("snake collision"); 
     }
-    if (wallCollision || snakeCollision) {
+    if (snakeCollision || wallCollision) {
+        console.log(snakeCollision);
         if (this.isAI) {
             this.markedForDeletion = true;
         } else {
@@ -307,7 +309,7 @@ function gameLoop() {
 }
 
 window.onload = function() {
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 15; i++) {
         summonSnake();
     }
     setup();

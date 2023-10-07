@@ -36,6 +36,9 @@ h1 {
 #circleSnakeGame {
     background: linear-gradient(to bottom, orange, rgba(0,0,0,0));
 }
+#shooterGame {
+    background: linear-gradient(to bottom, red, rgba(0,0,0,0));    
+}
 
 .text {
     background: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0));
