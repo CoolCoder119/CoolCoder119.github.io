@@ -182,7 +182,13 @@ var Player = function(x,y,width,height,color,isPlayer) {
     } else {
         this.player = 2;
     }
-    this.image = document.querySelector("")
+    this.image = document.querySelector("cowboy");
+    this.width = this.image.width/3;
+    this.height = this.image.height/4;
+    this.frameX = 0;
+    this.frameY = 0;
+    this.staggerFrames = 8;
+    this.maxFrames = 3;
 }
 Player.prototype.draw = function() {
     ctx.fillStyle = this.color;
@@ -306,6 +312,13 @@ Player.prototype.update = function() {
         );
         projectiles.push(projectile);
     }
+
+    if (gameFrame % this.staggerFrames === 0) {
+        this.frameX++;
+        if (this.frameX > this.maxFrames) {
+            this.frameX = 0;
+        }
+      }    
 }
 
 var Projectile = function(x,y,xVel,yVel,playerID,color) {
