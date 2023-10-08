@@ -227,16 +227,14 @@ Player.prototype.update = function() {
     }
 
     if (gameFrame % ProjectileSpawnLength === 1&& this.mouse.keyS) {
-        var angle;
-        console.log(this.direction);
-        if (this.direction = "right") {
-            angle = 90 / multiplier;
+        var yVel = 0;
+        var xVel;
+        if (this.lastDirection === "right") {
+            xVel = 1;
         } else {
-            angle = -90 / multiplier;
+            xVel = -1;
         }
-        var xVel = Math.cos(angle);
-        var yVel = Math.sin(angle);
-        var projectile = new Projectile(
+         var projectile = new Projectile(
             this.x,
             this.y,
             xVel,
@@ -289,7 +287,7 @@ Projectile.prototype.checkTouching = function() {
 Projectile.prototype.update = function() {
     //do something later
     this.yVel += GRAVITY;
-    this.x += this.xVel*10*multiplier;
+    this.x += this.xVel*20*multiplier;
     this.y += this.yVel;
     if (this.checkTouching()) {
         this.markedForDeletion = true;
