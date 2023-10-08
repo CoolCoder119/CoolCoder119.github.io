@@ -10,12 +10,12 @@ canvas.height = height;
 
 var levels = [
     [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
-        [1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,1,0,0,0,1],
+        [1,0,0,0,0,2,0,0,1,0,0,1,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+        [1,0,0,1,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
@@ -74,6 +74,7 @@ var gameFrame = 0;
 
 
 var bulletDamage = 3;
+var lavaDamage = 1;
 var ProjectileSpawnLength = 15;
 
     /*calculations*/
@@ -182,13 +183,15 @@ var Player = function(x,y,width,height,color,isPlayer) {
     } else {
         this.player = 2;
     }
-    this.image = document.querySelector("cowboy");
-    this.width = 96/3;
-    this.height = 128/4;
+    this.image = document.querySelector("#cowboy");
+    this.imgWidth = 96/3;
+    this.imgHeight = 128/4;
     this.frameX = 0;
     this.frameY = 0;
-    this.staggerFrames = 8;
+    this.staggerFrames = 5;
     this.maxFrames = 3;
+
+    this.moving = false;
 }
 Player.prototype.draw = function() {
     ctx.fillStyle = this.color;
@@ -197,12 +200,43 @@ Player.prototype.draw = function() {
     ctx.textAlign = "middle";
     ctx.textBaseline = "bottom";
     if (shouldScroll) {
-        ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
+        ctx.save();
+        if (this.lastDirection === "left") {
+            ctx.rotate(180 * Math.PI * 2);
+        }
+        ctx.drawImage(this.image,
+            this.frameX * this.imgWidth,
+            this.frameY*this.imgHeight,
+            this.imgWidth,
+            this.imgHeight,
+            this.x,
+            this.y,
+            this.width,
+            this.height);  
+        ctx.restore();
+
         drawBar(this.x-scrollX,this.y,this.width, this.height,this.health,this.maxHealth,10*multiplier);
         ctx.fillText("Player " +  this.player, this.x - scrollX, this.y - this.width * 0.3);
         offset = (toString(SIZEb).length + (blockSize * -5));
     } else {
-        ctx.fillRect(this.x,this.y,this.width,this.height);
+
+        ctx.save()
+        if (this.lastDirection === "left") {
+            ctx.translate(this.x + this.width/2, this.y + this.height/2);
+            ctx.rotate(180 / AnglestoOtherThing);
+            ctx.translate(0 - (this.x + this.width/2), 0 - (this.y + this.height/2));
+        }
+        ctx.drawImage(this.image,
+            this.frameX * this.imgWidth,
+            this.frameY*this.imgHeight,
+            this.imgWidth,
+            this.imgHeight,
+            this.x-this.width/2,
+            this.y-this.height/5,
+            this.width*1.5,
+            this.height*1.5);
+        ctx.restore();
+
         drawBar(this.x+this.width/2+1/5/2,this.y,this.width*1.5, this.height*0.1,this.health,this.maxHealth,10);
         ctx.fillText("Player " +  this.player, this.x, this.y - this.width * 0.3);
     }
@@ -262,9 +296,12 @@ Player.prototype.update = function() {
     }
     if (this.mouse.keyA) {
         this.xVel = -1 * movementSpeed;
-    }
-    if (this.mouse.keyD) {
+        this.moving = true;
+    }else if (this.mouse.keyD) {
         this.xVel = 1 * movementSpeed;
+        this.moving = true;
+    } else {
+        this.moving = false;
     }
 
 
@@ -285,11 +322,17 @@ Player.prototype.update = function() {
     }
 
     if (this.checkTouchingLava()) {
-        this.x = blockSize;
-        this.xVel = 0;
-        this.y = height-(blockSize*4);
-        this.yVel = 0;
-    } 
+        this.health -= lavaDamage;
+        if (this.health <= 0) {
+            gamePlaying = false;
+            if (this.id === 0) {
+                document.querySelector("#finalScore").innerHTML = "Player 2 Won!";
+            }  else {
+                document.querySelector("#finalScore").innerHTML = "Player 1 Won!";
+            }
+            document.querySelector(".deadDiv").style.display = "inline-block";
+        }
+    }   
     if (this.isPlayer || shouldScroll !== true) {
         scrollX = this.x-width/2;
     }
@@ -313,12 +356,16 @@ Player.prototype.update = function() {
         projectiles.push(projectile);
     }
 
-    if (gameFrame % this.staggerFrames === 0) {
+    if (gameFrame % this.staggerFrames === 0 && this.moving === true) {
         this.frameX++;
-        if (this.frameX > this.maxFrames) {
+        if (this.frameX === this.maxFrames) {
             this.frameX = 0;
         }
-      }    
+      }   
+    if (this.xVel === 0) {
+        this.frameX = 0;
+        this.frameY = 0;
+    } 
 }
 
 var Projectile = function(x,y,xVel,yVel,playerID,color) {
@@ -404,7 +451,36 @@ function drawGameBoard() {
             } else if (number === 2) {
                 var x = row*blockSize;
                 var y = column*blockSize;
-                ctx.drawImage(lavaImg,x-scrollX,y,blockSize,blockSize);
+                if (shouldScroll) {
+                    ctx.drawImage(lavaImg,x-scrollX,y,blockSize,blockSize);
+                } else {
+                    ctx.drawImage(lavaImg,x,y,blockSize,blockSize);
+                }
+            }
+        }
+    }
+
+    if (isDay) {
+        ctx.fillStyle = sunColor; 
+    }else {
+        ctx.fillStyle = moonColor;
+    }
+    ctx.beginPath();
+    ctx.arc(sunX,sunY,sunRadius,0,Math.PI*2,false);
+    ctx.fill();
+}
+function updateGameBoard() {
+    for (var column = 0; column < gameBoard.length; column++) {
+        for (var row = 0; row < 20; row++) {
+            var number = gameBoard[column][row];
+            if (number == 2) {
+                var x = row*blockSize;
+                var y = column*blockSize;
+                var numberBelow = gameBoard[column+1][row];
+                if (numberBelow === 0) {
+                    console.log(numberBelow);
+                    gameBoard[column+1][row] == 2;
+                }
             }
         }
     }
@@ -431,6 +507,7 @@ function gameLoop() {
         gameFrame++;
         ctx.clearRect(0,0,width,height);
         drawGameBoard();
+        updateGameBoard();
         players.forEach((player,i) => {
             player.draw();
             player.update();
