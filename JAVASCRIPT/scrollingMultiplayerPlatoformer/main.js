@@ -1,37 +1,38 @@
 var canvas = document.getElementById("canvas");
-var xDiff,yDiff = canvas.getBoundingClientRect();
+var canvasInfo = canvas.getBoundingClientRect();
+var xDiff = canvasInfo.left;
+var yDiff = canvasInfo.top;
 var ctx = canvas.getContext('2d');
 var width = window.innerWidth/1.5;
 var height = window.innerWidth/3;
 canvas.width =width;
 canvas.height = height;
 
-
-var multiplier = 1024/width;
-var dirtImg = document.querySelector("#dirt");
-var lavaImg = document.querySelector("#lava");
-
-var scrollX = 0;
-var shouldScroll = false;
-
-var currentId = 0;
-var gameFrame = 0;
-
-var ProjectileSpawnLength = 20;
-
 var levels = [
     [
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
         [1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     ],
+    [
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+        [1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    ],  
 ]
 var gameBoard = [
     [],
@@ -59,6 +60,22 @@ var gameBoard = [
     };  
 
 
+var multiplier = 1024/width;
+var dirtImg = document.querySelector("#dirt");
+var lavaImg = document.querySelector("#lava");
+
+var playerMaxHealth = 100;
+
+var scrollX = 0;
+var shouldScroll = false;
+
+var currentId = 0;
+var gameFrame = 0;
+
+
+var bulletDamage = 3;
+var ProjectileSpawnLength = 15;
+
     /*calculations*/
 var AnglestoOtherThing = 360 / (Math.PI * 2);
     /*variables */
@@ -75,13 +92,34 @@ var gamePlaying = true;
 var players = [];
 var projectiles = [];
 
-var circleRadius = 10*multiplier;
+var circleRadius = 8*multiplier;
 
 var windRESISTANCE = 0.85;
 var GRAVITY = 0.4*multiplier;
 var jumpForce = 12*multiplier;
 var movementSpeed = 5*multiplier;
 var speed = 3*multiplier;
+
+var currentLevel = 0;
+var blockSize = width/20;
+var blockColor = "green";
+var deathColor = "red";
+
+
+function reset() {
+    projectiles = [];
+    currentPlayer.x = blockSize;
+    currentPlayer.y = height-(blockSize*4);
+    currentPlayer.xVel = 0;
+    currentPlayer.yVel = 0;
+    currentPlayer.health = currentPlayer.maxHealth;
+    newPlayer.x = width-blockSize*2;
+    newPlayer.y = height-(blockSize*4);
+    newPlayer.xVel = 0;
+    newPlayer.yVel = 0;
+    newPlayer.health = newPlayer.maxHealth;
+    gamePlaying = true;
+}
 
 function touching(object1,object2) {
     return object1.x+object1.width > object2.x &&
@@ -100,12 +138,18 @@ function circle(x,y,radius,fillCircle) {
     }
 }
 
+function drawBar(x,y,width,height,health,maxHealth,yOffset) {
+    var xPosition = (x-width/2);
+    var yPosition = (y-yOffset);
+    ctx.fillStyle = "red";
+    ctx.fillRect(xPosition,yPosition,width,height);
+    ctx.fillStyle = "limegreen";
+    ctx.fillRect(xPosition,yPosition,width*(health/maxHealth),height);
+};
 
 
-var currentLevel = 0;
-var blockSize = width/gameBoard[0].length;
-var blockColor = "green";
-var deathColor = "red";
+
+
 
 var Player = function(x,y,width,height,color,isPlayer) {
     this.x = x;
@@ -130,13 +174,31 @@ var Player = function(x,y,width,height,color,isPlayer) {
     this.lastDirection = "right";
     this.id = currentId;
     currentId++;
+    this.maxHealth = playerMaxHealth;
+    this.health = this.maxHealth;
+    this.player;
+    if (this.id === 0) {
+        this.player = 1;
+    } else {
+        this.player = 2;
+    }
+    this.image = document.querySelector("")
 }
 Player.prototype.draw = function() {
     ctx.fillStyle = this.color;
+    ctx.font = (multiplier*15) + "px New Roman";
+    ctx.fillStyle = "White";
+    ctx.textAlign = "middle";
+    ctx.textBaseline = "bottom";
     if (shouldScroll) {
         ctx.fillRect(this.x-scrollX,this.y,this.width,this.height);
+        drawBar(this.x-scrollX,this.y,this.width, this.height,this.health,this.maxHealth,10*multiplier);
+        ctx.fillText("Player " +  this.player, this.x - scrollX, this.y - this.width * 0.3);
+        offset = (toString(SIZEb).length + (blockSize * -5));
     } else {
         ctx.fillRect(this.x,this.y,this.width,this.height);
+        drawBar(this.x+this.width/2+1/5/2,this.y,this.width*1.5, this.height*0.1,this.health,this.maxHealth,10);
+        ctx.fillText("Player " +  this.player, this.x, this.y - this.width * 0.3);
     }
 
 }
@@ -235,11 +297,11 @@ Player.prototype.update = function() {
             xVel = -1;
         }
          var projectile = new Projectile(
-            this.x,
-            this.y,
+            this.x+this.width/2,
+            this.y+this.height/5,
             xVel,
             yVel,
-            this.playerID,
+            this.id,
             this.color
         );
         projectiles.push(projectile);
@@ -256,6 +318,7 @@ var Projectile = function(x,y,xVel,yVel,playerID,color) {
     this.yVel = yVel;
     this.playerID = playerID;
     this.color = color;
+    this.damage = bulletDamage;
 }
 
 Projectile.prototype.draw = function() {
@@ -286,13 +349,30 @@ Projectile.prototype.checkTouching = function() {
 
 Projectile.prototype.update = function() {
     //do something later
-    this.yVel += GRAVITY;
+    this.yVel += GRAVITY*0.2;
     this.x += this.xVel*20*multiplier;
     this.y += this.yVel;
     if (this.checkTouching()) {
         this.markedForDeletion = true;
     }
-
+    for (var i = 0; i < players.length; i++) {
+        var player = players[i];
+        if (player.id !== this.playerID) {
+            if (touching(this,player)) {
+                this.markedForDeletion = true;
+                player.health -= this.damage;
+                if (player.health <= 0) {
+                    gamePlaying = false;
+                    if (player.id === 0) {
+                        document.querySelector("#finalScore").innerHTML = "Player 2 Won!";
+                    }  else {
+                        document.querySelector("#finalScore").innerHTML = "Player 1 Won!";
+                    }
+                    document.querySelector(".deadDiv").style.display = "inline-block";
+                } 
+            };
+        }
+    }
 };
 
 
@@ -329,7 +409,7 @@ function drawGameBoard() {
 
 var currentPlayer = new Player(blockSize,height-(blockSize*4),blockSize * 0.8,(blockSize*2) * 0.8,"yellow",true);
 players.push(currentPlayer);
-var newPlayer = new Player(blockSize*2,height-(blockSize*4),blockSize * 0.8,(blockSize*2) * 0.8,"blue",false);
+var newPlayer = new Player(width-blockSize*2,height-(blockSize*4),blockSize * 0.8,(blockSize*2) * 0.8,"blue",false);
 players.push(newPlayer);
 
 function gameLoop() {
@@ -463,9 +543,8 @@ document.addEventListener('keyup', (event) => {
     }
   }, false);
 
-
-document.querySelector(".restartButton").onclick = function() {
+  document.querySelector(".restartButton").onclick = function() {
     document.querySelector(".deadDiv").style.display = "none";
-    changeLevel();
-    gamePlaying = true;
-}
+    reset();
+  }
+
