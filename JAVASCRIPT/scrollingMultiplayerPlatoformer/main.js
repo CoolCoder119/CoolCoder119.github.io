@@ -183,8 +183,8 @@ var Player = function(x,y,width,height,color,isPlayer) {
         this.player = 2;
     }
     this.image = document.querySelector("cowboy");
-    this.width = this.image.width/3;
-    this.height = this.image.height/4;
+    this.width = 96/3;
+    this.height = 128/4;
     this.frameX = 0;
     this.frameY = 0;
     this.staggerFrames = 8;
@@ -197,7 +197,7 @@ Player.prototype.draw = function() {
     ctx.textAlign = "middle";
     ctx.textBaseline = "bottom";
     if (shouldScroll) {
-        ctx.fillRect(this.x-scrollX,this.y,this.width,this.height);
+        ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
         drawBar(this.x-scrollX,this.y,this.width, this.height,this.health,this.maxHealth,10*multiplier);
         ctx.fillText("Player " +  this.player, this.x - scrollX, this.y - this.width * 0.3);
         offset = (toString(SIZEb).length + (blockSize * -5));
