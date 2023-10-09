@@ -51,6 +51,7 @@
 
     var offset;
 
+    canvas.focus();
 
     var drawBorder = function() {
         ctx.fillStyle = "Gray";

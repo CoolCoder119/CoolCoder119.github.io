@@ -72,6 +72,8 @@ var explosionRadius = 250;
 var score = 0;
 var gameOver = false;
 
+canvas.focus();
+
 var bombImage0 = document.querySelector("#idleBomb0");
 var bombImage1 = document.querySelector("#idleBomb1");
 var bombImage2 = document.querySelector("#idleBomb2");

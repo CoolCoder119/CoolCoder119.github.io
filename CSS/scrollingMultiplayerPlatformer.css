@@ -18,6 +18,19 @@ div {
     width: inherit;
     height: inherit;   
 }
+#editLevels {
+    font-size: 1em; 
+    position: absolute;
+    margin-left: 20em;
+    width: 20em;
+    height:3em;
+    border-radius: 2em;
+    background: linear-gradient(to bottom,yellow, rgba(0,0,0,0));
+    color: white;
+}
+#editLevels:hover {
+    cursor: pointer;
+}
 #back {
     position: absolute;
     width: 5em;
@@ -74,5 +87,9 @@ div {
 
 }
 .hidden{
+    display: none;
+}
+
+.canvas2 {
     display: none;
 }

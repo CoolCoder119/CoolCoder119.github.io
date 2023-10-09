@@ -25,6 +25,8 @@ var squareHeight = height/10;
 
 var speedMultiplier = width/200;
 
+canvas.focus();
+
 
 
 var circle = function(x,y,radius,stroke) {

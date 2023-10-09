@@ -1,36 +1,40 @@
 var canvas = document.getElementById("canvas");
+var canvas2 = document.querySelector(".canvas2");
 var canvasInfo = canvas.getBoundingClientRect();
 var xDiff = canvasInfo.left;
 var yDiff = canvasInfo.top;
 var ctx = canvas.getContext('2d');
-var width = window.innerWidth/1.5;
-var height = window.innerWidth/3;
+var width = window.innerWidth/1.2;
+var height = window.innerWidth/2.4;
 canvas.width =width;
 canvas.height = height;
+canvas2.width = window.innerWidth;
+canvas2.height = window.innerHeight;
+canvas.focus();
 
 var levels = [
     [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,1,0,0,0,1],
-        [1,0,0,0,0,2,0,0,1,0,0,1,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
-        [1,0,0,1,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+        [1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
+        [1,0,1,2,0,0,0,1,1,2,1,0,0,0,0,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     ],
     [
-        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
-        [1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,1,1,0,1,0,0,1,1,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,1],
+        [1,0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     ],  
 ]
@@ -48,16 +52,32 @@ var gameBoard = [
 ]
 
 
+var blankLevelSheet = [
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],    
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]   
+];
+
+var myLevels = [];
 
 
-    for (var i = 0; i < levels.length; i++) {
-        for (var column = 0; column < 10; column++) {
-            for (var row = 0; row < 20; row++) {
-                var number = levels[i][column][row];
-                gameBoard[column].push(number);
-            }
-        }
-    };  
+
+
+
+var level = levels[Math.round(Math.random() * (levels.length -1))];
+for (var column = 0; column < 10; column++) {
+    for (var row = 0; row < 20; row++) {
+        var number = level[column][row];
+        gameBoard[column].push(number);
+    }
+} 
 
 
 var multiplier = 1024/width;
@@ -73,9 +93,10 @@ var currentId = 0;
 var gameFrame = 0;
 
 
-var bulletDamage = 3;
-var lavaDamage = 1;
-var ProjectileSpawnLength = 15;
+var bulletDamage = 8;
+var lavaDamage = 0.3;
+var ProjectileSpawnLength = 10;
+var LavaFallLength = 20;
 
     /*calculations*/
 var AnglestoOtherThing = 360 / (Math.PI * 2);
@@ -97,17 +118,37 @@ var circleRadius = 8*multiplier;
 
 var windRESISTANCE = 0.85;
 var GRAVITY = 0.4*multiplier;
-var jumpForce = 12*multiplier;
-var movementSpeed = 5*multiplier;
-var speed = 3*multiplier;
+var jumpForce = 15*multiplier;
+var movementSpeed = 8*multiplier;
 
 var currentLevel = 0;
 var blockSize = width/20;
 var blockColor = "green";
 var deathColor = "red";
 
-
 function reset() {
+    gameBoard = [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],    
+        [],
+        [],
+        [],
+        []   
+    ]
+
+
+    var level = levels[1];
+    for(var column = 0; column < 10; column++) {
+        for (var row = 0; row < 20; row++) {
+            var number = level[column][row];
+            gameBoard[column].push(number);
+        }
+    }  
+
     projectiles = [];
     currentPlayer.x = blockSize;
     currentPlayer.y = height-(blockSize*4);
@@ -152,6 +193,7 @@ function drawBar(x,y,width,height,health,maxHealth,yOffset) {
 
 
 
+
 var Player = function(x,y,width,height,color,isPlayer) {
     this.x = x;
     this.y = y;
@@ -188,9 +230,10 @@ var Player = function(x,y,width,height,color,isPlayer) {
     this.imgHeight = 128/4;
     this.frameX = 0;
     this.frameY = 0;
-    this.staggerFrames = 5;
+    this.staggerFrames = 3;
     this.maxFrames = 3;
-
+    this.jumpForce = jumpForce;
+    this.movementSpeed = movementSpeed;
     this.moving = false;
 }
 Player.prototype.draw = function() {
@@ -201,7 +244,7 @@ Player.prototype.draw = function() {
     ctx.textBaseline = "bottom";
     if (shouldScroll) {
         ctx.save();
-        if (this.lastDirection === "left") {
+        if (this.lastDirection === "left" && false) {
             ctx.rotate(180 * Math.PI * 2);
         }
         ctx.drawImage(this.image,
@@ -221,7 +264,7 @@ Player.prototype.draw = function() {
     } else {
 
         ctx.save()
-        if (this.lastDirection === "left") {
+        if (this.lastDirection === "left" && false) {
             ctx.translate(this.x + this.width/2, this.y + this.height/2);
             ctx.rotate(180 / AnglestoOtherThing);
             ctx.translate(0 - (this.x + this.width/2), 0 - (this.y + this.height/2));
@@ -236,9 +279,8 @@ Player.prototype.draw = function() {
             this.width*1.5,
             this.height*1.5);
         ctx.restore();
-
-        drawBar(this.x+this.width/2+1/5/2,this.y,this.width*1.5, this.height*0.1,this.health,this.maxHealth,10);
         ctx.fillText("Player " +  this.player, this.x, this.y - this.width * 0.3);
+        drawBar(this.x+this.width/2+1/5/2,this.y,this.width*1.5, this.height*0.1,this.health,this.maxHealth,10);
     }
 
 }
@@ -291,14 +333,14 @@ Player.prototype.update = function() {
     }
 
     if (this.mouse.keyW && this.onFloor) {
-        this.yVel = 0- jumpForce;
+        this.yVel = 0- this.jumpForce;
 
     }
     if (this.mouse.keyA) {
-        this.xVel = -1 * movementSpeed;
+        this.xVel = -1 * this.movementSpeed;
         this.moving = true;
     }else if (this.mouse.keyD) {
-        this.xVel = 1 * movementSpeed;
+        this.xVel = 1 * this.movementSpeed;
         this.moving = true;
     } else {
         this.moving = false;
@@ -322,6 +364,8 @@ Player.prototype.update = function() {
     }
 
     if (this.checkTouchingLava()) {
+        this.jumpForce = jumpForce * 0.7;
+        this.movementSpeed = movementSpeed * 0.5;
         this.health -= lavaDamage;
         if (this.health <= 0) {
             gamePlaying = false;
@@ -332,7 +376,10 @@ Player.prototype.update = function() {
             }
             document.querySelector(".deadDiv").style.display = "inline-block";
         }
-    }   
+    }  else {
+        this.jumpForce = jumpForce;
+        this.movementSpeed = movementSpeed;
+    }
     if (this.isPlayer || shouldScroll !== true) {
         scrollX = this.x-width/2;
     }
@@ -470,17 +517,45 @@ function drawGameBoard() {
     ctx.fill();
 }
 function updateGameBoard() {
-    for (var column = 0; column < gameBoard.length; column++) {
+    if (gameFrame % LavaFallLength === 0) {
+        makeLavaFall();
+    }
+}
+function makeLavaFall() {
+    var changedIndex = [
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ]
+    for (var column = gameBoard.length-1; column > 0; column--) {
         for (var row = 0; row < 20; row++) {
             var number = gameBoard[column][row];
-            if (number == 2) {
+            var changed = changedIndex[column][row]
+            if (number == 2 && changed === 0) {
                 var x = row*blockSize;
                 var y = column*blockSize;
                 var numberBelow = gameBoard[column+1][row];
-                if (numberBelow === 0) {
-                    console.log(numberBelow);
-                    gameBoard[column+1][row] == 2;
+                var numberLeft = gameBoard[column][row-1];
+                var numberRight = gameBoard[column][row+1];
+                if (numberBelow === 0 && column !== gameBoard.length) {
+                    gameBoard[column+1][row] = 2;
+                    changedIndex[column+1][row] = 1;
                 }
+                if (numberLeft === 0 && numberBelow === 1 && row !== 0) {
+                    gameBoard[column][row-1] = 2;
+                    changedIndex[column][row-1] = 1;
+                }   
+                if (numberRight === 0 && numberBelow === 1 && row !== 20) {
+                    gameBoard[column][row+1] = 2;
+                    changedIndex[column][row+1] = 1;
+                }   
             }
         }
     }
@@ -636,5 +711,11 @@ document.addEventListener('keyup', (event) => {
   document.querySelector(".restartButton").onclick = function() {
     document.querySelector(".deadDiv").style.display = "none";
     reset();
+  }
+
+  document.querySelector("#editLevels").onclick = function() {
+    gamePlaying = false;
+    canvas.style.display = "none";
+    canvas
   }
 

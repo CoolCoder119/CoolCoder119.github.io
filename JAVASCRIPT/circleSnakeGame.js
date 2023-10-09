@@ -14,6 +14,8 @@ var SCROLLY;
 var apples;
 var snakes = [];
 
+canvas.focus();
+
 
 
 
