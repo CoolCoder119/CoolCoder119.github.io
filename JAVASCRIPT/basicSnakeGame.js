@@ -13,6 +13,8 @@ var SIZE = 0;
 var sizeToGetTo = 2;
 var maxSize = 200;
 
+canvas.focus();
+
 var drawBorder = function() {
     ctx.fillStyle = "Gray";
     ctx.fillRect(0,0,width,blockSize);

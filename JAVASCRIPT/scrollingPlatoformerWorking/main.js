@@ -243,32 +243,18 @@ Player.prototype.draw = function() {
     ctx.textAlign = "middle";
     ctx.textBaseline = "bottom";
     if (shouldScroll) {
-        ctx.save();
-        if (this.lastDirection === "left" && false) {
-            ctx.rotate(180 * Math.PI * 2);
-        }
         ctx.drawImage(this.image,
             this.frameX * this.imgWidth,
             this.frameY*this.imgHeight,
             this.imgWidth,
             this.imgHeight,
-            this.x,
+            this.x-scrollX,
             this.y,
             this.width,
             this.height);  
-        ctx.restore();
-
+        ctx.fillText("Player " +  this.player, this.x-scrollX, this.y - this.width * 0.3);
         drawBar(this.x-scrollX,this.y,this.width, this.height,this.health,this.maxHealth,10*multiplier);
-        ctx.fillText("Player " +  this.player, this.x - scrollX, this.y - this.width * 0.3);
-        offset = (toString(SIZEb).length + (blockSize * -5));
     } else {
-
-        ctx.save()
-        if (this.lastDirection === "left" && false) {
-            ctx.translate(this.x + this.width/2, this.y + this.height/2);
-            ctx.rotate(180 / AnglestoOtherThing);
-            ctx.translate(0 - (this.x + this.width/2), 0 - (this.y + this.height/2));
-        }
         ctx.drawImage(this.image,
             this.frameX * this.imgWidth,
             this.frameY*this.imgHeight,
@@ -278,7 +264,6 @@ Player.prototype.draw = function() {
             this.y-this.height/5,
             this.width*1.5,
             this.height*1.5);
-        ctx.restore();
         ctx.fillText("Player " +  this.player, this.x, this.y - this.width * 0.3);
         drawBar(this.x+this.width/2+1/5/2,this.y,this.width*1.5, this.height*0.1,this.health,this.maxHealth,10);
     }
@@ -379,9 +364,6 @@ Player.prototype.update = function() {
     }  else {
         this.jumpForce = jumpForce;
         this.movementSpeed = movementSpeed;
-    }
-    if (this.isPlayer || shouldScroll !== true) {
-        scrollX = this.x-width/2;
     }
 
     if (gameFrame % ProjectileSpawnLength === 1&& this.mouse.keyS) {
@@ -587,6 +569,9 @@ function gameLoop() {
             player.draw();
             player.update();
           });
+          if (shouldScroll === true) {
+            scrollX = currentPlayer.x-width/2;
+        }
           projectiles.forEach((projectile,i) => {
             projectile.draw();
             projectile.update();
