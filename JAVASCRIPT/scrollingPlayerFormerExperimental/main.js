@@ -442,6 +442,7 @@ Player.prototype.checkTouchingLava = function() {
     return isTouching;
 };
 Player.prototype.checkTouchingJumpPad = function() {
+    var powerupLength = 0;
     var isTouching = false;
     for (var column = 0; column < gameBoard.length; column++) {
         for (var row = 0; row < gameBoard[0].length; row++) {
@@ -455,13 +456,14 @@ Player.prototype.checkTouchingJumpPad = function() {
                 this.y <= y+blockSize;
                 if (touching) {
                     isTouching = true;
+                    powerupLength++;
                     var sprite = spriteSheetInfo[column][row];
                     sprite.shouldUpdate = true;
                 }
             }
         }
     }
-    return isTouching;
+    return powerupLength;
 };
 Player.prototype.update = function() {
 
@@ -476,8 +478,10 @@ Player.prototype.update = function() {
     if ((this.mouse.keyW && this.onFloor)) {
         this.yVel = 0- this.jumpForce;
     }
-    if ((this.checkTouchingJumpPad() && this.yVel > 0)) {
-        this.yVel = 0- jumpPadForce;
+    var powerupLength = this.checkTouchingJumpPad()
+    if ((powerupLength > 0 && this.yVel > 0)) {
+
+        this.yVel = (0- jumpPadForce);
     }
     if (this.mouse.keyA) {
         this.xVel = -1 * this.movementSpeed;
