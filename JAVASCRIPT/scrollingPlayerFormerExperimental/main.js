@@ -11,58 +11,71 @@ canvas.height = height;
 var editinglevels = false;
 
 var jumpPadImage = document.querySelector("#jumpPad");
+var fireball = document.querySelector("#fireball");
 
 var levels = [
     [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [1,1,1,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [1,2,0,0,3,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0],
-        [1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1],
-        [1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [1,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,0],
-        [1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],
-        [1,0,1,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,0,0],
+        [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0],
+        [1,2,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0],
+        [1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [1,0,1,0,0,0,0,0,0,3,0,0,0,0,0,3,0,0,0,0],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     ],
     [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,1,1,0,1,0,0,1,1,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0],
-        [0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,0,3,3,0,0,0,0,0,0,3,0,0,0,0,0],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     ],  
     [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,1,1,0,1,0,0,1,1,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0],
-        [0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],
+        [0,0,1,1,0,0,0,0,3,0,0,0,0,0,0,2,3,0,0,0],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     ],     
     [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,1],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [0,0,0,0,0,0,1,1,0,1,0,0,1,1,0,0,0,0,0,1],
-        [0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,1],
-        [0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1],
+        [0,0,0,0,0,0,0,0,1,1,0,0.0,0,0,0,0,0,0,1],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [0,2,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     ],  
 ]
 var gameBoard = [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],    
+    [],
+    [],
+    [],
+    []   
+]
+var spriteSheetInfo = [
     [],
     [],
     [],
@@ -121,8 +134,8 @@ var currentId = 0;
 var gameFrame = 0;
 
 
-var bulletDamage = 8;
-var lavaDamage = 0.3;
+var bulletDamage = 3;
+var lavaDamage = 0.1;
 var ProjectileSpawnLength = 10;
 var LavaFallLength = 30;
 
@@ -142,11 +155,12 @@ var gamePlaying = true;
 var players = [];
 var projectiles = [];
 
-var circleRadius = 8*multiplier;
+
 
 var windRESISTANCE = 0.85;
 var GRAVITY = 0.4*multiplier;
 var jumpForce = 15*multiplier;
+var jumpPadForce = 16.8*multiplier;
 var movementSpeed = 8*multiplier;
 
 var currentLevel = 0;
@@ -154,8 +168,58 @@ var blockSize = width/20;
 var blockColor = "green";
 var deathColor = "red";
 
+var circleRadius = blockSize*0.6*multiplier;
+
+var Sprite = function(img,spriteWidth,spriteHeight,frameX,frameY,maxFrames,staggerFrames,name,shouldUpdate) {
+    this.img = img;
+    this.spriteWidth = spriteWidth;
+    this.spriteHeight = spriteHeight;
+    this.frameX = frameX;
+    this.frameY = frameY;
+    this.maxFrames = maxFrames;
+    this.staggerFrames = staggerFrames;
+    this.name = name;
+    this.shouldUpdate = shouldUpdate;
+}
+Sprite.prototype.draw = function(x,y,width,height) {
+    ctx.drawImage(
+        this.img,
+        this.frameX*this.spriteWidth,
+        this.frameY,
+        this.spriteWidth,
+        this.spriteHeight,
+        x,
+        y,
+        width,
+        height
+        );
+}
+Sprite.prototype.update = function() {
+    if (gameFrame % this.staggerFrames === 0 && this.shouldUpdate) {
+        this.frameX++;
+        if (this.frameX === this.maxFrames) {
+            this.frameX = 0;
+            this.shouldUpdate = false;
+        }
+    }
+}
+
+
+
 function reset() {
     gameBoard = [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],    
+        [],
+        [],
+        [],
+        []   
+    ]
+    spriteSheetInfo = [
         [],
         [],
         [],
@@ -176,8 +240,31 @@ function reset() {
                 gameBoard[column].push(number);
             }
         } 
+    }  
+    for (var i = 0; i < levels.length; i++) {
+        var level = levels[i];
+        for (var column = 0; column < 10; column++) {
+            for (var row = 0; row < 20; row++) {
+                var number = level[column][row];
+                if (number === 3) {
+                    spriteSheetInfo[column].push(
+                        new Sprite(jumpPadImage,
+                            192/6,
+                            64,
+                            0,
+                            0,
+                            6,
+                            2,
+                            "jumpPad",
+                            false
+                            )
+                        );
+                } else {
+                    spriteSheetInfo[column].push(number);
+                }
+            }
+        } 
     }   
-
     projectiles = [];
     currentPlayer.x = blockSize;
     currentPlayer.y = height-(blockSize*4);
@@ -218,11 +305,6 @@ function drawBar(x,y,width,height,health,maxHealth,yOffset) {
     ctx.fillRect(xPosition,yPosition,width*(health/maxHealth),height);
 };
 
-
-
-
-
-
 var Player = function(x,y,width,height,color,isPlayer) {
     this.x = x;
     this.y = y;
@@ -254,15 +336,21 @@ var Player = function(x,y,width,height,color,isPlayer) {
     } else {
         this.player = 2;
     }
-    this.image = document.querySelector("#cowboy");
-    this.imgWidth = 96/3;
-    this.imgHeight = 128/4;
+
+    this.image;
+    if (this.id === 0) {
+        this.image = document.querySelector("#regularPlayer");
+    } else {
+        this.image = document.querySelector("#redPlayer");
+    }
+    this.imgWidth = 368/8;
+    this.imgHeight = 200/4;
     this.frameX = 0;
-    this.frameY = 0;
-    this.staggerFrames = 3;
-    this.maxFrames = 3;
+    this.frameY = 3;
+    this.maxFrames = 8;
     this.jumpForce = jumpForce;
     this.movementSpeed = movementSpeed;
+    this.staggerFrames = Math.round(10 - this.movementSpeed);
     this.moving = false;
 }
 Player.prototype.draw = function() {
@@ -272,7 +360,15 @@ Player.prototype.draw = function() {
     ctx.textAlign = "middle";
     ctx.textBaseline = "bottom";
     if (shouldScroll) {
-        ctx.fillRect(this.x-scrollX,this.y,this.width,this.height);
+        ctx.drawImage(this.image,
+            (this.frameX * this.imgWidth),
+            this.frameY*this.imgHeight,
+            this.imgWidth,
+            this.imgHeight,
+            this.x-scrollX,
+            this.y,
+            this.width,
+            this.height);  
         ctx.fillText("Player " +  this.player, this.x-scrollX, this.y - this.width * 0.3);
         drawBar(this.x-scrollX+(this.width*0.2),this.y,this.width, this.height*0.1,this.health,this.maxHealth,10*multiplier);
     } else {
@@ -305,6 +401,17 @@ Player.prototype.checkTouching = function() {
                 if (touching) {
                     isTouching = true;
                 }
+                } else if (number === 3) {
+                    var x = row*blockSize;
+                    var y = column*blockSize;
+                    var touching = this.x+this.width > x &&
+                    this.y+this.height > y &&
+                    this.x <= x+blockSize &&
+                    this.y <= y+blockSize &&
+                    this.yVel <= 0;
+                    if (touching) {
+                        isTouching = true;
+                    }
             }
         }
     }
@@ -348,6 +455,8 @@ Player.prototype.checkTouchingJumpPad = function() {
                 this.y <= y+blockSize;
                 if (touching) {
                     isTouching = true;
+                    var sprite = spriteSheetInfo[column][row];
+                    sprite.shouldUpdate = true;
                 }
             }
         }
@@ -355,6 +464,8 @@ Player.prototype.checkTouchingJumpPad = function() {
     return isTouching;
 };
 Player.prototype.update = function() {
+
+
     this.xVel = this.xVel * windRESISTANCE;
     this.x += this.xVel;
     if (this.checkTouching()) {
@@ -362,9 +473,11 @@ Player.prototype.update = function() {
         this.xVel = 9;
     }
 
-    if ((this.mouse.keyW && this.onFloor) || this.checkTouchingJumpPad()) {
+    if ((this.mouse.keyW && this.onFloor)) {
         this.yVel = 0- this.jumpForce;
-
+    }
+    if ((this.checkTouchingJumpPad() && this.yVel > 0)) {
+        this.yVel = 0- jumpPadForce;
     }
     if (this.mouse.keyA) {
         this.xVel = -1 * this.movementSpeed;
@@ -379,6 +492,8 @@ Player.prototype.update = function() {
 
     this.yVel += GRAVITY;
     this.y += this.yVel;
+
+
     if (this.checkTouching()) {
         this.y -= this.yVel;
         this.yVel = 0;
@@ -392,10 +507,16 @@ Player.prototype.update = function() {
         this.y -= this.yVel;
         this.yVel = 0;
     }
-
+    if (this.moving) {
+        this.frameY = 3;
+    } else {
+        this.frameY = 0;
+        this.frameX = 0;
+    }
     if (this.checkTouchingLava()) {
         this.jumpForce = jumpForce * 0.7;
         this.movementSpeed = movementSpeed * 0.5;
+        this.staggerFrames = Math.round(10 - this.movementSpeed)
         this.health -= lavaDamage;
         if (this.health <= 0) {
             gamePlaying = false;
@@ -409,6 +530,7 @@ Player.prototype.update = function() {
     }  else {
         this.jumpForce = jumpForce;
         this.movementSpeed = movementSpeed;
+        this.staggerFrames = Math.round(10 - this.movementSpeed)
     }
 
     if (gameFrame % ProjectileSpawnLength === 1&& this.mouse.keyS) {
@@ -430,7 +552,7 @@ Player.prototype.update = function() {
         projectiles.push(projectile);
     }
 
-    if (gameFrame % this.staggerFrames === 0 && this.moving === true) {
+    if (gameFrame % this.staggerFrames === 0 && this.moving) {
         this.frameX++;
         if (this.frameX === this.maxFrames) {
             this.frameX = 0;
@@ -448,17 +570,29 @@ var Projectile = function(x,y,xVel,yVel,playerID,color) {
     this.width = circleRadius*2;
     this.height = circleRadius*2;
     this.radius = circleRadius;
-    this.xVel = xVel;
+    this.xVel = xVel*0.5;
     this.yVel = yVel;
     this.playerID = playerID;
     this.color = color;
     this.damage = bulletDamage;
+    this.img = fireball;
 }
 
 Projectile.prototype.draw = function() {
     ctx.fillStyle = this.color;
     if (shouldScroll) {
-        circle(this.x-scrollX,this.y,this.radius,true);
+        ctx.save();
+        ctx.translate(this.x-(this.width*0.5)-scrollX, this.y);
+       if (this.xVel < 0 ) {
+            ctx.rotate(180*(Math.PI*2));
+        }
+        ctx.translate(-(this.x-(this.width*0.5)-scrollX), -this.y);
+        ctx.drawImage(this.img,
+            this.x-(this.width*0.5)-scrollX,
+            this.y-this.height*0.5,
+            this.width,
+            this.height);
+        ctx.restore();
     } else {
         circle(this.x,this.y,this.radius,true);
     }
@@ -487,7 +621,6 @@ Projectile.prototype.checkTouching = function() {
 
 Projectile.prototype.update = function() {
     //do something later
-    this.yVel += GRAVITY*0.2;
     this.x += this.xVel*20*multiplier;
     this.y += this.yVel;
     if (this.checkTouching()) {
@@ -538,9 +671,11 @@ function drawGameBoard() {
                 var x = row*blockSize;
                 var y = column*blockSize;
                 if (shouldScroll) {
-                    ctx.drawImage(jumpPadImage,x-scrollX,y-blockSize,blockSize,blockSize*2);
+                    var sprite = spriteSheetInfo[column][row];
+                    sprite.draw((x-scrollX),y-blockSize,blockSize,blockSize*2);
+                    sprite.update();
                 } else {
-                    ctx.drawImage(jumpPadImage,x,y-blockSize,blockSize,blockSize*2);
+                    ctx.drawImage(jumpPadImage,0,0,192/6,64,x,y-blockSize,blockSize,blockSize*2);
                 }
             }
         }
@@ -616,7 +751,7 @@ function gameLoop() {
         ctx.clearRect(0,0,width,height);
         drawGameBoard();
         updateGameBoard();
-        if (shouldScroll !== false) {
+        if (shouldScroll) {
             var diffBetweenPlayers = currentPlayer.x - newPlayer.x;
             var centerBetweenPlayers = currentPlayer.x-diffBetweenPlayers/2;
             scrollX = centerBetweenPlayers-width/2;
@@ -656,8 +791,8 @@ function gameLoop() {
 }
 
 window.onload = function() {
-    reset();
     canvas.focus();
+    reset();
     gameLoop();
 }
 

@@ -225,11 +225,11 @@ var Player = function(x,y,width,height,color,isPlayer) {
     } else {
         this.player = 2;
     }
-    this.image = document.querySelector("#cowboy");
-    this.imgWidth = 96/3;
+    this.image = document.querySelector("#regularPlayer");
+    this.imgWidth = 368/8;
     this.imgHeight = 128/4;
     this.frameX = 0;
-    this.frameY = 0;
+    this.frameY = 4;
     this.staggerFrames = 3;
     this.maxFrames = 3;
     this.jumpForce = jumpForce;
@@ -570,7 +570,12 @@ function gameLoop() {
             player.update();
           });
           if (shouldScroll === true) {
+
+
             scrollX = currentPlayer.x-width/2;
+            if (scrollX < width) {
+                scrollX = width;
+            };
         }
           projectiles.forEach((projectile,i) => {
             projectile.draw();
