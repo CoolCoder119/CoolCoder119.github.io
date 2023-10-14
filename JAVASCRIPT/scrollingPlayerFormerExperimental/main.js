@@ -352,6 +352,7 @@ var Player = function(x,y,width,height,color,isPlayer) {
     this.movementSpeed = movementSpeed;
     this.staggerFrames = Math.round(10 - this.movementSpeed);
     this.moving = false;
+    this.attacking = false;
 }
 Player.prototype.draw = function() {
     ctx.fillStyle = this.color;
@@ -467,7 +468,7 @@ Player.prototype.checkTouchingJumpPad = function() {
 };
 Player.prototype.update = function() {
 
-
+    this.attacking = false;
     this.xVel = this.xVel * windRESISTANCE;
     this.x += this.xVel;
     if (this.checkTouching()) {
@@ -511,12 +512,8 @@ Player.prototype.update = function() {
         this.y -= this.yVel;
         this.yVel = 0;
     }
-    if (this.moving) {
-        this.frameY = 3;
-    } else {
-        this.frameY = 0;
-        this.frameX = 0;
-    }
+
+
     if (this.checkTouchingLava()) {
         this.jumpForce = jumpForce * 0.7;
         this.movementSpeed = movementSpeed * 0.5;
@@ -538,6 +535,7 @@ Player.prototype.update = function() {
     }
 
     if (gameFrame % ProjectileSpawnLength === 1&& this.mouse.keyS) {
+        this.attacking = true;
         var yVel = 0;
         var xVel;
         if (this.lastDirection === "right") {
@@ -554,6 +552,18 @@ Player.prototype.update = function() {
             this.color
         );
         projectiles.push(projectile);
+    }
+
+    if (this.moving) {
+        this.frameY = 3;
+    } else {
+        if (this.attacking) {
+            this.frameY = 0;
+            this.frameX = 4;
+        } else {
+            this.frameY = 0;
+            this.frameX = 0;
+        }
     }
 
     if (gameFrame % this.staggerFrames === 0 && this.moving) {
