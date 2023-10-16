@@ -1,7 +1,7 @@
 var canvas = document.getElementById("canvas");
 var canvasInfo = canvas.getBoundingClientRect();
-var xDiff = canvasInfo.left;
-var yDiff = canvasInfo.top;
+var xDiff = canvasInfo.x;
+var yDiff = canvasInfo.y;
 var ctx = canvas.getContext('2d');
 var width = window.innerWidth/1.2;
 var height = window.innerWidth/2.4;
@@ -12,6 +12,9 @@ var editinglevels = false;
 
 var jumpPadImage = document.querySelector("#jumpPad");
 var fireball = document.querySelector("#fireball");
+
+var onLevels = false;
+var currentLevel;
 
 var levels = [
     [
@@ -90,7 +93,7 @@ var spriteSheetInfo = [
 
 
 var blankLevelSheet = [
-    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
     [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
     [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -99,11 +102,18 @@ var blankLevelSheet = [
     [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
     [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
     [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]   
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]   
 ];
 
 var myLevels = [];
 
+
+
+var Mouse = {
+    x: undefined,
+    y: undefined,
+    clicked: false
+};
 
 
 
@@ -134,8 +144,8 @@ var currentId = 0;
 var gameFrame = 0;
 
 
-var bulletDamage = 3;
-var lavaDamage = 0.1;
+var bulletDamage = 6;
+var lavaDamage = 0.3;
 var ProjectileSpawnLength = 10;
 var LavaFallLength = 30;
 
@@ -304,6 +314,15 @@ function drawBar(x,y,width,height,health,maxHealth,yOffset) {
     ctx.fillStyle = "limegreen";
     ctx.fillRect(xPosition,yPosition,width*(health/maxHealth),height);
 };
+function mouseTouching(board,column,row) {
+    var x = (row * blockSize) - scrollX;
+    var y = (column * blockSize) - scrollY;
+    return Mouse.x > x &&
+            Mouse.y > y &&
+            Mouse.x < x+blockSize &&
+            Mouse.y < y+blockSize;
+}
+
 
 var Player = function(x,y,width,height,color,isPlayer) {
     this.x = x;
@@ -313,9 +332,6 @@ var Player = function(x,y,width,height,color,isPlayer) {
     this.color = color;
     this.markedForDeletion = false;
     this.mouse = {
-        x: undefined,
-        y: undefined,
-        clicked: false,
         keyW: false,
         keyA: false,
         keyS: false,
@@ -661,10 +677,10 @@ Projectile.prototype.update = function() {
 };
 
 
-function drawGameBoard() {
-    for (var column = 0; column < gameBoard.length; column++) {
-        for (var row = 0; row < gameBoard[0].length; row++) {
-            var number = gameBoard[column][row];
+function drawGameBoard(board) {
+    for (var column = 0; column < board.length; column++) {
+        for (var row = 0; row < board[0].length; row++) {
+            var number = board[column][row];
             if (number === 1) {
                 var x = row*blockSize;
                 var y = column*blockSize;
@@ -704,21 +720,21 @@ function drawGameBoard() {
     ctx.arc(sunX,sunY,sunRadius,0,Math.PI*2,false);
     ctx.fill();
 }
-function updateGameBoard() {
+function updateGameBoard(board) {
     if (gameFrame % LavaFallLength === 0) {
-        makeLavaFall();
+        makeLavaFall(board);
     }
 }
-function makeLavaFall() {
+function makeLavaFall(board) {
     var changedIndex = [[],[],[],[],[],[],[],[],[],[]]
-    for (var column = 0; column < gameBoard.length; column++) {
-        for (var row = 0; row < gameBoard[0].length; row++) {
+    for (var column = 0; column < board.length; column++) {
+        for (var row = 0; row < board[0].length; row++) {
             changedIndex[column].push(0);
         }
     }
-    for (var column = gameBoard.length-1; column > 0; column--) {
-        for (var row = 0; row < gameBoard[0].length; row++) {
-            var number = gameBoard[column][row];
+    for (var column = board.length-1; column > 0; column--) {
+        for (var row = 0; row < board[0].length; row++) {
+            var number = board[column][row];
             var changed = changedIndex[column][row]
             if (number == 2 && changed === 0) {
                 var x = row*blockSize;
@@ -758,13 +774,13 @@ players.push(currentPlayer);
 var newPlayer = new Player(width-blockSize*2,height-(blockSize*4),blockSize * 0.8,(blockSize*2) * 0.8,"blue",false);
 players.push(newPlayer);
 
-function gameLoop() {
-    window.requestAnimationFrame(gameLoop);
-    if (gamePlaying) {
-        gameFrame++;
+
+
+function gameCode() {
+    gameFrame++;
         ctx.clearRect(0,0,width,height);
-        drawGameBoard();
-        updateGameBoard();
+        drawGameBoard(gameBoard);
+        updateGameBoard(gameBoard);
         if (shouldScroll) {
             var diffBetweenPlayers = currentPlayer.x - newPlayer.x;
             var centerBetweenPlayers = currentPlayer.x-diffBetweenPlayers/2;
@@ -800,6 +816,36 @@ function gameLoop() {
                 isDay = true;
             }
         }
+}
+
+function levelCode() {
+    ctx.clearRect(0,0,width,height);
+    scrollX = 0;
+    level = blankLevelSheet;
+    drawGameBoard(level);
+    for (var column = level.length-1; column > 0; column--) {
+        for (var row = 0; row < level[0].length; row++) {
+            var touching = mouseTouching(level,column,row);
+            if (touching && Mouse.clicked) {
+                ctx.fillStyle = "black";
+                var x = (row * blockSize) - scrollX;
+                var y = column * blockSize;
+            }
+        }
+    }
+    ctx.fillStyle = "white";
+    ctx.fillRect(Mouse.x,Mouse.y,blockSize,blockSize);
+    
+}
+
+function gameLoop() {
+    window.requestAnimationFrame(gameLoop);
+    if (gamePlaying) {
+        if (onLevels) {
+            levelCode();
+        } else {
+            gameCode();
+        }
 
     }
 }
@@ -811,15 +857,16 @@ window.onload = function() {
 }
 
 
-addEventListener('mousemove', (event) => {
-    currentPlayer.mouse.x = event.clientX-xDiff;
-    currentPlayer.mouse.x = event.clientX - yDiff;    
+window.addEventListener('mousemove', (event) => {
+    Mouse.x = event.clientX-canvasInfo.x;
+    Mouse.y = event.clientY-canvasInfo.y;  
+    console.log(Mouse.x + " : " + Mouse.y);
 });
-addEventListener('mousedown', (event) => {
-    currentPlayer.mouse.clicked = true;
+window.addEventListener('mousedown', () => {
+    Mouse.clicked = true;
 });
-addEventListener('mouseup', (event) => {
-    currentPlayer.mouse.clicked = false;
+window.addEventListener('mouseup', () => {
+    Mouse.clicked = false;
 });
 
 
@@ -905,14 +952,13 @@ document.addEventListener('keyup', (event) => {
   document.querySelector("#editLevels").onclick = function() {
     if (onLevels === false) {
         onLevels = true;
-        ctx2.fillStyle = "black";
-        ctx2.fillRect(0,0,width,height);
+        document.querySelector("#editLevels").innerHTML = "Go back to game";
+        document.querySelector("#editLevels").style.background = "background: linear-gradient(to bottom, pink, rgba(0,0,0,0))";
     } else {
         onLevels = false;
-        gamePlaying = triue;
-        canvas.style.display = "none";
-        canvas2.style.display = "inline-block";
-        document.querySelector("#editLevels").innerHTML = "Go back to game";
+        document.querySelector("#editLevels").innerHTML = "Edit your levels!";
+        document.querySelector("#editLevels").style.background = "background: linear-gradient(to bottom, orange, rgba(0,0,0,0))";
+        
     }
   }
 

@@ -22,14 +22,18 @@ div {
     font-size: 1em; 
     position: absolute;
     margin-left: 20em;
+    margin-top: 0.2%;
     width: 20em;
     height:3em;
     border-radius: 2em;
-    background: linear-gradient(to bottom,yellow, rgba(0,0,0,0));
+    background: linear-gradient(to bottom, orange, rgba(0,0,0,0));
     color: white;
+    transition: 0.5s all;
 }
 #editLevels:hover {
     cursor: pointer;
+    transform: scale(1.1,1.1);
+
 }
 #back {
     position: absolute;
