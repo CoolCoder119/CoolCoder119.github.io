@@ -1,11 +1,27 @@
+socket.on('updatePlayers', (backendPlayers) => {
+    for (const id in backendPlayers) {
+        const backendPlayer = backendPlayers[id];
+        if (!players[id]) {
+            players[id] = new Player(backendPlayer.x,backendPlayer.y,backendPlayer.radius,backendPlayer.color,backendPlayer.speed,backendPlayer.id)
+        }
+    }
+    for (const id in players) {
+        if (!backendPlayers[id]) {
+            delete players[id]
+        }
+    }
+})
 
-function gameLoop() {;
+socket.on('update', () => {
     ctx.clearRect(0,0,width,height);
     drawMap();
-    players.forEach((player) => {
-        player.draw();
-        player.update();
-    })
+    player.draw();
+    player.update();
+    for (const id in players) {
+        var otherPlayer = players[id];
+        otherPlayer.draw();
+        otherPlayer.update();
+    }
     coins.forEach((coin) => {
         coin.draw();
     })
@@ -20,12 +36,16 @@ function gameLoop() {;
         createCoins(1);
     }
     tick++;
-    requestAnimationFrame(gameLoop);
-}
+})
+
+
+socket.on('mapDone', (serverMap,serverMapHealth) => {
+    map = serverMap;
+    maphealth = serverMapHealth;
+})
 
 
 window.onload = function() {
-    createPlayer(0);
-    createPlayer(1);
-    gameLoop();
+    player = createPlayer(0);
+    mainPlayerId = 0;
 }

@@ -2,7 +2,7 @@ var Coin = function(x,y,radius,color) {
     this.x = x;
     this.y = y;
     this.radius = radius;
-    this.color = color;
+    this.color = "yellow";
     this.markedForDeletion = false;
 }
 Coin.prototype.draw = function() {

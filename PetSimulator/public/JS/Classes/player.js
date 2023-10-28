@@ -24,7 +24,7 @@ var Player = function(x,y,radius,color,speed,id) {
 Player.prototype.draw = function() {
     ctx.fillStyle = this.color;
     circle(this.x-scrollX,this.y-scrollY,this.radius,true);
-    drawBar(this.x-scrollX,this.y-scrollY,this.radius*4,this.radius *0.5, this.health, this.maxHealth, 0 - (this.radius * 1.2));
+    drawBar(this.x-scrollX,this.y-scrollY,this.radius * 4,this.radius * 0.5,this.health,this.maxHealth,this.radius * -1.3);
 } 
 Player.prototype.checkTouchingBlock = function() {
     var touching = false;
@@ -88,7 +88,8 @@ Player.prototype.update = function() {
             const yVel = Math.sin(angle) * bulletSpeed;
 
 
-            var bullet = new Bullet(this.x,this.y,bulletRadius,bulletColor,this.id,xVel,yVel)
+            var bullet = new Bullet(this.x,this.y,bulletRadius,bulletColor,this.id,xVel,yVel);
+            
             bullets.push(bullet);
         }
     }

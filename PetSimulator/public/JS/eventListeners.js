@@ -15,15 +15,19 @@ document.addEventListener('keydown', (event) => {
     // Alert the key name and key code on keydown
     if (code === "w" || code === "ArrowUp") {
         player.Mouse.keyW = true;
+        socket.emit("keydown", "w")
     } 
     if (code === "s" || code === "ArrowDown") {
         player.Mouse.keyS = true;
+        socket.emit("keydown", "s" )
     } 
     if (code === "a" || code === "ArrowLeft") {
         player.Mouse.keyA = true;
+        socket.emit("keydown", "a" )
     }
     if (code === "d" || code === "ArrowRight") {
         player.Mouse.keyD = true;
+        socket.emit("keydown",  "d")
     }
   }, false);
 document.addEventListener('keyup', (event) => {
@@ -31,14 +35,18 @@ document.addEventListener('keyup', (event) => {
     // Alert the key name and key code on keydown
     if (code === "w" || code === "ArrowUp") {
         player.Mouse.keyW = false;
+        socket.emit("keyup",  "w")
     } 
     if (code === "s" || code === "ArrowDown") {
         player.Mouse.keyS = false;
+        socket.emit("keyup",  "s")
     } 
     if (code === "a" || code === "ArrowLeft") {
         player.Mouse.keyA = false;
+        socket.emit("keyup",  "a")
     } 
     if (code === "d" || code === "ArrowRight") {
         player.Mouse.keyD = false;
+        socket.emit("keyup",  "d")
     }
   }, false);

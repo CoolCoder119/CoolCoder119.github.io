@@ -25,6 +25,10 @@ for (var c = 0; c < columns; c++) {
     map.push(array);
     maphealth.push(healthArray);
 }
+window.onload = function() {
+    document.getElementById("text").innerHTML = map;
+    document.getElementById("otherText").innerHTML = maphealth;
+}
 
 
 
@@ -97,8 +101,6 @@ function createCoins(amount) {
 function createPlayer(id) {
     var x = Math.round(Math.random() * width);
     var y = Math.round(Math.random() * height);
-    var row = Math.floor(x/blockWidth);
-    var column = Math.floor(y/blockHeight);
     var newPlayer = new Player(x,y,playerRadius,playerColor,playerSpeed,id);   
     if (newPlayer.checkTouchingBlock()) {
         createPlayer(id);
@@ -106,9 +108,8 @@ function createPlayer(id) {
         if (id === mainPlayerId) {
             player = newPlayer;
         }
-        players.push(newPlayer);
+        return player
     }
-
 }
 
 
