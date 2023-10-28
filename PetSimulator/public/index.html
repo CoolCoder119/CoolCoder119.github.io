@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Platformer</title>
+</head>
+<body>
+    <button id="back" onclick="window.open('../index.html')">Back!</button>
+
+    <canvas id="canvas"></canvas>
+
+    <img src="./Images/Dirt.png" id="grassBlock" class="hidden">
+    <img src="./Images/indestructableBlock.png" id="indestructableBlock" class="hidden">
+
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="./JS/variables.js"></script>
+    <script src="./JS/Classes/player.js"></script>
+    <script src="./JS/Classes/coin.js"></script>
+    <script src="./JS/Classes/block.js"></script>
+    <script src="./JS/Classes/bullet.js"></script>
+    <script src="./JS/functions.js"></script>
+    <script src="./JS/main.js"></script>
+    <script src="./JS/eventListeners.js"></script>
+</body>
+</html>

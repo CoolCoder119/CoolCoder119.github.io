@@ -96,10 +96,10 @@ function circle(x,y,radius,color,fillCircle) {
 
 function drawBorder() {
     ctx.fillStyle = "red";
-    ctx.fillRect(0-SCROLLX,0-SCROLLY,width,blockSize);
-    ctx.fillRect(0-SCROLLX, (height - blockSize) - SCROLLY,width,blockSize);
-    ctx.fillRect(0-SCROLLX,0-SCROLLY,blockSize,height);
-    ctx.fillRect((width - blockSize) - SCROLLX, 0 - SCROLLY, blockSize, height);
+    ctx.fillRect(0-scrollX,0-scrollY,width,blockHeight);
+    ctx.fillRect(0-scrollX, (height - blockHeight) - scrollY,width,blockHeight);
+    ctx.fillRect(0-scrollX,0-scrollY,blockWidth,height);
+    ctx.fillRect((width - blockWidth) - scrollX, 0 - scrollX, blockWidth, height);
 }
 
 var createColorPattern = function() {
