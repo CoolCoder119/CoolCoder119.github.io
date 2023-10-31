@@ -7,6 +7,9 @@ var Bullet = function(x,y,radius,color,id,xVel,yVel) {
     this.xVel = xVel;
     this.yVel = yVel;
     this.blockTouched;
+    this.block; 
+    this.c;
+    this.r;
     this.markedForDeletion = false;
 }
 Bullet.prototype.draw = function() {
@@ -15,7 +18,8 @@ Bullet.prototype.draw = function() {
 }
 Bullet.prototype.checkTouchingBlock = function() {
     var touching = false;
-    var blockTouched;
+    this.block;
+    this.blockTouched;
     for (var c = 0; c < columns; c++) {
         for (var r = 0; r < rows; r++) {
             var block = getBlockAt(c,r);
@@ -23,13 +27,16 @@ Bullet.prototype.checkTouchingBlock = function() {
                 var x = r*blockWidth;
                 var y = c*blockHeight;
                 if (
-                        this.x + this.radius > x &&
-                        this.y + this.radius > y &&
+                        this.x + this.radius >= x &&
+                        this.y + this.radius >= y &&
                         this.x - this.radius <= x+blockWidth &&
                         this.y - this.radius <= y+blockHeight
                 ) {
                     touching = true;
+                    this.block = map[c][r];
                     this.blockTouched = maphealth[c][r];
+                    this.c = c;
+                    this.r = r;
                 }
             }
         }
@@ -41,12 +48,15 @@ Bullet.prototype.update = function() {
     this.y += this.yVel;
     if (this.checkTouchingBlock()) {
         this.markedForDeletion = true;
-        var blockTouched = this.blockTouched;
-        if (blockTouched.canBeAttacked) {
-            blockTouched.health -= 1;
-            if (blockTouched.health === 0) {
-                map[blockTouched.column][blockTouched.row] = 0;
-                blockTouched = 0;
+        if (this.block === 1) {
+            this.blockTouched.health -= 1;
+            if (this.blockTouched.health < 1) {
+                map[this.blockTouched.column][this.blockTouched.row] = 0;
+                maphealth[this.blockTouched.column][this.blockTouched.row] = 0;
+
+                var r = this.blockTouched.row;
+                var c = this.blockTouched.column;
+                socket.emit('updateMapBackend', { row: r, column: c});
             }
         }
     }

@@ -1,34 +1,3 @@
-for (var c = 0; c < columns; c++) {
-    var array = [];
-    var healthArray = [];
-    for (var r = 0; r < rows; r++) {
-        var random = Math.random();
-        var choice = getChoiceForBlock(random);
-        var canBeAttacked = true;
-        if (c === 0|| r === 0 || r === rows-1 || c === columns-1) {
-            choice = 2;
-            canBeAttacked = false;
-        }
-        array.push(choice);
-        if (choice === 1) {
-            var x = r*blockWidth;
-            var y = c*blockHealth;
-            if (!canBeAttacked) {
-                healthArray.push(new Block(x,y,blockWidth,blockHeight,indestructableblockColor,r,c,blockHealth,canBeAttacked));
-            } else {
-                healthArray.push(new Block(x,y,blockWidth,blockHeight,indestructableblockColor,r,c,blockHealth,canBeAttacked));
-            }
-        } else {
-            healthArray.push(0);
-        }
-    }
-    map.push(array);
-    maphealth.push(healthArray);
-}
-window.onload = function() {
-    document.getElementById("text").innerHTML = map;
-    document.getElementById("otherText").innerHTML = maphealth;
-}
 
 
 

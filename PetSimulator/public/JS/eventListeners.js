@@ -1,16 +1,25 @@
+
 addEventListener('mousedown', (event) => {
+    if (!players[socket.id]) return;
+    var player = players[socket.id];
     player.Mouse.down = true;
 });
 addEventListener('mouseup', (event) => {
+    if (!players[socket.id]) return;
+    var player = players[socket.id];
     player.Mouse.down = false;
 });
 
 addEventListener('mousemove', (event) => {
+    if (!players[socket.id]) return;
+    var player = players[socket.id];
     player.Mouse.x = event.x;
     player.Mouse.y = event.y;
 });
 
 document.addEventListener('keydown', (event) => {
+    if (!players[socket.id]) return;
+    var player = players[socket.id];
     var code = event.key;
     // Alert the key name and key code on keydown
     if (code === "w" || code === "ArrowUp") {
@@ -31,6 +40,8 @@ document.addEventListener('keydown', (event) => {
     }
   }, false);
 document.addEventListener('keyup', (event) => {
+    if (!players[socket.id]) return;
+    var player = players[socket.id];
     var code = event.key;
     // Alert the key name and key code on keydown
     if (code === "w" || code === "ArrowUp") {

@@ -27,6 +27,8 @@ Player.prototype.draw = function() {
     drawBar(this.x-scrollX,this.y-scrollY,this.radius * 4,this.radius * 0.5,this.health,this.maxHealth,this.radius * -1.3);
 } 
 Player.prototype.checkTouchingBlock = function() {
+    if (!map || maphealth) return false;
+
     var touching = false;
     for (var c = 0; c < columns; c++) {
         for (var r = 0; r < rows; r++) {
@@ -75,24 +77,6 @@ Player.prototype.update = function() {
         this.xVel = 0;
     }
     this.tryMove();
-    if (this.id === mainPlayerId) {
-        scrollX = this.x - (Actualwidth/2);
-        scrollY = this.y - (Actualheight/2);
-
-        if (tick % bulletSummonTick === 0 && this.Mouse.down) {
-            const angle = Math.atan2(
-            this.Mouse.y-(Actualheight/2),
-            this.Mouse.x-(Actualwidth/2)
-            );
-            const xVel = Math.cos(angle) * bulletSpeed;
-            const yVel = Math.sin(angle) * bulletSpeed;
-
-
-            var bullet = new Bullet(this.x,this.y,bulletRadius,bulletColor,this.id,xVel,yVel);
-            
-            bullets.push(bullet);
-        }
-    }
 
 
 }
