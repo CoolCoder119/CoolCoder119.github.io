@@ -13,11 +13,6 @@ console.log("this is here");
 const width = 1536;
 const height = 739;
 
-var playerRadius = 20;
-var playerSpeed = 5;
-var playerHealth = 50;
-const backendPlayers = {};
-
 var map = [
       [
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -156,6 +151,11 @@ function getChoiceForBlock(random) {
     return 1;
 }
 
+var playerRadius = 20;
+var playerSpeed = 5;
+var playerHealth = 50;
+const backendPlayers = {};
+
 var Block = function(x,y,width,height,color,row,column,health,canBeAttacked) {
     this.x = x;
     this.y = y;
@@ -217,12 +217,25 @@ io.on('connection', (socket) => {
     }
     io.emit('sendMap', {map: map, maphealth: maphealth});
     io.emit('updatePlayers', backendPlayers)
+    socket.on('damage', (info) => {
+      backendPlayers[info.id].health -= info.damage;
+    })
+
     socket.on('updateMapBackend', (info) => {
       map[info.column][info.row] = 0;
       maphealth[info.column][info.row] = 0;
       io.emit('updateMap', {row: info.row,column: info.column});
     })
-
+    socket.on('mousemove', (info) => {
+      backendPlayers[socket.id].Mouse.x = info.x;
+      backendPlayers[socket.id].Mouse.y = info.y;
+    })
+    socket.on('mousedown', (info) => {
+      backendPlayers[socket.id].Mouse.down = true;
+    })
+    socket.on('mouseup', (info) => {
+      backendPlayers[socket.id].Mouse.down = false;
+    })
     socket.on('keydown', (keyCode) => {
             if (keyCode === "w") {
                 backendPlayers[socket.id].Mouse.keyW = true;
@@ -259,9 +272,62 @@ io.on('connection', (socket) => {
 
 
 })
+function checkTouching(player) {
+      var touching = false;
+    for (var c = 0; c < columns; c++) {
+        for (var r = 0; r < rows; r++) {
+            var block = map[c][r];
+            if (block === 1 || block === 2) {
+                var x = r*blockWidth;
+                var y = c*blockHeight;
+                if (
+                        player.x + player.radius > x &&
+                        player.y + player.radius > y &&
+                        player.x - player.radius <= x+blockWidth &&
+                        player.y - player.radius <= y+blockHeight
+                ) {
+                    touching = true;
+                }
+            }
+        }
+    } 
+    return touching;
+}
+function updateBackendPlayers() {
+    for (id in backendPlayers) {
+      var player = backendPlayers[id];
+      var xVel;
+      var yVel;
+      if (player.Mouse.keyW) {
+        yVel = 0 - player.speed;
+      } else if (player.Mouse.keyS) {
+        yVel = player.speed;
+      } else {
+        yVel = 0;
+      }
+      if (player.Mouse.keyA) {
+          xVel = 0 - player.speed;
+      } else if (player.Mouse.keyD) {
+          xVel = player.speed;
+      } else {
+          xVel = 0;
+      }
+      this.x += xVel;
+      if (checkTouching(player)) {
+        this.x -= xVel;
+      }
+      this.y += this.yVel;
+      if (checkTouching(player)) {
+        this.y -= this.yVel;
+      }
+
+    }
+}
 
 
 setInterval(() => {
+    updateBackendPlayers();
+    io.emit('updatePlayers', backendPlayers);
     io.emit('update');
 }, 15);
 

@@ -24,7 +24,13 @@ function circle(x, y, radius) {
     ctx.arc(x,y,radius,0,Math.PI * 2, false);
     ctx.fill()
 };
+function getDistance(x1,y1,x2,y2) {
+    var xDistance = x2-x1;
+    var yDistance = y2 - y1;
 
+    return Math.sqrt(Math.pow(xDistance,2) + 
+        Math.pow(yDistance,2));
+}
 function drawMap() {
     for (var c = 0; c < columns; c++) {
         for (var r = 0; r < rows; r++) {

@@ -4,13 +4,14 @@ socket.on('updatePlayers', (backendPlayers) => {
         if (!players[id]) {
             players[id] = new Player(backendPlayer.x,backendPlayer.y,backendPlayer.radius,backendPlayer.color,backendPlayer.speed,id)
         } else {
-/*            var currentPlayer = players[id];
+            var currentPlayer = players[id];
             currentPlayer.Mouse.x = backendPlayer.Mouse.x;
             currentPlayer.Mouse.y = backendPlayer.Mouse.y;
             currentPlayer.Mouse.keyW = backendPlayer.Mouse.keyW;
             currentPlayer.Mouse.keyA = backendPlayer.Mouse.keyA;
             currentPlayer.Mouse.keyS = backendPlayer.Mouse.keyS;
-            currentPlayer.Mouse.keyD = backendPlayer.Mouse.keyD;*/
+            currentPlayer.Mouse.keyD = backendPlayer.Mouse.keyD;
+            currentPlayer.health = backendPlayer.health;
         }
     }
     for (const id in players) {
@@ -44,7 +45,7 @@ socket.on('update', () => {
     var player = players[socket.id];
     scrollX = player.x - (Actualwidth/2);
     scrollY = player.y - (Actualheight/2);
-    if (tick % bulletSummonTick === 0 /*&& player.Mouse.down*/) {
+    if (tick % bulletSummonTick === 0 && player.Mouse.down) {
         const angle = Math.atan2(
         player.Mouse.y-(Actualheight/2),
         player.Mouse.x-(Actualwidth/2)
@@ -64,7 +65,6 @@ socket.on('update', () => {
 socket.on('sendMap', (info) => {
     map = info.map;
     maphealth = info.maphealth;
-    console.log(maphealth);
 })
 socket.on('updateMap', (info) => {
     map[info.column][info.row] = 0;

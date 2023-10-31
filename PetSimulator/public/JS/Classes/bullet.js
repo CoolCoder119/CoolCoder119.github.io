@@ -60,4 +60,16 @@ Bullet.prototype.update = function() {
             }
         }
     }
+
+    for (const id in players) {
+        if (id !== socket.id) {
+            var otherPlayer = players[id];
+            var distance = getDistance(this.x,this.y,otherPlayer.x,otherPlayer.y);
+            if (distance < this.radius+otherPlayer.radius) {
+                this.markedForDeletion = true;
+                otherPlayer.health -= 10;
+                socket.emit('damage',{id: id,damage: 10});
+            }       
+        }
+    }
 }

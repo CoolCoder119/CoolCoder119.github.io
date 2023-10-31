@@ -3,11 +3,13 @@ addEventListener('mousedown', (event) => {
     if (!players[socket.id]) return;
     var player = players[socket.id];
     player.Mouse.down = true;
+    socket.emit("mousedown");
 });
 addEventListener('mouseup', (event) => {
     if (!players[socket.id]) return;
     var player = players[socket.id];
     player.Mouse.down = false;
+    socket.emit("mouseup")
 });
 
 addEventListener('mousemove', (event) => {
@@ -15,6 +17,7 @@ addEventListener('mousemove', (event) => {
     var player = players[socket.id];
     player.Mouse.x = event.x;
     player.Mouse.y = event.y;
+    socket.emit("mousemove", {x: event.x, y: event.y});
 });
 
 document.addEventListener('keydown', (event) => {

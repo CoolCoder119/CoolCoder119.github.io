@@ -27,8 +27,6 @@ Player.prototype.draw = function() {
     drawBar(this.x-scrollX,this.y-scrollY,this.radius * 4,this.radius * 0.5,this.health,this.maxHealth,this.radius * -1.3);
 } 
 Player.prototype.checkTouchingBlock = function() {
-    if (!map || maphealth) return false;
-
     var touching = false;
     for (var c = 0; c < columns; c++) {
         for (var r = 0; r < rows; r++) {
