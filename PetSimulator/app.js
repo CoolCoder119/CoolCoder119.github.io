@@ -8,8 +8,6 @@ const port = 3000;
 const server = http.createServer(app);
 const io = new Server(server);
 server.listen(3000);
-console.log("this is here");
-
 const width = 1536;
 const height = 739;
 
@@ -143,7 +141,8 @@ var blockHeight = height/columns;
 var blockHealth = 1;
 var indestructableblockColor = "black";
 var maphealth = [];
-console.log(rows*columns);
+
+
 function getChoiceForBlock(random) {
     if (random < 0.9) {
         return 0;
@@ -155,6 +154,20 @@ var playerRadius = 20;
 var playerSpeed = 5;
 var playerHealth = 50;
 const backendPlayers = {};
+
+var count = 0;
+var bulletRadius = 10;
+var bulletSpeed = 15;
+var bulletSummonTick = 10;
+var tick = 0;
+const backendProjectiles = {};
+
+var block;
+var blockTouched;
+var column;
+var row;
+
+
 
 var Block = function(x,y,width,height,color,row,column,health,canBeAttacked) {
     this.x = x;
@@ -213,18 +226,24 @@ io.on('connection', (socket) => {
             keyS: false,
             keyD: false,
             down: false
-        }
+        },
+        id: socket.id,
+        Actualwidth: undefined,
+        Actualheight: undefined,
+        scrollX: undefined,
+        scrollY: undefined
     }
+
+    const player = backendPlayers[socket.id];
+    io.emit('sendWidthHeight');
     io.emit('sendMap', {map: map, maphealth: maphealth});
     io.emit('updatePlayers', backendPlayers)
+    socket.on('widthHeight', (info) => {
+      player.Actualwidth = info.width;
+      player.Actualheight = info.height;
+    })
     socket.on('damage', (info) => {
       backendPlayers[info.id].health -= info.damage;
-    })
-
-    socket.on('updateMapBackend', (info) => {
-      map[info.column][info.row] = 0;
-      maphealth[info.column][info.row] = 0;
-      io.emit('updateMap', {row: info.row,column: info.column});
     })
     socket.on('mousemove', (info) => {
       backendPlayers[socket.id].Mouse.x = info.x;
@@ -267,11 +286,29 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', (reason) => {
         delete backendPlayers[socket.id];
+        for (const id in backendProjectiles) {
+          const projectile = backendProjectiles[id];
+          if (projectile.playerID === socket.id) {
+            delete backendProjectiles[id];
+          }
+        }
         io.emit('updatePlayers', backendPlayers);
     })
 
 
 })
+
+function getDistance(x1,y1,x2,y2) {
+  var xDistance = x2-x1;
+  var yDistance = y2 - y1;
+
+  return Math.sqrt(Math.pow(xDistance,2) + 
+      Math.pow(yDistance,2));
+}
+
+function getBlockAt(column,row) {
+  return map[column][row];
+}
 function checkTouching(player) {
       var touching = false;
     for (var c = 0; c < columns; c++) {
@@ -296,8 +333,11 @@ function checkTouching(player) {
 function updateBackendPlayers() {
     for (id in backendPlayers) {
       var player = backendPlayers[id];
+
       var xVel;
       var yVel;
+
+      
       if (player.Mouse.keyW) {
         yVel = 0 - player.speed;
       } else if (player.Mouse.keyS) {
@@ -312,25 +352,114 @@ function updateBackendPlayers() {
       } else {
           xVel = 0;
       }
-      this.x += xVel;
+      player.x += xVel;
       if (checkTouching(player)) {
-        this.x -= xVel;
+        player.x -= xVel;
       }
-      this.y += this.yVel;
+      player.y += player.yVel;
       if (checkTouching(player)) {
-        this.y -= this.yVel;
+        player.y -= player.yVel;
       }
+      if (tick % bulletSummonTick === 0 && player.Mouse.down) {
+
+        var angle = Math.atan2(
+          player.Mouse.y-(player.Actualheight/2),
+          player.Mouse.x-(player.Actualwidth/2)
+        );
+  
+        const xVel = Math.cos(angle) * bulletSpeed;
+        const yVel = Math.sin(angle) * bulletSpeed;
+  
+        const velocity = {
+            x: xVel,
+            y: yVel
+        }
+        count++;
+        backendProjectiles[count] = {
+          x: player.x,
+          y: player.y,
+          color: player.color,
+          radius: bulletRadius,
+          velocity: velocity,
+          playerID: player.id
+        }
+    };
 
     }
+}
+
+function checkTouchingBlock(bullet) {
+  var touching = false;
+  for (var c = 0; c < columns; c++) {
+      for (var r = 0; r < rows; r++) {
+          var block = getBlockAt(c,r);
+          if (block === 1 || block === 2) {
+              var x = r*blockWidth;
+              var y = c*blockHeight;
+              if (
+                bullet.x + bullet.radius >= x &&
+                bullet.y + bullet.radius >= y &&
+                bullet.x - bullet.radius <= x+blockWidth &&
+                bullet.y - bullet.radius <= y+blockHeight
+              ) {
+                  touching = true;
+                  block = map[c][r];
+                  blockTouched = maphealth[c][r];
+                  column = c;
+                  row = r;
+              }
+          }
+      }
+  } 
+  return touching;
+}
+
+var updateBackendBullets = function() {
+  for (id in backendProjectiles) {
+      var bullet = backendProjectiles[id];
+      bullet.x += bullet.velocity.x;
+      bullet.y += bullet.velocity.y;
+      bullet.x = backendPlayers[bullet.playerID].x;
+      bullet.y = backendPlayers[bullet.playerID].y;
+      console.//log('x: ' + bullet.x + ", Y: " + bullet.y)
+    if (checkTouchingBlock(bullet)) {
+        if (block === 1) {
+            blockTouched.health -= 1;
+            if (blockTouched.health < 1) {
+                map[blockTouched.column][blockTouched.row] = 0;
+                maphealth[blockTouched.column][blockTouched.row] = 0;
+  
+                var r = blockTouched.row;
+                var c = blockTouched.column;
+
+                var info ={
+                  row: r,
+                  column: c
+                }
+                io.emit('updateMap', {row: info.row,column: info.column});
+              }
+        }
+    }
+  
+    for (const id in backendPlayers) {
+        if (id !== bullet.playerID) {
+            var otherPlayer =  backendPlayers[id];
+            var distance = getDistance(bullet.x,bullet.y,otherPlayer.x,otherPlayer.y);
+            if (distance < bullet.radius+otherPlayer.radius) {
+                delete backendProjectiles[id];
+                otherPlayer.health -= 10;
+            }       
+        }
+    }
+  }
 }
 
 
 setInterval(() => {
     updateBackendPlayers();
+    updateBackendBullets();
     io.emit('updatePlayers', backendPlayers);
+    io.emit('updateProjectiles', backendProjectiles);
     io.emit('update');
+    tick++;
 }, 15);
-
-/*app.listen(port, () => {
-     console.log("Example port listening on port 3000");
- });*/

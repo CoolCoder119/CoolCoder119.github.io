@@ -1,5 +1,11 @@
 socket.on('updatePlayers', (backendPlayers) => {
     for (const id in backendPlayers) {
+        for (const id in players) {
+            if (!backendPlayers[id]) {
+                delete players[id];
+                continue;
+            }
+        }
         const backendPlayer = backendPlayers[id];
         if (!players[id]) {
             players[id] = new Player(backendPlayer.x,backendPlayer.y,backendPlayer.radius,backendPlayer.color,backendPlayer.speed,id)
@@ -14,17 +20,30 @@ socket.on('updatePlayers', (backendPlayers) => {
             currentPlayer.health = backendPlayer.health;
         }
     }
-    for (const id in players) {
-        if (!backendPlayers[id]) {
-            delete players[id];
-        }
-    }
 
     
 })
+socket.on('updateProjectiles', (backendProjectiles) => {
+    for (const id in backendProjectiles){
+         var backendProjectile = backendProjectiles[id];
+        if (!bullets[id]) {
+            bullets[id] = new Bullet(backendProjectile.x,backendProjectile.y,backendProjectile.radius,backendProjectile.color,backendProjectile.velocity)
+        } else {
+            var bullet = bullets[id];
+            bullet.x = backendProjectile.x;
+            bullet.y = backendProjectile.y;
+        }
+
+        for (const id in backendProjectiles) {
+            if (!backendProjectiles[id]) {
+                delete bullets[id];
+            };
+        }
+    }
+})
 
 socket.on('update', () => {
-    ctx.clearRect(0,0,width,height);
+    ctx.clearRect(0,0,Actualwidth,Actualheight);
     drawMap();
     for (const id in players) {
         var player = players[id];
@@ -34,31 +53,22 @@ socket.on('update', () => {
     coins.forEach((coin) => {
         coin.draw();
     })
-    bullets.forEach((bullet,i) => {
+    for (const id in bullets) {
+        var bullet = bullets[id];
         bullet.draw();
-        bullet.update();
-        if (bullet.markedForDeletion) {
-            bullets.splice(i,1);
-        }
-    })
+    };
+
+
     if (!players[socket.id]) return;
     var player = players[socket.id];
     scrollX = player.x - (Actualwidth/2);
     scrollY = player.y - (Actualheight/2);
-    if (tick % bulletSummonTick === 0 && player.Mouse.down) {
-        const angle = Math.atan2(
-        player.Mouse.y-(Actualheight/2),
-        player.Mouse.x-(Actualwidth/2)
-        );
-
-        const xVel = Math.cos(angle) * bulletSpeed;
-        const yVel = Math.sin(angle) * bulletSpeed;
-
-        var bullet = new Bullet(player.x,player.y,bulletRadius,player.color,player.id,xVel,yVel);
-        bullets.push(bullet);
-    };
 
     tick++;
+    socket.emit('updateScroll',{scrollX: scrollX,scrollY: scrollY});
+})
+socket.on('sendWidthHeight',() => {
+    socket.emit('widthHeight', ({width: Actualwidth,height: Actualheight}));
 })
 
 
