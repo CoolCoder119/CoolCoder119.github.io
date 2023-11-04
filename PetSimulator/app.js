@@ -3,7 +3,7 @@ const http = require('http');
 const { Server }  = require('socket.io');
 const app = express();
 
-const port = 3000;  
+const port = process.env.PORT || 3000;  
 
 const server = http.createServer(app);
 const io = new Server(server);
@@ -52,14 +52,14 @@ function getChoiceForBlock(random) {
 
 var playerRadius = 20;
 var playerSpeed = 5;
-var playerHealth = 100;
+var playerHealth = 30;
 const backendPlayers = {};
 
 var count = 0;
 var bulletRadius = 10;
 var bulletSpeed = 10;
 var bulletSummonTick = 8;
-var bulletDamage = 5;
+var bulletDamage = 2;
 var tick = 0;
 const backendProjectiles = {};
 
@@ -126,6 +126,8 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + 'index.html');
 })
+
+
 
 function getDistance(x1,y1,x2,y2) {
   var xDistance = x2-x1;
@@ -411,10 +413,8 @@ var updateBackendBullets = function() {
 
       delete backendProjectiles[id];
 
-      console.log(info.blockTouched);
         if (info.blockTouched.canBeAttacked) {
-            console.log('continue');
-              info.blockTouched.health -= 1;
+              info.blockTouched.health -= bullet.damage;
               if (info.blockTouched.health < 1) {
                   map[info.blockTouched.column][info.blockTouched.row] = 0;
                   maphealth[info.blockTouched.column][info.blockTouched.row] = 0;
