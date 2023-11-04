@@ -8,7 +8,7 @@ socket.on('updatePlayers', (backendPlayers) => {
         }
         const backendPlayer = backendPlayers[id];
         if (!players[id]) {
-            players[id] = new Player(backendPlayer.x,backendPlayer.y,backendPlayer.radius,backendPlayer.color,backendPlayer.speed,id)
+            players[id] = new Player(backendPlayer.x,backendPlayer.y,backendPlayer.radius,backendPlayer.color,backendPlayer.speed,id,backendPlayer.health)
         } else {
             var currentPlayer = players[id];
             currentPlayer.Mouse.x = backendPlayer.Mouse.x;
@@ -18,6 +18,8 @@ socket.on('updatePlayers', (backendPlayers) => {
             currentPlayer.Mouse.keyS = backendPlayer.Mouse.keyS;
             currentPlayer.Mouse.keyD = backendPlayer.Mouse.keyD;
             currentPlayer.health = backendPlayer.health;
+            currentPlayer.x = backendPlayer.x;
+            currentPlayer.y = backendPlayer.y;
         }
     }
 
@@ -33,12 +35,11 @@ socket.on('updateProjectiles', (backendProjectiles) => {
             bullet.x = backendProjectile.x;
             bullet.y = backendProjectile.y;
         }
-
-        for (const id in backendProjectiles) {
-            if (!backendProjectiles[id]) {
-                delete bullets[id];
-            };
-        }
+    }
+    for (const id in bullets) {
+        if (!backendProjectiles[id]) {
+            delete bullets[id];
+        };
     }
 })
 
@@ -48,7 +49,6 @@ socket.on('update', () => {
     for (const id in players) {
         var player = players[id];
         player.draw();
-        player.update();
     }
     coins.forEach((coin) => {
         coin.draw();
@@ -59,13 +59,14 @@ socket.on('update', () => {
     };
 
 
-    if (!players[socket.id]) return;
+    if (!players[socket.id]) {
+        location.reload();
+        return;
+    }
     var player = players[socket.id];
     scrollX = player.x - (Actualwidth/2);
     scrollY = player.y - (Actualheight/2);
 
-    tick++;
-    socket.emit('updateScroll',{scrollX: scrollX,scrollY: scrollY});
 })
 socket.on('sendWidthHeight',() => {
     socket.emit('widthHeight', ({width: Actualwidth,height: Actualheight}));

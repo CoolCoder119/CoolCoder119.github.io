@@ -12,133 +12,33 @@ const width = 1536;
 const height = 739;
 
 var map = [
-      [
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2
-      ],
-      [
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-        1, 0, 0, 0, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-        1, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-        0, 1, 0, 0, 0, 1, 0, 0, 0, 2
-      ],
-      [
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 1, 0, 0, 0, 0, 1, 1,
-        0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-        1, 0, 0, 0, 1, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-        1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 1, 0, 0, 1, 0, 0, 0, 1, 0,
-        0, 0, 1, 0, 0, 1, 0, 0, 1, 0,
-        0, 0, 0, 0, 0, 1, 0, 0, 1, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 1, 0, 0, 0, 0, 0, 1, 1, 1,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 1, 0, 0, 1, 0, 0, 0, 0, 0,
-        0, 1, 0, 0, 0, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 0, 1, 0, 0, 0, 0, 0, 1, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-        0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-        1, 0, 0, 0, 0, 0, 0, 1, 1, 2
-      ],
-      [
-        2, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-        0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-        0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
-        0, 0, 1, 0, 0, 0, 0, 1, 1, 2
-      ],
-      [
-        2, 0, 0, 0, 1, 0, 1, 0, 0, 0,
-        0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
-        0, 0, 0, 0, 0, 1, 0, 0, 0, 2
-      ],
-      [
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-        0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 1, 0, 2
-      ],
-      [
-        2, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        1, 0, 1, 0, 0, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 0, 0, 1, 0, 0,
-        1, 0, 1, 0, 1, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 0, 0, 0, 0, 1, 0, 1, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-        0, 1, 0, 0, 0, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-        0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-        1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 2
-      ],
-      [
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2
-      ]
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      [2, 1, 0, 0, 2, 0, 0, 0, 0, 0,1, 0, 0, 0, 0, 0, 0, 0, 0, 1,1, 0, 0, 0, 1, 1, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 1, 0, 0, 2, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 1, 1,1, 0, 0, 0, 0, 0, 0, 0, 1, 0,0, 1, 0, 0, 0, 1, 0, 0, 0, 2],
+      [2, 0, 0, 0, 2, 0, 0, 0, 0, 0,0, 0, 0, 1, 0, 0, 0, 0, 1, 1,0, 0, 0, 1, 0, 0, 0, 0, 0, 0,1, 0, 0, 0, 1, 0, 0, 0, 0, 2],
+      [2, 0, 0, 0, 2, 0, 0, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, 0, 0,1, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, 0, 2],
+      [2, 1, 0, 0, 1, 0, 0, 0, 2, 0,0, 0, 0, 0, 0, 1, 0, 0, 1, 0,0, 0, 0, 0, 0, 1, 0, 0, 1, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 1, 0, 0, 0, 0, 0, 1, 2, 2,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 1, 0, 0, 1, 0, 0, 0, 0, 0,0, 1, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 0, 1, 0, 0, 0, 0, 0, 2, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 1, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 0, 0, 0, 0, 1, 0, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, 0, 0,0, 0, 0, 1, 0, 0, 0, 0, 0, 0,1, 0, 0, 0, 0, 0, 0, 1, 1, 2],
+      [2, 0, 0, 0, 0, 0, 1, 0, 0, 0,0, 2, 0, 0, 0, 1, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 0, 0, 1, 0, 0, 0, 0, 0, 0,0, 2, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 2, 0, 0, 0, 0, 0, 1, 0, 0,0, 0, 0, 0, 0, 0, 1, 1, 0, 0,0, 0, 1, 0, 0, 0, 0, 1, 1, 2],
+      [2, 0, 0, 0, 1, 0, 1, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, 0, 1,0, 0, 0, 0, 0, 1, 0, 0, 0, 2],
+      [2, 0, 0, 0, 0, 0, 0, 0, 0, 1,0, 0, 0, 0, 0, 1, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 0, 0, 0, 0, 0, 1, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 1, 0, 2],
+      [2, 0, 1, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0, 0, 0, 0, 0, 0, 1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,1, 0, 1, 0, 0, 0, 0, 0, 0, 2],
+      [2, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 1, 0, 0,1, 0, 1, 0, 1, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 0, 0, 0, 0, 1, 0, 1, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0, 0, 0, 0, 0, 0, 0,0, 1, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 0, 1, 0, 0, 0, 1, 0, 0, 0,0, 1, 0, 0, 0, 0, 0, 0, 0, 0,1, 0, 1, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0, 0, 0, 0, 0, 0, 2],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
 ]
 var maphealth = [];
 var rows = map[0].length;
 var columns = map.length;
 var blockWidth = width/rows;
 var blockHeight = height/columns;
-var blockHealth = 1;
+var blockHealth = 3;
 var indestructableblockColor = "black";
 var maphealth = [];
 
@@ -152,21 +52,16 @@ function getChoiceForBlock(random) {
 
 var playerRadius = 20;
 var playerSpeed = 5;
-var playerHealth = 50;
+var playerHealth = 100;
 const backendPlayers = {};
 
 var count = 0;
 var bulletRadius = 10;
-var bulletSpeed = 15;
-var bulletSummonTick = 10;
+var bulletSpeed = 10;
+var bulletSummonTick = 8;
+var bulletDamage = 5;
 var tick = 0;
 const backendProjectiles = {};
-
-var block;
-var blockTouched;
-var column;
-var row;
-
 
 
 var Block = function(x,y,width,height,color,row,column,health,canBeAttacked) {
@@ -181,6 +76,8 @@ var Block = function(x,y,width,height,color,row,column,health,canBeAttacked) {
     this.color = color;
     this.canBeAttacked = canBeAttacked;
 }
+
+
 for (var c = 0; c < columns; c++) {
     var healthArray = [];
     for (var r = 0; r < rows; r++) {
@@ -188,9 +85,31 @@ for (var c = 0; c < columns; c++) {
         var x = r*blockWidth;
         var y = c*blockHealth;
         if (choice === 1) {   
-            healthArray.push(new Block(x,y,blockWidth,blockHeight,indestructableblockColor,r,c,blockHealth,true));
+            healthArray.push(new Block(
+              x,
+              y,
+              blockWidth,
+              blockHeight,
+              indestructableblockColor,
+              r,
+              c,
+              blockHealth,
+              true
+              )
+              );
         } else if (choice === 2) {
-          healthArray.push(new Block(x,y,blockWidth,blockHeight,indestructableblockColor,r,c,blockHealth,false));
+          healthArray.push(new Block(
+            x,
+            y,
+            blockWidth,
+            blockHeight,
+            indestructableblockColor,
+            r,
+            c,
+            blockHealth,
+            false
+            )
+            );
         }else {
           healthArray.push(0);
         }
@@ -208,10 +127,127 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + 'index.html');
 })
 
+function getDistance(x1,y1,x2,y2) {
+  var xDistance = x2-x1;
+  var yDistance = y2 - y1;
 
+  return Math.sqrt(Math.pow(xDistance,2) + 
+      Math.pow(yDistance,2));
+}
+
+function getBlockAt(column,row) {
+  return map[column][row];
+}
+function checkTouching(player) {
+      var touching = false;
+    for (var c = 0; c < columns; c++) {
+        for (var r = 0; r < rows; r++) {
+            var block = map[c][r];
+            if (block === 1 || block === 2) {
+                var x = r*blockWidth;
+                var y = c*blockHeight;
+                if (
+                        player.x + player.radius > x &&
+                        player.y + player.radius > y &&
+                        player.x - player.radius <= x+blockWidth &&
+                        player.y - player.radius <= y+blockHeight
+                ) {
+                    touching = true;
+                }
+            }
+        }
+    } 
+    return touching;
+}
+function checkTouchingBlockBullet(bullet) {
+  var touching = false;
+  var row;
+  var column;
+  var blockTouched;
+  var block;
+  for (var c = 0; c < columns; c++) {
+      for (var r = 0; r < rows; r++) {
+          var block = getBlockAt(c,r);
+          if (block === 1 || block === 2) {
+              var x = r*blockWidth;
+              var y = c*blockHeight;
+              if (
+                bullet.x + bullet.radius >= x &&
+                bullet.y + bullet.radius >= y &&
+                bullet.x - bullet.radius <= x+blockWidth &&
+                bullet.y - bullet.radius <= y+blockHeight
+              ) {
+                  touching = true;
+                  block = map[c][r];
+                  blockTouched = maphealth[c][r];
+              }
+          }
+      }
+  } 
+  return {
+    touching: touching,
+    c: c,
+    r: r,
+    blockTouched: blockTouched,
+    block: block  
+  };
+} 
+
+function getNewXY(player) {
+  player.x = getRandom(width)
+  player.y = getRandom(height);
+  if (checkTouching(player)) {
+    getNewXY(player);
+  }
+}
 
 io.on('connection', (socket) => {
-    backendPlayers[socket.id] = {
+  backendPlayers[socket.id] = {
+    x: getRandom(width),
+    y: getRandom(height),
+    radius: playerRadius,
+    color: "rgb(" + getRandom(360) + "," + getRandom(360)+ "," + getRandom(360) +")",
+    health: playerHealth,
+    speed: playerSpeed,
+    Mouse: {
+        x: width,
+        y: height,
+        keW: false,
+        keyA: false,
+        keyS: false,
+        keyD: false,
+        down: false
+    },
+    id: socket.id,
+    Actualwidth: undefined,
+    Actualheight: undefined,
+    scrollX: undefined,
+    scrollY: undefined
+  }
+
+
+    const player = backendPlayers[socket.id];
+
+
+    var touching = checkTouching(player);
+    if (touching) {
+      getNewXY(player);
+    }
+
+    
+
+    io.emit('sendWidthHeight');
+    io.emit('sendMap', {map: map, maphealth: maphealth});
+    io.emit('updatePlayers', backendPlayers)
+    socket.on('widthHeight', (info) => {
+      player.Actualwidth = info.width;
+      player.Actualheight = info.height;
+    })
+    socket.on('damage', (info) => {
+      backendPlayers[info.id].health -= info.damage;
+    })
+    socket.on('restart', (info) => {
+      backendPlayers[socket.id] = {
         x: getRandom(width),
         y: getRandom(height),
         radius: playerRadius,
@@ -233,17 +269,6 @@ io.on('connection', (socket) => {
         scrollX: undefined,
         scrollY: undefined
     }
-
-    const player = backendPlayers[socket.id];
-    io.emit('sendWidthHeight');
-    io.emit('sendMap', {map: map, maphealth: maphealth});
-    io.emit('updatePlayers', backendPlayers)
-    socket.on('widthHeight', (info) => {
-      player.Actualwidth = info.width;
-      player.Actualheight = info.height;
-    })
-    socket.on('damage', (info) => {
-      backendPlayers[info.id].health -= info.damage;
     })
     socket.on('mousemove', (info) => {
       backendPlayers[socket.id].Mouse.x = info.x;
@@ -298,44 +323,26 @@ io.on('connection', (socket) => {
 
 })
 
-function getDistance(x1,y1,x2,y2) {
-  var xDistance = x2-x1;
-  var yDistance = y2 - y1;
 
-  return Math.sqrt(Math.pow(xDistance,2) + 
-      Math.pow(yDistance,2));
-}
-
-function getBlockAt(column,row) {
-  return map[column][row];
-}
-function checkTouching(player) {
-      var touching = false;
-    for (var c = 0; c < columns; c++) {
-        for (var r = 0; r < rows; r++) {
-            var block = map[c][r];
-            if (block === 1 || block === 2) {
-                var x = r*blockWidth;
-                var y = c*blockHeight;
-                if (
-                        player.x + player.radius > x &&
-                        player.y + player.radius > y &&
-                        player.x - player.radius <= x+blockWidth &&
-                        player.y - player.radius <= y+blockHeight
-                ) {
-                    touching = true;
-                }
-            }
-        }
-    } 
-    return touching;
-}
 function updateBackendPlayers() {
     for (id in backendPlayers) {
       var player = backendPlayers[id];
 
-      var xVel;
-      var yVel;
+      var xVel = 0;
+      var yVel = 0;
+
+      for (var bulletID in backendProjectiles) {
+        var bullet = backendProjectiles[bulletID];
+        if (bullet.playerID === id) continue;
+        var distance = getDistance(player.x,player.y,bullet.x,bullet.y);
+        if (distance < bullet.radius + player.radius) {
+          delete backendProjectiles[bulletID];
+          player.health -= bullet.damage;
+          if (player.health <= 0) {
+            delete backendPlayers[id];
+          }
+        }
+    }
 
       
       if (player.Mouse.keyW) {
@@ -356,10 +363,13 @@ function updateBackendPlayers() {
       if (checkTouching(player)) {
         player.x -= xVel;
       }
-      player.y += player.yVel;
+
+      player.y += yVel;
       if (checkTouching(player)) {
-        player.y -= player.yVel;
+        player.y -= yVel;
       }
+
+
       if (tick % bulletSummonTick === 0 && player.Mouse.down) {
 
         var angle = Math.atan2(
@@ -381,76 +391,39 @@ function updateBackendPlayers() {
           color: player.color,
           radius: bulletRadius,
           velocity: velocity,
-          playerID: player.id
+          playerID: player.id,
+          damage: bulletDamage
         }
     };
 
     }
 }
 
-function checkTouchingBlock(bullet) {
-  var touching = false;
-  for (var c = 0; c < columns; c++) {
-      for (var r = 0; r < rows; r++) {
-          var block = getBlockAt(c,r);
-          if (block === 1 || block === 2) {
-              var x = r*blockWidth;
-              var y = c*blockHeight;
-              if (
-                bullet.x + bullet.radius >= x &&
-                bullet.y + bullet.radius >= y &&
-                bullet.x - bullet.radius <= x+blockWidth &&
-                bullet.y - bullet.radius <= y+blockHeight
-              ) {
-                  touching = true;
-                  block = map[c][r];
-                  blockTouched = maphealth[c][r];
-                  column = c;
-                  row = r;
-              }
-          }
-      }
-  } 
-  return touching;
-}
+
 
 var updateBackendBullets = function() {
   for (id in backendProjectiles) {
       var bullet = backendProjectiles[id];
       bullet.x += bullet.velocity.x;
       bullet.y += bullet.velocity.y;
-      bullet.x = backendPlayers[bullet.playerID].x;
-      bullet.y = backendPlayers[bullet.playerID].y;
-      console.//log('x: ' + bullet.x + ", Y: " + bullet.y)
-    if (checkTouchingBlock(bullet)) {
-        if (block === 1) {
-            blockTouched.health -= 1;
-            if (blockTouched.health < 1) {
-                map[blockTouched.column][blockTouched.row] = 0;
-                maphealth[blockTouched.column][blockTouched.row] = 0;
-  
-                var r = blockTouched.row;
-                var c = blockTouched.column;
+      var info =checkTouchingBlockBullet(bullet);
+    if (info.touching) {
 
-                var info ={
-                  row: r,
-                  column: c
-                }
-                io.emit('updateMap', {row: info.row,column: info.column});
+      delete backendProjectiles[id];
+
+      console.log(info.blockTouched);
+        if (info.blockTouched.canBeAttacked) {
+            console.log('continue');
+              info.blockTouched.health -= 1;
+              if (info.blockTouched.health < 1) {
+                  map[info.blockTouched.column][info.blockTouched.row] = 0;
+                  maphealth[info.blockTouched.column][info.blockTouched.row] = 0;
+
+                  io.emit('updateMap', {row: info.blockTouched.row,column: info.blockTouched.column});
               }
+            
         }
-    }
-  
-    for (const id in backendPlayers) {
-        if (id !== bullet.playerID) {
-            var otherPlayer =  backendPlayers[id];
-            var distance = getDistance(bullet.x,bullet.y,otherPlayer.x,otherPlayer.y);
-            if (distance < bullet.radius+otherPlayer.radius) {
-                delete backendProjectiles[id];
-                otherPlayer.health -= 10;
-            }       
-        }
-    }
+    };
   }
 }
 

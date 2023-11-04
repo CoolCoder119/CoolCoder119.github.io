@@ -1,4 +1,4 @@
-var Player = function(x,y,radius,color,speed,id) {
+var Player = function(x,y,radius,color,speed,id,health) {
     this.x = x;
     this.y = y;
     this.radius = radius;
@@ -8,8 +8,8 @@ var Player = function(x,y,radius,color,speed,id) {
     this.yVel = 0;
     this.id = id;
 
-    this.maxHealth = playerHealth;
-    this.health = playerHealth;
+    this.maxHealth = health;
+    this.health = health;
 
     this.Mouse = {
         x: width,
