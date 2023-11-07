@@ -8,18 +8,16 @@ const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 const io = new Server(server);
 server.listen(3000);
-const width = 1536;
-const height = 739;
 
 var map = [
       [2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-      [2, 1, 0, 0, 2, 0, 0, 0, 0, 0,1, 0, 0, 0, 0, 0, 0, 0, 0, 1,1, 0, 0, 0, 1, 1, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-      [2, 1, 0, 0, 2, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 1, 1,1, 0, 0, 0, 0, 0, 0, 0, 1, 0,0, 1, 0, 0, 0, 1, 0, 0, 0, 2],
-      [2, 0, 0, 0, 2, 0, 0, 0, 0, 0,0, 0, 0, 1, 0, 0, 0, 0, 1, 1,0, 0, 0, 1, 0, 0, 0, 0, 0, 0,1, 0, 0, 0, 1, 0, 0, 0, 0, 2],
-      [2, 0, 0, 0, 2, 0, 0, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, 0, 0,1, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, 0, 2],
-      [2, 1, 0, 0, 1, 0, 0, 0, 2, 0,0, 0, 0, 0, 0, 1, 0, 0, 1, 0,0, 0, 0, 0, 0, 1, 0, 0, 1, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-      [2, 1, 0, 0, 0, 0, 0, 1, 2, 2,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 1, 0, 0, 1, 0, 0, 0, 0, 0,0, 1, 0, 0, 0, 0, 0, 0, 0, 2],
-      [2, 0, 1, 0, 0, 0, 0, 0, 2, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 1, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 0, 0, 0, 0, 0, 0, 2, 0, 0,1, 0, 0, 0, 0, 0, 0, 0, 0, 1,1, 0, 0, 0, 1, 1, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 0, 0, 0, 0, 0, 0, 2, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 1, 1,1, 0, 0, 0, 0, 0, 0, 0, 1, 0,0, 1, 0, 0, 0, 1, 0, 0, 0, 2],
+      [2, 2, 2, 2, 1, 1, 2, 2, 0, 0,0, 0, 0, 1, 0, 0, 0, 0, 1, 1,0, 0, 0, 1, 0, 0, 0, 0, 0, 0,1, 0, 0, 0, 1, 0, 0, 0, 0, 2],
+      [2, 0, 0, 2, 0, 0, 2, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, 0, 0,1, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, 0, 2],
+      [2, 1, 0, 2, 1, 0, 2, 0, 0, 2,0, 0, 0, 0, 0, 1, 0, 0, 1, 0,0, 0, 0, 0, 0, 1, 0, 0, 1, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 1, 0, 2, 0, 0, 2, 0, 2, 2,2, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 1, 0, 0, 1, 0, 0, 0, 0, 0,0, 1, 0, 0, 0, 0, 0, 0, 0, 2],
+      [2, 0, 1, 0, 0, 0, 0, 0, 0, 2,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 1, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
       [2, 0, 0, 0, 0, 1, 0, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, 0, 0,0, 0, 0, 1, 0, 0, 0, 0, 0, 0,1, 0, 0, 0, 0, 0, 0, 1, 1, 2],
       [2, 0, 0, 0, 0, 0, 1, 0, 0, 0,0, 2, 0, 0, 0, 1, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
       [2, 0, 0, 1, 0, 0, 0, 0, 0, 0,0, 2, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
@@ -36,30 +34,27 @@ var map = [
 var maphealth = [];
 var rows = map[0].length;
 var columns = map.length;
-var blockWidth = width/rows;
-var blockHeight = height/columns;
-var blockHealth = 3;
+var blockWidth = 50;
+var blockHeight = 50;
+const width = rows*blockWidth;
+const height = columns*blockHeight;
+var blockHealth = 4;
 var indestructableblockColor = "black";
 var maphealth = [];
 
 
-function getChoiceForBlock(random) {
-    if (random < 0.9) {
-        return 0;
-    }
-    return 1;
-}
+
 
 var playerRadius = 20;
 var playerSpeed = 5;
-var playerHealth = 30;
+var playerHealth = 50;
 const backendPlayers = {};
 
 var count = 0;
 var bulletRadius = 10;
 var bulletSpeed = 10;
 var bulletSummonTick = 8;
-var bulletDamage = 2;
+var bulletDamage = 3;
 var tick = 0;
 const backendProjectiles = {};
 
@@ -228,7 +223,7 @@ io.on('connection', (socket) => {
   }
 
 
-    const player = backendPlayers[socket.id];
+    var player = backendPlayers[socket.id];
 
 
     var touching = checkTouching(player);
@@ -239,6 +234,14 @@ io.on('connection', (socket) => {
     
 
     io.emit('sendWidthHeight');
+    io.emit('sendInfo', {
+      width: width,
+      height: height,
+      rows: rows,
+      columns: columns,
+      blockWidth: blockWidth,
+      blockHeight: blockHeight
+    })
     io.emit('sendMap', {map: map, maphealth: maphealth});
     io.emit('updatePlayers', backendPlayers)
     socket.on('widthHeight', (info) => {
@@ -248,38 +251,17 @@ io.on('connection', (socket) => {
     socket.on('damage', (info) => {
       backendPlayers[info.id].health -= info.damage;
     })
-    socket.on('restart', (info) => {
-      backendPlayers[socket.id] = {
-        x: getRandom(width),
-        y: getRandom(height),
-        radius: playerRadius,
-        color: "rgb(" + getRandom(360) + "," + getRandom(360)+ "," + getRandom(360) +")",
-        health: playerHealth,
-        speed: playerSpeed,
-        Mouse: {
-            x: width,
-            y: height,
-            keW: false,
-            keyA: false,
-            keyS: false,
-            keyD: false,
-            down: false
-        },
-        id: socket.id,
-        Actualwidth: undefined,
-        Actualheight: undefined,
-        scrollX: undefined,
-        scrollY: undefined
-    }
-    })
     socket.on('mousemove', (info) => {
+      if (!backendPlayers[socket.id]) return;
       backendPlayers[socket.id].Mouse.x = info.x;
       backendPlayers[socket.id].Mouse.y = info.y;
     })
     socket.on('mousedown', (info) => {
+      if (!backendPlayers[socket.id]) return;
       backendPlayers[socket.id].Mouse.down = true;
     })
     socket.on('mouseup', (info) => {
+      if (!backendPlayers[socket.id]) return;
       backendPlayers[socket.id].Mouse.down = false;
     })
     socket.on('keydown', (keyCode) => {
@@ -319,7 +301,6 @@ io.on('connection', (socket) => {
             delete backendProjectiles[id];
           }
         }
-        io.emit('updatePlayers', backendPlayers);
     })
 
 
@@ -342,6 +323,7 @@ function updateBackendPlayers() {
           player.health -= bullet.damage;
           if (player.health <= 0) {
             delete backendPlayers[id];
+            io.emit('playerKilled', {player: player.id,killer: bullet.playerID})
           }
         }
     }
@@ -436,3 +418,4 @@ setInterval(() => {
     io.emit('update');
     tick++;
 }, 15);
+

@@ -1,4 +1,8 @@
 socket.on('updatePlayers', (backendPlayers) => {
+    if (backendPlayers[socket.id] && !players[socket.id]) {
+        document.querySelector(".deathDiv").style.background = backendPlayers[socket.id].color;
+    }
+
     for (const id in backendPlayers) {
         for (const id in players) {
             if (!backendPlayers[id]) {
@@ -21,7 +25,9 @@ socket.on('updatePlayers', (backendPlayers) => {
             currentPlayer.x = backendPlayer.x;
             currentPlayer.y = backendPlayer.y;
         }
+
     }
+
 
     
 })
@@ -57,15 +63,23 @@ socket.on('update', () => {
         var bullet = bullets[id];
         bullet.draw();
     };
-
+    if (killer) {
+        var playerKiller = players[killer];
+        if (playerKiller) {
+            scrollX = playerKiller.x - (Actualwidth/2);
+            scrollY = playerKiller.y - (Actualheight/2);
+        }
+    }
 
     if (!players[socket.id]) {
-        location.reload();
         return;
     }
     var player = players[socket.id];
+    currentPlayerID = socket.id;
+    playerColor = player.color;
     scrollX = player.x - (Actualwidth/2);
     scrollY = player.y - (Actualheight/2);
+
 
 })
 socket.on('sendWidthHeight',() => {
@@ -81,7 +95,27 @@ socket.on('updateMap', (info) => {
     map[info.column][info.row] = 0;
     maphealth[info.column][info.row] = 0;
 })
+socket.on('playerKilled', (info) => {
+    if (currentPlayerID === info.player) {
+        killer = info.killer;
+        setTimeout(() => {
+            document.querySelector('.deathDiv').style.display = "flex";
+            document.querySelector('.deathDiv').style.opacity = "1";
+        },1000);
+    }
+})
+socket.on('sendInfo', (info) => {
+    width = info.width;
+    height = info.height;
+    rows = info.rows;
+    columns = info.columns;
+    blockWidth = info.blockWidth;
+    blockHeight = info.blockHeight;
+})
 window.onload = function() {
-    player = createPlayer(0);
+
     mainPlayerId = 0;
+    document.querySelector('.restart').onclick = function() {
+        location.reload();
+    }
 }

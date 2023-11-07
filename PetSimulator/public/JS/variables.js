@@ -11,8 +11,14 @@ const Actualheight = window.innerHeight;
 var total = 1536+739;
 var MULTIPLIER = total/(Actualwidth+Actualheight);
 
-const width = 1536;
-const height = 739;
+var map = [];
+var maphealth = [];
+var rows;
+var columns;
+var blockWidth;
+var blockHeight;
+var width;
+var height;
 
 canvas.width = Actualwidth;
 canvas.height = Actualheight;
@@ -24,12 +30,7 @@ var indestructableBlock = document.querySelector("#indestructableBlock");
 var scrollX = 0;
 var scrollY = 0;
 
-var map = [];
-var maphealth = [];
-var rows = 20*2;
-var columns = 10*2;
-var blockWidth = width/rows;
-var blockHeight = height/columns;
+
 
 var randomColors = ["green","red","orange","blue","yellow","purple"];
 
@@ -58,9 +59,8 @@ var blockColor = "rgb(110, 84, 56)";
 var indestructableblockColor = "black";
 
 var bullets = [];
-var bulletColor = 'pink';
-var bulletRadius = 10;
-var bulletSpeed = 15;
-var bulletSummonTick = 10;
 
-var tick = 0;
+
+var killer;
+var currentPlayerID;
+var playerColor;
