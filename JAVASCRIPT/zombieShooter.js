@@ -9,6 +9,8 @@ var width = canvas.width;
 var MULTIPLIER = 1536/width;
 
 
+var shootSound = new Audio('../Sounds/shoot.wav');
+
 var projectiles = [];
 var enemies = [];
 var powerups = [];
@@ -509,6 +511,8 @@ Explosion.prototype.draw = function() {
 }   
 Explosion.prototype.update = function() {
     if (!this.exploded) {
+        explosionSound.pause();
+        explosionSound.currentTime = 0;
         explosionSound.play();
         enemies.forEach((enemy) => {
             var distance = getDistance(this.x,this.y,enemy.x,enemy.y)
@@ -544,6 +548,19 @@ var summonNewProjectile = function() {
 
     var projectile = new Projectile(player.x, player.y,xVel,yVel,projectileRadius,"Black");
     projectiles.push(projectile)
+
+    if (hasBombPowerup) {
+        shootSound.volume = 1;
+    } else {
+        if (hasBulletPowerup) {
+            shootSound.volume = 0.5;
+        } else {
+            shootSound.volume = 0.6;
+        }
+    }
+    shootSound.pause();
+    shootSound.currentTime = 0;
+    shootSound.play();
 }
 
 var summonNewExplosion = function(bomb) {

@@ -1,6 +1,7 @@
 const express = require("express");
 const http = require('http');
 const { Server }  = require('socket.io');
+const { isObject } = require("util");
 const app = express();
 
 const port = process.env.PORT || 3000;  
@@ -41,9 +42,6 @@ const height = columns*blockHeight;
 var blockHealth = 4;
 var indestructableblockColor = "black";
 var maphealth = [];
-
-
-
 
 var playerRadius = 20;
 var playerSpeed = 5;
@@ -219,7 +217,8 @@ io.on('connection', (socket) => {
     Actualwidth: undefined,
     Actualheight: undefined,
     scrollX: undefined,
-    scrollY: undefined
+    scrollY: undefined,
+    moving: false
   }
 
 
@@ -313,6 +312,11 @@ function updateBackendPlayers() {
 
       var xVel = 0;
       var yVel = 0;
+      if (player.Mouse.keyW ||player.Mouse.keyA ||player.Mouse.keyS ||player.Mouse.keyD ) {
+        player.moving = true;
+      } else {
+        player.moving = false;
+      }
 
       for (var bulletID in backendProjectiles) {
         var bullet = backendProjectiles[bulletID];
@@ -346,11 +350,13 @@ function updateBackendPlayers() {
       player.x += xVel;
       if (checkTouching(player)) {
         player.x -= xVel;
+        player.moving = false;
       }
 
       player.y += yVel;
       if (checkTouching(player)) {
         player.y -= yVel;
+        player.moving = false;
       }
 
 
@@ -378,6 +384,9 @@ function updateBackendPlayers() {
           playerID: player.id,
           damage: bulletDamage
         }
+        io.emit('shoot', {
+          playerID: id
+        })
     };
 
     }

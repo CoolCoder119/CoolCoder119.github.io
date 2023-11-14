@@ -24,6 +24,7 @@ socket.on('updatePlayers', (backendPlayers) => {
             currentPlayer.health = backendPlayer.health;
             currentPlayer.x = backendPlayer.x;
             currentPlayer.y = backendPlayer.y;
+            currentPlayer.moving = backendPlayer.moving;
         }
 
     }
@@ -59,6 +60,7 @@ socket.on('update', () => {
     coins.forEach((coin) => {
         coin.draw();
     })
+
     for (const id in bullets) {
         var bullet = bullets[id];
         bullet.draw();
@@ -79,7 +81,17 @@ socket.on('update', () => {
     playerColor = player.color;
     scrollX = player.x - (Actualwidth/2);
     scrollY = player.y - (Actualheight/2);
+    
+    if (tick % walkSoundTick === 0 && players[socket.id].moving) {
+        tick = 0;
+        var walkSound = walkSounds[Math.floor((Math.random() * walkSounds.length))];
+        walkSound.pause();
+        walkSound.currentTime = 0;
+        walkSound.volume = Math.random();
+        walkSound.play();
+    }
 
+    tick++;
 
 })
 socket.on('sendWidthHeight',() => {
@@ -112,8 +124,15 @@ socket.on('sendInfo', (info) => {
     blockWidth = info.blockWidth;
     blockHeight = info.blockHeight;
 })
+socket.on('shoot', (info) => {
+    if (info.playerID === socket.id) {
+        shootSound.volume = 0.6;
+        shootSound.pause();
+        shootSound.currentTime = 0;
+        shootSound.play();
+    }
+})
 window.onload = function() {
-
     mainPlayerId = 0;
     document.querySelector('.restart').onclick = function() {
         location.reload();

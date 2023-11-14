@@ -11,6 +11,17 @@ const Actualheight = window.innerHeight;
 var total = 1536+739;
 var MULTIPLIER = total/(Actualwidth+Actualheight);
 
+
+
+var sounds = [];
+var shootSound = new Audio('./Sounds/shoot.wav');
+var walkSounds = 
+    [
+        new Audio('./Sounds/walk1.wav'),
+        new Audio('./Sounds/walk2.wav'),
+        new Audio('./Sounds/walk3.wav')
+    ];
+
 var map = [];
 var maphealth = [];
 var rows;
@@ -53,6 +64,9 @@ var coinColor = 'gold';
 var maxcoinRadius = 30;
 var mincoinRadius = 10;
 var coinSummonTick = 50;
+
+var tick = 0;
+var walkSoundTick = 15;
 
 var blockHealth = 2;
 var blockColor = "rgb(110, 84, 56)";
