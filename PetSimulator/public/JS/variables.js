@@ -21,6 +21,12 @@ var walkSounds =
         new Audio('./Sounds/walk2.wav'),
         new Audio('./Sounds/walk3.wav')
     ];
+var damageSounds =
+    [
+        new Audio('./Sounds/damage1.wav'),
+        new Audio('./Sounds/damage2.wav'),
+        new Audio('./Sounds/damage3.wav')
+    ];
 
 var map = [];
 var maphealth = [];

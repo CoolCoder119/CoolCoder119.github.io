@@ -1,4 +1,6 @@
-
+function getRandomChoiceOf(choices) {
+    return choices[Math.floor(Math.random() * choices.length)]
+}
 
 
 function drawBar(x,y,width,height,health,maxHealth,yOffset) {
@@ -16,6 +18,12 @@ function getChoiceForBlock(random) {
     }
     return 1;
 }
+function play(sound) {
+    sound.pause();
+    sound.currentTime = 0;
+    sound.play();
+}
+
 function getBlockAt(column,row) {
     return map[column][row];
 }

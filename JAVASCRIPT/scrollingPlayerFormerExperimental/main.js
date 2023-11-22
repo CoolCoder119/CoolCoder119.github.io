@@ -835,6 +835,7 @@ function levelCode() {
     }
     ctx.fillStyle = "white";
     ctx.fillRect(Mouse.x,Mouse.y,blockSize,blockSize);
+    ctx.fillRect(Math.round(Mouse.x/blockSize)*blockSize,Math.round(Mouse.y/blockSize)*blockSize,blockSize,blockSize);
     
 }
 
@@ -858,9 +859,8 @@ window.onload = function() {
 
 
 window.addEventListener('mousemove', (event) => {
-    Mouse.x = event.clientX-canvasInfo.x;
-    Mouse.y = event.clientY-canvasInfo.y;  
-    console.log(Mouse.x + " : " + Mouse.y);
+    Mouse.x = event.clientX-canvasInfo.offsetLeft;
+    Mouse.y = event.clientY-canvasInfo.top; 
 });
 window.addEventListener('mousedown', () => {
     Mouse.clicked = true;

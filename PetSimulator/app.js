@@ -325,6 +325,9 @@ function updateBackendPlayers() {
         if (distance < bullet.radius + player.radius) {
           delete backendProjectiles[bulletID];
           player.health -= bullet.damage;
+          io.emit('damage', {
+            player: player.id
+          });
           if (player.health <= 0) {
             delete backendPlayers[id];
             io.emit('playerKilled', {player: player.id,killer: bullet.playerID})

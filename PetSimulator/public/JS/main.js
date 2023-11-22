@@ -14,7 +14,9 @@ socket.on('updatePlayers', (backendPlayers) => {
         if (!players[id]) {
             players[id] = new Player(backendPlayer.x,backendPlayer.y,backendPlayer.radius,backendPlayer.color,backendPlayer.speed,id,backendPlayer.health)
         } else {
+
             var currentPlayer = players[id];
+
             currentPlayer.Mouse.x = backendPlayer.Mouse.x;
             currentPlayer.Mouse.y = backendPlayer.Mouse.y;
             currentPlayer.Mouse.keyW = backendPlayer.Mouse.keyW;
@@ -84,11 +86,9 @@ socket.on('update', () => {
     
     if (tick % walkSoundTick === 0 && players[socket.id].moving) {
         tick = 0;
-        var walkSound = walkSounds[Math.floor((Math.random() * walkSounds.length))];
-        walkSound.pause();
-        walkSound.currentTime = 0;
-        walkSound.volume = Math.random();
-        walkSound.play();
+        var walkSound =getRandomChoiceOf(walkSounds);
+        walkSound.volume = Math.random() * 0.2;
+        play(walkSound);
     }
 
     tick++;
@@ -110,10 +110,25 @@ socket.on('updateMap', (info) => {
 socket.on('playerKilled', (info) => {
     if (currentPlayerID === info.player) {
         killer = info.killer;
+        var damageSound = damageSounds[0];
+        play(damageSound);
+        setTimeout(() => {
+            var damageSound = damageSounds[1];
+            dplay(damageSound);
+        },400);
         setTimeout(() => {
             document.querySelector('.deathDiv').style.display = "flex";
             document.querySelector('.deathDiv').style.opacity = "1";
+            var damageSound = damageSounds[2];
+            play(damageSound);
         },1000);
+    }
+})
+socket.on('damage', (info) => {
+    if (currentPlayerID === info.player) {
+        var damageSound = getRandomChoiceOf(damageSounds);
+        damageSound.volume = 0.3;
+        play(damageSound);
     }
 })
 socket.on('sendInfo', (info) => {
@@ -126,10 +141,7 @@ socket.on('sendInfo', (info) => {
 })
 socket.on('shoot', (info) => {
     if (info.playerID === socket.id) {
-        shootSound.volume = 0.6;
-        shootSound.pause();
-        shootSound.currentTime = 0;
-        shootSound.play();
+        play(shootSound);
     }
 })
 window.onload = function() {
