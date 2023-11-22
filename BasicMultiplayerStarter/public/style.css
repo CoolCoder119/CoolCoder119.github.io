@@ -1,0 +1,11 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+canvas {
+    position: absolute;
+    background: rgb(0, 150, 80);
+}
+.hidden{
+    display: none;
+}
