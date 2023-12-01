@@ -18,5 +18,5 @@ app.get('/', (req, res) => {
 
 
 io.on('connection', (socket) => {
-  //do something later
+  console.log('say something');
 })
