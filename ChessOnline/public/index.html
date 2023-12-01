@@ -4,14 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
-    <title>Platformer</title>
 </head>
 <body>
+    <div class="alignCenter">
+        <h1 class="topText">Online Chess!</h1>
+    </div>
+    <div class="alignCenter">
+        <canvas id="canvas"></canvas>
+    </div>
+    <img src="./Images/B_Bishop.png" id="B_Bishop" class="hidden">
 
-    <canvas id="canvas"></canvas>
-
+    <img src="./Images/B_King.png" id="B_King" class="hidden">
+    <img src="./Images/B_Knight.png" id="B_Knight" class="hidden">
+    <img src="./Images/B_Pawn.png" id="B_Pawn" class="hidden">
+    <img src="./Images/B_Queen.png" id="B_Queen" class="hidden">
+    <img src="./Images/B_Rook.png" id="B_Rook" class="hidden">
+    <img src="./Images/W_Bishop.png" id="W_Bishop" class="hidden">
+    <img src="./Images/W_King.png" id="W_King" class="hidden">
+    <img src="./Images/W_Knight.png" id="W_Knight" class="hidden">
+    <img src="./Images/W_Pawn.png" id="W_Pawn" class="hidden">
+    <img src="./Images/W_Queen.png" id="W_Queen" class="hidden">
+    <img src="./Images/W_Rook.png" id="W_Rook" class="hidden">
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script src="./JS/variables.js"></script>
+    <script src="./JS/Classes/Block.js"></script>    
     <script src="./JS/functions.js"></script>
     <script src="./JS/main.js"></script>
     <script src="./JS/eventListeners.js"></script>
