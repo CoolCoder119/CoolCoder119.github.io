@@ -1,54 +1,30 @@
 * {
     margin: 0;
     padding: 0;
+    background-color: grey;
+}
+body {
+    overflow: hidden;
+}
+.topText {
+    width: 7em;
+    height: 1.5em;
+    background: linear-gradient(rgb(57, 237, 180),rgba(0,0,0,0));
+    border-radius: 0.3em;
+    margin-top: 1em;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 3em;
+}
+.alignCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 canvas {
-    position: absolute;
-    background: rgb(0, 150, 80);
-}
-.deathDiv {
-    position: absolute;
-    z-index: 10000;
-    background: rgba(100,345,13);
-    opacity: 0;
-    align-content: center;
-    margin-left: 38%;
-    margin-top: 1%;
-    border-radius: 3em;
-    width: 20em;
-    height: 20em;
-    display: none;
-    transition: 0.5s opacity;
-}
-#text {
-    position: absolute;
-    width: 80%;
-    height: 3em;
-    margin-left: 10%;
-    padding-top: 5%;
-    text-align: center;
-    justify-content: center;
-    color: rgba(0,0,0,1);
-    margin-bottom: 3em;
-}
-.restart {
-    margin-top: 70%;
-    background: rgba(365,365,365,0.3);
-    border-radius: 2em; 
-    font-size: 1.5em;
-    height: 10% !important;
-    text-align: center;
-    transition: 0.5s all;
-}
-.restart:hover {
-    cursor: pointer;
-    scale: 1.2 1.2 1.2;
-    background: rgba(365,365,365,0.4);
-}
-.taunt {
-    background: rgba(365,365,365,0.2);
-    border-radius: 2em;
-    font-size: 1.5em;
+    margin: 5em;
+    border-radius: 1em;   
 }
 .hidden{
     display: none;
