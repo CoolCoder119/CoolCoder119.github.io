@@ -1,0 +1,13 @@
+.chat{
+    background-color: rgba(58, 58, 238, 0.822);
+    width: 50%;
+    height: 50%;
+
+
+    
+    display: flex;
+    align-items: center;
+    justify-content:center;
+
+    color: rgb(13, 255, 0);
+}
