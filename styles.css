@@ -1,0 +1,32 @@
+.body {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.Chat {
+    background-color: lightblue;   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 80%;
+    height: 40em;
+
+}
+.Message {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    display: block;
+    background-color: rgba(0,0,0,0.1);
+}
+.Author , .Text {
+    height: 100%;
+}
+.Author {
+    width: 10%;
+}
+.Text {
+    width: 90%;
+}
