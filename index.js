@@ -3,7 +3,7 @@ const PORT = 8080;
 
 app.listen(
     PORT,
-    () => console.log(`it's alive on https://localhost:${PORT}`)
+    () => console.log(`it's alive on http://localhost:${PORT}`)
 )
 
 app.get(`/testing`, (req, res) => {
