@@ -7,15 +7,18 @@
 
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body id="body">
     <div class="Chat">
          <div class="Message">
             <h1 class="Author">Person</h1>
             <h1 class="Text">Chatting</h1>
-            <input class="Input" type="text">
-            <input type="button" class="submit" value = "Submit" onclick="sendToAPI()"> 
          </div>
     </div>
+    <div class="SendMessage">
+        <input class="Input" id="Input" type="text">
+        <input type="button" class="Submit" value = "Submit" onclick="sendToAPI()"> 
+    </div>
+
 
     <script type="text/javascript" src="index.js"></script>
     
