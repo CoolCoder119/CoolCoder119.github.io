@@ -97,3 +97,7 @@
     width: 5em;
     height: 3em;
 }
+
+.hidden {
+    display: none;
+}

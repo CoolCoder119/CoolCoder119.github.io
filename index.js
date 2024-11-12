@@ -1,17 +1,24 @@
-var textInput;
-window.onload = function() {
-    textInput = document.getElementById("Input");
-    var body = document.getElementById("body")
-    body.clientWidth = window.innerWidth;
-    body.clientHeight = window.innerHeight;
-    
+
+
+function createNewText(Text) {
+    var div = document.createElement("div");
+    document.getElementById("chat").appendChild(div);
+    div.classList.add("Message");
+    var author = document.createElement("h1");
+    var text = document.createElement("h1");
+    div.appendChild(author);
+    div.appendChild(text);
+    author.classList.add("Author");
+    text.classList.add("Text");
+    author.innerText = "Author";
+    text.innerText = Text;
+
 }
 
-
 function sendToAPI(){
-    alert("hihi")
-    console.log('button presed')
-    alert(textInput.textContent);
+    var textInput = document.getElementById("input");
+    //send this to server
+    createNewText(textInput.value)
 }
 
 
