@@ -1,27 +1,34 @@
 .body {
-    width: 100%;
-    height: 100%;
+    width: inherit;
+    height: inherit;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: lightblue;
 }
 .Chat {
-    background-color: lightblue;   
-    display: flex;
+    background-color: rgba(0,0,0,0.1);   
+    display:block;
     align-items: center;
     justify-content: center;
 
     width: 100%;
-    height: 42em;
+    height: 39em;
 
-    overflow: scroll;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-color: black black;
+    scroll-behavior: auto;
 
 }
 .Message {
-    width: 100%;
-    height: 10%;
+    width: 90%;
+    height: auto;
     margin-left: 5%;
     margin-right: 5%;
+    margin-top: 3%;
     display: block;
     background-color: rgba(0,0,0,0.1);
     display: flex;
@@ -29,7 +36,7 @@
 
 .Author {
     display: inline-block;
-    height: 100%;
+    height: auto;
     width: 10%;
     margin-left: 0;
     margin-right: 0;
@@ -58,7 +65,21 @@
     text-align: center;
 }
 
+.SendMessage {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 20%;
+    width: 40%;
+    background-color: green;
+    margin-left: 30%;
+    bottom: 0;
+}
+
 .Input {
+    display: inline-block;
     background-color: green;
     color: white;
     font-size: 150%;
@@ -70,4 +91,10 @@
     color:rgb(255, 251, 0);
     font-size: 150%;
     overflow:scroll;
+    width: 5em;
+    height: 3em;
+}
+
+.hidden {
+    display: none;
 }
