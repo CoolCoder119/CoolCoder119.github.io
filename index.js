@@ -18,7 +18,9 @@ function createNewText(Text) {
 function sendToAPI(){
     var textInput = document.getElementById("input");
     //send this to server
-    createNewText(textInput.value)
+    if (textInput.value != "") {
+        createNewText(textInput.value)
+        textInput.value = "";
+    }
+
 }
-
-
