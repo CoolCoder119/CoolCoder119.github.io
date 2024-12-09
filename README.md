@@ -55,6 +55,34 @@ using @RequestMapping(method="POST"). After this variable <br>
 is specified this can do the functions of other mappings<br>
 which we will get into. <br>
 
+##### @PostMapping
+
+This mapping handles all POST requests made to the api and <br>
+can control the data type that certain endpoint consumes. <br>
+
+This also pairs with the annotation @RequestBody <br>
+
+The annotation pairs all JSON data variables to classes <br>
+as shown below. <br>
+
+##### Request Body ->
+```
+{
+   username: 'hihihihi',
+   password: '123456789'
+}
+```
+
+```java
+@PostMapping
+public String register(@RequestBody Client client){
+   System.out.println(client.username);
+   System.ou
+}
+
+
+```
+
 
 
 
