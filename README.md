@@ -29,12 +29,36 @@ annotations and functions. <br>
 #### Now we will dive in into all the code Spring provides
 
 ```java
-
+@RequestMapping(value = "/endpoint", method = "POST")
 @PostMapping(value = "/endpoint", consumes = "text;charset=UTF-8")
-@GetMapping(value = "/endpoint")
+@GetMapping(value = "/endpoint/{value}")
 @ResponseStatues(HttpStatus.OK)
+@CrossOrigin(origins="http://localhost:8000")
+@RestController
 
+@RequestBody
+@PathVariable String value
 ```
+#### All RequestMappings for functions
+
+These annotations label the functions that take care <br>
+of the functions that handle HTTP requests. <br>
+Most annotations can specify the api endpoint <br>
+that the function is listening to via <br>
+@PostMapping(value="/endpoint) <br>
+
+##### Let's see some of these annotations
+
+##### @RequestMapping
+
+This mapping is the generic annotation for all the HTTP <br>
+methods. This annotation can specify which method it is <br>
+using @RequestMapping(method="POST"). After this variable <br>
+is specified this can do the functions of other mappings<br>
+which we will get into. <br>
+
+
+
 
 
 
