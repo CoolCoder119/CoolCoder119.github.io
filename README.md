@@ -16,7 +16,30 @@
 ### Topics Covered ->
 - Spring Boot API
 - Endpoints Functions
-- Deep Dive into Code
+- SQLITE Processing
+
+### Spring Boot API ->
+
+Right now, as we have no domain available for us, <br>
+it is in prototype mode, hosting on http://localhost:8080. <br>
+Spring Boot API makes it extremely easy to create RESTFUL <br>
+services via java. It provides simple to understand <br>
+annotations and functions. <br>
+
+#### Now we will dive in into all the code Spring provides
+
+```java
+
+@PostMapping(value = "/endpoint", consumes = "text;charset=UTF-8")
+@GetMapping(value = "/endpoint")
+@ResponseStatues(HttpStatus.OK)
+
+```
+
+
+
+
+
 
 
 
