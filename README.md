@@ -39,8 +39,6 @@ annotations and functions. <br>
 @RequestBody
 @PathVariable String value
 ```
-#### All RequestMappings for functions
-
 These annotations label the functions that take care <br>
 of the functions that handle HTTP requests. <br>
 Most annotations can specify the api endpoint <br>
