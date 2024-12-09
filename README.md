@@ -9,9 +9,14 @@
 1. Backend Server (Spring Boot API) <br/>
 2. Frontend Client (HTML, CSS, JS) <br/>
 3. About the authors <br/>
-4. Documentation <br/>
+4. Documentation and Dependencies <br/>
 
 ## 🖥️ Backend Server
+
+### Topics Covered ->
+- Spring Boot API
+- Endpoints Functions
+- Deep Dive into Code
 
 
 
