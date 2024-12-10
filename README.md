@@ -149,7 +149,16 @@ public String testing(@PathVariable String id){
 
 ##### @CrossOrigins
 
-While, programming the client side of the application I 
+While, programming the client side of the application I ran
+into an error.
+
+```
+No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Origin 'http://localhost:3000' is therefore not allowed access. If an opaque
+response serves your needs, set the request's mode to 'no-cors' to fetch the
+resource with CORS disabled.
+
+```
 
 
 
