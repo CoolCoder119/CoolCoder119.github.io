@@ -32,7 +32,7 @@ annotations and functions. <br>
 @RequestMapping(value = "/endpoint", method = "POST")
 @PostMapping(value = "/endpoint", consumes = "text;charset=UTF-8")
 @GetMapping(value = "/endpoint/{value}")
-@ResponseStatues(HttpStatus.OK)
+@ResponseStatus(HttpStatus.OK)
 @CrossOrigin(origins="http://localhost:8000")
 @RestController
 
@@ -146,6 +146,13 @@ public String testing(@PathVariable String id){
 ```
 1
 ```
+
+##### @CrossOrigins
+
+While, programming the client side of the application I 
+
+
+
 
 
 
