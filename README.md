@@ -65,22 +65,86 @@ This also pairs with the annotation @RequestBody <br>
 The annotation pairs all JSON data variables to classes <br>
 as shown below. <br>
 
-##### Request Body ->
+##### Frontend Side
 ```
 {
    username: 'hihihihi',
    password: '123456789'
 }
 ```
-
+##### Backend Side
 ```java
 @PostMapping
 public String register(@RequestBody Client client){
-   System.out.println(client.username);
-   System.ou
+   System.out.println(client.getUsername());
+   System.out.println(client.getPassword());
 }
 
+public class Client{
+   private String username;
+   private String password;
 
+   public void setUsername(String username){
+      this.username = username;
+   }
+
+   public void setPassword(String password){
+      this.password = password;
+   }
+
+   public String getUsername(){
+      return username;
+   }
+   public String getPassword(){
+      return password;
+   }
+}
+```
+
+###### Output
+
+```
+hihihihi
+123456789
+```
+
+##### @GetMapping
+
+This mapping handles all GET requests to the api. The 
+backend then returns a String as the response. It can
+be formatted into json or straight text.
+
+Additionally, the annotation @PathVariable can get the 
+path variable of the api url. For example...
+
+If your api endpoint was 
+
+```
+http://localhost:8080/api/get/{username}
+
+```
+Then the @PathVariable would return what the username was. This
+maps to a String.
+
+###### Example
+
+###### HTTP request
+```
+http://localhost:8080/testing/{1}
+```
+###### Java Code
+
+``` java
+@GetMapping(value = "/testing/{id}")
+@ResponseStatus(HttpStatus.OK)
+public String testing(@PathVariable String id){
+  return id;
+}
+
+```
+###### Output
+```
+1
 ```
 
 
