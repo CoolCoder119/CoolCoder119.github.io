@@ -9,11 +9,16 @@ const msgbox = document.getElementById("msg");
 var client;
 var loggedIn;
 
-while(true){
-    while(loggedIn){
-        console.log("logged in")
-    }
-}
+window.onload = getMessages;
+
+setInterval(getMessages, 5000);
+
+
+// while(true){
+//     while(loggedIn){
+//         console.log("logged in")
+//     }
+// }
 
 function Client(username, password){
     this.username = username
@@ -119,6 +124,25 @@ function sendMessage(){
         }
     })
     .catch((error) =>{
-        alert(error)
+        alert(error) 
+    })
+}
+
+function getMessages(){
+    if(client == null){
+        return
+    }
+
+    fetch("http://localhost:8080/api/msg/get/" + client.username , {
+        method: "GET"
+    })
+    // .then(response => {
+    //     if(!response.ok){
+    //         alert("server is down skbidis")
+    //     }
+    //     return response.json();
+    // })
+    .then(json => {
+        console.log(response.text())
     })
 }
