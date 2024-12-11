@@ -32,7 +32,7 @@ annotations and functions. <br>
 @RequestMapping(value = "/endpoint", method = "POST")
 @PostMapping(value = "/endpoint", consumes = "text;charset=UTF-8")
 @GetMapping(value = "/endpoint/{value}")
-@ResponseStatues(HttpStatus.OK)
+@ResponseStatus(HttpStatus.OK)
 @CrossOrigin(origins="http://localhost:8000")
 @RestController
 
@@ -146,6 +146,22 @@ public String testing(@PathVariable String id){
 ```
 1
 ```
+
+##### @CrossOrigins
+
+While, programming the client side of the application I ran
+into an error.
+
+```
+No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Origin 'http://localhost:3000' is therefore not allowed access. If an opaque
+response serves your needs, set the request's mode to 'no-cors' to fetch the
+resource with CORS disabled.
+
+```
+
+
+
 
 
 
