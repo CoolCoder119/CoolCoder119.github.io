@@ -10,6 +10,7 @@
 2. Frontend Client (HTML, CSS, JS) <br/>
 3. About the authors <br/>
 4. Documentation and Dependencies <br/>
+5. Using the project.
 
 ## 🖥️ Backend Server
 
