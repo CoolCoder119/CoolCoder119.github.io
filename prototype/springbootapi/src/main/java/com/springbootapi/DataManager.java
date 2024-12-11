@@ -13,6 +13,7 @@ import java.util.Set;
 public class DataManager {
 
     private Client[] registeredClients = getClients();
+    final String dbURL = "jdbc:sqlite:database.db";
 
     public void addMessage(Client client, String message){
         String sql = "INSERT INTO Messages(Messenger, Content, Reciever) VALUES('" + client.getUser() + "', '" + message + "', '" + client.getReciever() + "')";
@@ -44,7 +45,7 @@ public class DataManager {
     }
 
     public int getTableLength(String table){
-        try(Connection conn = DriverManager.getConnection("jdbc:sqlite:database.db")){
+        try(Connection conn = DriverManager.getConnection(dbURL)){
             Statement stmnt = conn.createStatement();
             ResultSet rs = stmnt.executeQuery("SELECT COUNT(*) FROM Users");
             return rs.getInt(1);
@@ -59,7 +60,7 @@ public class DataManager {
         String sql = "SELECT * FROM Messages WHERE Reciever='" + username + "' ORDER BY Messenger DESC";
         Set<Message> messages = new HashSet<>();
 
-        try(Connection conn = DriverManager.getConnection("jdbc:sqlite:database.db")){
+        try(Connection conn = DriverManager.getConnection(dbURL)){
             Statement stmnt = conn.createStatement();
             ResultSet rs = stmnt.executeQuery(sql);
             while(rs.next()){
@@ -84,7 +85,7 @@ public class DataManager {
 
         Client[] clients = new Client[getTableLength("")];
 
-        try(Connection conn = DriverManager.getConnection("jdbc:sqlite:database.db")){
+        try(Connection conn = DriverManager.getConnection(dbURL)){
             Statement stmnt = conn.createStatement();
             ResultSet rs = stmnt.executeQuery(sql);
             int i = 0;
@@ -110,7 +111,7 @@ public class DataManager {
 
 
     public void runSQL(String sql){
-        try(Connection conn = DriverManager.getConnection("jdbc:sqlite:database.db")){
+        try(Connection conn = DriverManager.getConnection(dbURL)){
             Statement stmnt = conn.createStatement();
             stmnt.execute(sql);
             conn.close();
