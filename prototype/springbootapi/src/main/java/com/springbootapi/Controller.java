@@ -16,7 +16,7 @@ import org.json.*;
 import org.springframework.http.HttpStatus;
 
 @RestController
-@CrossOrigin(origins="http://127.0.0.1:5500")
+@CrossOrigin(origins={"http://127.0.0.1:5500","http://127.0.0.1:5000"})
 @RequestMapping("/api")
 public class Controller {
     
