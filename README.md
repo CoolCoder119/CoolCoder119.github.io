@@ -161,18 +161,12 @@ resource with CORS disabled.
 
 ```
 
+##### @AddingTimestamps
 
+For adding timestamps to the code, you need to do a few things in the server.
 
-
-
-
-
-
-
-
-
-
-
-
-        
-              
+1. Add a column for when the message is sent
+2. Use a library to get the time
+3. Add the time to the message table
+4. In the client, make a U.I. for the message.
+5. Celebrate, ur done.😊
