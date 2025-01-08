@@ -13,7 +13,10 @@ import java.util.Set;
 public class DataManager {
 
     private Client[] registeredClients = getClients();
-    final String dbURL = "jdbc:sqlite:database.db";
+    // private Client[] registeredClients = null;
+    final String databaseURL = "jdbc:postgresql://pg-24a4a67c-springbootapi.h.aivencloud.com:10193/defaultdb?sslmode=require";
+    final String username = "avnadmin";
+    final String password = "AVNS_1E5FZpr-OIOurXHQohD";
 
     public void addMessage(Client client, String message){
         String sql = "INSERT INTO Messages(Messenger, Content, Reciever) VALUES('" + client.getUser() + "', '" + message + "', '" + client.getReciever() + "')";
@@ -45,9 +48,10 @@ public class DataManager {
     }
 
     public int getTableLength(String table){
-        try(Connection conn = DriverManager.getConnection(dbURL)){
+        try(Connection conn = DriverManager.getConnection(databaseURL, username, password)){
             Statement stmnt = conn.createStatement();
             ResultSet rs = stmnt.executeQuery("SELECT COUNT(*) FROM Users");
+            rs.next();
             return rs.getInt(1);
         }catch(SQLException e){
             e.printStackTrace();
@@ -56,11 +60,11 @@ public class DataManager {
         return 0;
     }
 
-    public Message[] getMessages(String username){
-        String sql = "SELECT * FROM Messages WHERE Reciever='" + username + "' ORDER BY Messenger DESC";
+    public Message[] getMessages(String user){
+        String sql = "SELECT * FROM Messages WHERE Reciever='" + user + "' ORDER BY Messenger DESC";
         Set<Message> messages = new HashSet<>();
 
-        try(Connection conn = DriverManager.getConnection(dbURL)){
+        try(Connection conn = DriverManager.getConnection(databaseURL, username, password)){
             Statement stmnt = conn.createStatement();
             ResultSet rs = stmnt.executeQuery(sql);
             while(rs.next()){
@@ -77,15 +81,16 @@ public class DataManager {
         for(Message m : messages){
             output[i] = m;
         }
+        // runSQL("DELETE FROM Messages WHERE Reciever='" + user + "'");
         return output;
     }
     
     private Client[] getClients(){
-        String sql = "SELECT Username, Password FROM Users";
+        String sql = "SELECT * FROM Users";
 
-        Client[] clients = new Client[getTableLength("")];
+        Client[] clients = new Client[getTableLength("Users")];
 
-        try(Connection conn = DriverManager.getConnection(dbURL)){
+        try(Connection conn = DriverManager.getConnection(databaseURL, username, password)){
             Statement stmnt = conn.createStatement();
             ResultSet rs = stmnt.executeQuery(sql);
             int i = 0;
@@ -111,9 +116,14 @@ public class DataManager {
 
 
     public void runSQL(String sql){
-        try(Connection conn = DriverManager.getConnection(dbURL)){
+        try(Connection conn = DriverManager.getConnection(databaseURL, username, password)){
             Statement stmnt = conn.createStatement();
             stmnt.execute(sql);
+            // ResultSet rs = stmnt.executeQuery(sql);
+            // while(rs.next()){
+            //     System.out.println(rs.getString(1));
+            //     System.out.println(rs.getString(2));
+            // }
             conn.close();
         }
         catch(SQLException e){
