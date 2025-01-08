@@ -29,7 +29,7 @@ function createAccount(){
     const username = document.getElementById("username")
     const password = document.getElementById("password")
 
-    fetch("http://localhost:8080/api/login/register", {
+    fetch("https://springbootapi-1.onrender.com/api/login/register", {
         method: "post",
         headers: {
             'Content-type': 'application/json;charset=UTF-8'
@@ -60,7 +60,7 @@ function login(){
     const username = document.getElementById("login")
     const password = document.getElementById("pass")
 
-    fetch("http://localhost:8080/api/login/signin",{
+    fetch("https://springbootapi-1.onrender.com/api/login/signin",{
         method: "post",
         headers: {
             'Content-type': "application/json;charset=UTF-8"
@@ -107,15 +107,15 @@ function sendMessage(){
         return
     }
 
-    fetch("http://localhost:8080/api/msg/send", {
+    fetch("https://springbootapi-1.onrender.com/api/msg/send", {
         method: "post",
         headers: {
             "content-type": "application/json;charset=UTF-8"
         },
         body: JSON.stringify({
             username: client.username,
-            message: document.getElementById("msg").value,
-            reciever: document.getElementById("person").value
+            message: recieverbox.value,
+            reciever: msgbox.value
         })
     })
     .then(response =>{
@@ -133,16 +133,46 @@ function getMessages(){
         return
     }
 
-    fetch("http://localhost:8080/api/msg/get/" + client.username , {
+    var answer = fetch("https://springbootapi-1.onrender.com/api/msg/get/" + client.username , {
         method: "GET"
-    })
-    // .then(response => {
-    //     if(!response.ok){
-    //         alert("server is down skbidis")
-    //     }
-    //     return response.json();
-    // })
-    .then(json => {
-        console.log(response.text())
-    })
+    }).then(response => {
+        try {
+            console.log("Turning into object");
+            console.log(response);
+            return response.json();
+        } catch (error) {
+            console.log("This means that you have no messages.");
+            return null;
+        }
+
+     })
+
+     setTimeout(function(){
+        answer.then(object => {
+            try {
+                console.log(object);
+                var messageObject = object[0];
+                var message = messageObject.Messages;   
+                var messenger = messageObject.Messenger;    
+                var string = "";
+                for (i = 0; i < message.length; i++) {
+                    var character = message[i]
+                    if (character !== "[" && character !== "]") {
+                        string = string+character;
+                        console.log(string);
+                    }
+                }
+                message = string;
+                console.log(message," was sent by ",messenger);
+                console.log(messenger[0]);        
+
+            } catch (error) {
+                console.log("This means that there was an error or everything is working.");
+                console.log("The error was ",error);
+            }   
+    
+        })
+    }, 1000);
+
+     
 }

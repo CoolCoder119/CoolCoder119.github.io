@@ -7,38 +7,53 @@
 
 </head>
 <body>
-
-    <h3>Create Account Here</h3>
-    <input id = "username" type="text" >
-    <input id = "password" type="text" >
-    <input id="submit" type="button" value="create!" onclick="createAccount()">
-
-    <h3>Login here</h3>
-    <input id = "login" type="text">
-    <input id = "pass" type="text">
-    <input id="submit" type = "button" value = "login" onclick="login()">
-
-
-    <br>
-
-    <p id = "info">
-    </p>
-
-    <br>
-
-
-    <ul>
+    <div id="MainDiv">
+        <div id="leftSide">
+            <h3>Create Account Here</h3>
+            <input id = "username" type="text" >
+            <input id = "password" type="text" >
+            <input id="submit" type="button" value="create!" onclick="createAccount()">
         
-    </ul>
+            <h3>Login here</h3>
+            <input id = "login" type="text">
+            <input id = "pass" type="text">
+            <input id="submit" type = "button" value = "login" onclick="login()">
+        
+        
+            <br>
+        
+            <p id = "info">
+            </p>
+        
+            <br>
+        
+        
+            <ul>
+                
+            </ul>
+        
+            
+            <h3>Send messages</h3>
+            <br>
+            <input id = "person" type = "text">
+            <br>
+            <br>
+            <input id = "msg" type = "text">
+            <input id = "msgbutton" type = "button" value="send" onclick="sendMessage()">
+        </div>
+        <div id="MessageDisplayer">
+            <h1>Messages</h1>
+            <div id="messages">
+                <div id="message">
+                    <h1 id="person">By AverageCoder101</h1>
+                    <h1 id="text">Hi. I just wanted to say that some stuff. Okay. Bye.</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
     
-    <h3>Send messages</h3>
-    <br>
-    <input id = "person" type = "text">
-    <br>
-    <br>
-    <input id = "msg" type = "text">
-    <input id = "msgbutton" type = "button" value="send" onclick="sendMessage()">
 
     <script src="index.js"></script>
 </body>

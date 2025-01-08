@@ -1,5 +1,7 @@
 package com.springbootapi;
 
+
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpStatus;
 @CrossOrigin(origins={"http://127.0.0.1:5500","http://127.0.0.1:5000"})
 @RequestMapping("/api")
 public class Controller {
+
     
     final DataManager dm = new DataManager();
 
@@ -51,7 +54,6 @@ public class Controller {
     @PostMapping(value = "/msg/send", consumes = "application/json;UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public void sendMessage(@RequestBody String rawData){
-        System.out.println(rawData);
         JSONTokener tokener = new JSONTokener(rawData);
         JSONObject json = new JSONObject(tokener);
 
@@ -65,16 +67,42 @@ public class Controller {
 
     @GetMapping(value = "/msg/get/{username}")
     @ResponseStatus(HttpStatus.OK)
-    public String getMessage(@PathVariable String username){
+    public String getMessage(@PathVariable String username){        
         Message[] messages = dm.getMessages(username);
-        System.out.println(username);
         JSONObject jsonObject = new JSONObject(); 
 
         String currentUsername = "";
         JSONArray jsonMessages = new JSONArray();
         JSONObject jsonFormat = new JSONObject();
         int count = 0;
+
+        System.out.println(messages.length);
+        for (int i = 0; i < messages.length; i++) {
+            if (messages[i] == null) {
+                System.out.println("The messgae is null");
+                /*System.out.println("The message was blank");
+                System.out.println("Removing " + i);
+                Message[] arr_new = new Message[messages.length-1];
+                int j=i;
+                for(int p=0, k=0;p<messages.length;p++){
+                    if(p!=j){
+                        arr_new[k]=messages[p];
+                        k++;
+                        
+                    }
+                }
+                messages = arr_new;*/
+            } else {
+                System.out.println("The message is :" + messages[i]);
+            }
+
+        }
+        
         for(int i = 0; i < messages.length; i++){
+            if (messages[i] == null) {
+                continue;
+            }
+            System.out.println(i);
             jsonMessages.put(messages[i].getContent());
             if(messages[i].getSender().equals(currentUsername) == false){
                 currentUsername = messages[i].getSender();
