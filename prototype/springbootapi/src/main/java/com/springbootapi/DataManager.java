@@ -14,7 +14,7 @@ public class DataManager {
 
     private Client[] registeredClients = getClients();
     // private Client[] registeredClients = null;
-    final String databaseURL = "jdbc:postgresql://pg-24a4a67c-springbootapi.h.aivencloud.com:10193/defaultdb?sslmode=require";
+    final String databaseURL = "********";
     final String username = "avnadmin";
     final String password = "*********";
 
