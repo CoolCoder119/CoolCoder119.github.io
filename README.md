@@ -161,18 +161,28 @@ resource with CORS disabled.
 
 ```
 
+##### @Finding_Date_Library 
+
+To add timestamps, you need a date library. I would make it so that it gets the time from a faraway place so we're not hacked.
+ 
+``` java
+import java.util.Date
+
+ZoneOffset zoneOffset = ZoneOffset.of( "-04:00" );
+OffsetDateTime odt = OffsetDateTime.ofInstant( instant , zoneOffset );
+
+```
+
+I got all of this from a [Reddit Post](https://pages.github.com/).
 
 
 
+##### @AddingTimestamps
 
+For adding timestamps to the code, you need to do a few things in the server.
 
-
-
-
-
-
-
-
-
-        
-              
+1. Add a column for when the message is sent
+2. Use a library to get the time
+3. Add the time to the message table
+4. In the client, make a U.I. for the message.
+5. Celebrate, ur done.😊
