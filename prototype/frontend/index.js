@@ -9,9 +9,14 @@ const msgbox = document.getElementById("msg");
 var client;
 var loggedIn;
 
+var sendingTo = null;
+
 window.onload = getMessages;
 
 setInterval(getMessages, 5000);
+
+const container = document.getElementById("container");
+const body = document.getElementById("body");
 
 
 // while(true){
@@ -96,8 +101,16 @@ function login(){
    
 }
 
+
+function exitMessaging(){
+    container.style.visibility='hidden';
+}
+function startMessaging(){
+    container.style.visibility='visible';
+}
+
 function sendMessage(){
-    if(loggedIn == null){
+    /*if(loggedIn == null){
         alert("Please log in.")
         return
     }
@@ -106,6 +119,21 @@ function sendMessage(){
         alert("Please fill out both boxes before sending a message.")
         return
     }
+    */
+    if (msgbox.value == ""){
+        return;
+    }
+
+    const newMessage = document.createElement("p");
+    newMessage.innerText = msgbox.value;
+    newMessage.classList.add("message");
+    newMessage.classList.add("user_message");
+
+    body.append(newMessage)
+
+    
+    msgbox.value = "";
+    /*
 
     fetch("https://springbootapi-1.onrender.com/api/msg/send", {
         method: "post",
@@ -126,6 +154,7 @@ function sendMessage(){
     .catch((error) =>{
         alert(error) 
     })
+    */
 }
 
 function getMessages(){

@@ -7,17 +7,19 @@
 
 </head>
 <body>
+   
+
     <div id="MainDiv">
         <div id="leftSide">
             <h3>Create Account Here</h3>
-            <input id = "username" type="text" >
-            <input id = "password" type="text" >
-            <input id="submit" type="button" value="create!" onclick="createAccount()">
+            <input class="top-text" id = "username" type="text" >
+            <input class="top-text" id = "password" type="text" >
+            <input class="top-submit" id="submit" type="button" value="create!" onclick="createAccount()">
         
             <h3>Login here</h3>
-            <input id = "login" type="text">
-            <input id = "pass" type="text">
-            <input id="submit" type = "button" value = "login" onclick="login()">
+            <input class="top-text" id = "login" type="text">
+            <input class="top-text" id = "pass" type="text">
+            <input class="top-submit" id="submit" type = "button" value = "login" onclick="login()">
         
         
             <br>
@@ -33,27 +35,28 @@
             </ul>
         
             
-            <h3>Send messages</h3>
+            <h3>CHAT WITH ...</h3>
             <br>
-            <input id = "person" type = "text">
-            <br>
-            <br>
-            <input id = "msg" type = "text">
-            <input id = "msgbutton" type = "button" value="send" onclick="sendMessage()">
+            <input class="top-text" id = "person" type = "text">
+            <button class="top-submit" id="start-messaging" onclick="startMessaging()">START MESSAGING</button>
+    </div>  
+    
+    <div class="container" id="container">     
+        <div class="header">
+            <h1>WebChat</h1>
+            <button class="X" onclick="exitMessaging()">X</button>
         </div>
-        <div id="MessageDisplayer">
-            <h1>Messages</h1>
-            <div id="messages">
-                <div id="message">
-                    <h1 id="person">By AverageCoder101</h1>
-                    <h1 id="text">Hi. I just wanted to say that some stuff. Okay. Bye.</h1>
-                </div>
-            </div>
+        <div class="body" id="body">
+            <p class="message">Hello</p>
+        </div>
+        <div class="footer">
+            <form>
+                <input type="text" name="" id="msg">
+                <button type="button" value="send" id = "msgbutton" onclick="sendMessage()">SEND</button>
+            </form>
         </div>
     </div>
-    
 
-    
 
     <script src="index.js"></script>
 </body>
