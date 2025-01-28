@@ -1,0 +1,147 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+
+h3 {
+    color: white;
+}
+
+body {
+    height: 150vh;
+    background-color: rgb(70, 62, 62);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.container {
+    margin-top: 10vh;
+    width: 450px;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 2px 20px rgba( 0, 0, 0, 0.4);
+    background-color: dodgerblue;
+    align-self: center;
+}
+
+.header h1{
+    color: white;
+    text-align: center;
+    display: inline-block;
+    width: 90%;
+}
+.X {
+    display:inline;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 35px;
+    font-weight: 600;
+    color: red;
+    position: absolute;
+    x:50%;
+}
+.X:hover {
+    cursor: pointer;
+}
+.body {
+    flex: 1;
+    color: white;
+    background-color: rgba(0,0,0,0.7);
+    padding: 20px 30px;
+}
+.message {
+    background-color: dodgerblue;
+    padding: 10px;
+    max-width: 80%;
+    font-size:medium;
+    flex-wrap: wrap;
+    word-wrap: break-word;
+    color: white;
+    width: fit-content; 
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+.user_message {
+    margin-left: auto;
+    background-color: white;
+    color: black;   
+}
+.footer form{
+    display: flex;
+}
+form input {
+    flex: 1;
+    height: 40px;
+    border: none;
+    outline: none;
+    padding-left: 5px;
+    font-size: 16px;
+}
+form button {
+    width: 100px;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: dodgerblue;
+    color: white;
+    cursor: pointer;
+}
+form button:hover {
+    background-color: blue;
+    transition: 0.3s ease;
+}
+
+#container {
+    visibility:hidden;
+}
+#starter-message{
+    visibility: hidden;
+}
+
+.top-submit {
+    margin-bottom: 5vh;
+    margin-top: 1vh;
+    border: none;
+    outline: none;
+    width: 15em;
+    height: 5.5vh;
+    text-align: center; 
+    font-weight:600;
+    background-color: blue;
+    color: black;
+    border-radius: 3em;
+    font-size: larger;
+}
+
+@keyframes submit {
+    0%   {background-color: rgba(0, 0, 255, 0.581);}
+    50%  {background-color: rgba(56, 56, 145, 0.748);}
+    100% {background-color:blue;}
+  }
+.top-submit:hover{
+    background-color: rgba(0, 0, 255, 0.581);
+    transition: 0.2s ease;
+    cursor:pointer;
+}
+.top-submit:focus {
+    animation: submit .5s ease-in-out;
+}
+
+.top-text {
+    border: none;
+    outline: none;
+    width: 15em;
+    height: 5vh;
+    text-align: center;
+    background-color: dodgerblue;
+    color: white;
+    border-radius: 1em;
+    font-size: medium;
+}
+
+
